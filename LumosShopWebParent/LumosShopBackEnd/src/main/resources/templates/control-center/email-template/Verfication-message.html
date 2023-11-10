@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<div th:fragment="data">
+    <div class="container mt-5" data-bs-theme="dark">
+        <h3>
+            Verification Message
+        </h3>
+        <hr class="my-5"/>
+        <form th:action="@{/control/update-message-design}" method="post">
+            <div class="mb-3">
+                <label for="Verification_emailTitle" class="form-label">Subject/Title:</label>
+                <input name="Verification_emailTitle" th:value="${Verification_emailTitle}" type="text" class="form-control w-50" id="Verification_emailTitle" required>
+            </div>
+            <section id="editor" class="mb-3">
+                <label for="edit" class="form-label">Template: </label>
+                <textarea id="edit" name="Verification_messageContent" th:text="${Verification_messageContent}" required></textarea>
+            </section>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h5 class="modal-title" th:text="${Title}"></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Name:</strong>
+                <p th:text="${customer.fullName}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>Phone Number:</strong>
+                <p th:text="${customer.phoneNumber}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>Address Line 1:</strong>
+                <p th:text="${customer.addressLine1}"></p>
+            </div>
+            <div class="col-md-6" th:if="${customer.addressLine2 != null}">
+                <strong>Address Line 2:</strong>
+                <p th:text="${customer.addressLine2}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>Nation:</strong>
+                <p th:text="${customer.nation.name}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>City:</strong>
+                <p th:text="${customer.city}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>Email:</strong>
+                <p th:text="${customer.email}"></p>
+            </div>
+            <div class="col-md-6">
+                <strong>Created Time:</strong>
+                <p th:text="${#dates.format(customer.createdTime, 'yyyy/MM/dd HH:mm')}" ></p>
+            </div>
+            <div class="col-md-6">
+                <strong>isEnabled:</strong>
+                <p th:text="${customer.enabled}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

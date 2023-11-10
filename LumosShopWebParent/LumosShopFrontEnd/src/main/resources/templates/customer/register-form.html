@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${title})}"></div>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .form-control:focus {
+            border-color: #022e64;
+            box-shadow: none;
+        }
+
+
+    </style>
+</head>
+
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="form-container" data-bs-theme="dark">
+    <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i> User Registration Form</h2>
+
+
+    <form th:action="@{/setUp-customer}" method="post" data-bs-theme="dark" th:object="${customer}"
+          onsubmit="return checkEmailUnique(this);">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="input-group my-4">
+            <span class="input-group-text">First and last name</span>
+            <input type="text" th:field="*{firstName}" aria-label="First name" class="form-control" required
+                   maxlength="60" minlength="3">
+            <input type="text" th:field="*{lastName}" aria-label="Last name" class="form-control" required
+                   maxlength="60" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Phone Number"
+                   aria-label="Phone Number"
+                   aria-describedby="basic-addon1" required maxlength="16" minlength="8">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon2"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine1}" class="form-control" placeholder="Address Line 1"
+                   aria-label="Address Line 1"
+                   aria-describedby="basic-addon2" required maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon3"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine2}" class="form-control" placeholder="Address Line 2"
+                   aria-label="Address Line 2"
+                   aria-describedby="basic-addon3" maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon4"><i class="fa fa-globe"></i></span>
+            <select th:field="*{nation}" class="form-control">
+                <option th:each="nation : ${nationList}" th:value="${nation.id}">[[${nation.name}]]</option>
+            </select>
+        </div>
+
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon5"><i class="fa fa-city"></i></span>
+            <input type="text" th:field="*{city}" class="form-control" placeholder="City" aria-label="City"
+                   aria-describedby="basic-addon5" required maxlength="55" minlength="3" list="cityList">
+            <datalist id="cityList"></datalist>
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon6"><i class="fa fa-envelope"></i></span>
+            <input type="text" th:field="*{email}" class="form-control" placeholder="Email" aria-label="Email"
+                   aria-describedby="basic-addon6" required maxlength="55" minlength="6">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon7"><i class="fa fa-lock"></i></span>
+            <input type="password" th:field="*{password}" id="Password" class="form-control" placeholder="Password"
+                   aria-label="Password"
+                   aria-describedby="basic-addon7" required maxlength="20" minlength="6"
+                   oninput="checkPasswordMatch(document.getElementById('ConfirmPassword'))">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon8"><i class="fa fa-duotone fa-lock-keyhole"></i></span>
+            <input type="password" id="ConfirmPassword" class="form-control" placeholder="Confirm Password"
+                   aria-label="Password"
+                   aria-describedby="basic-addon8" required maxlength="20" minlength="6"
+                   oninput="checkPasswordMatch(this)">
+        </div>
+        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+        <button type="submit" class="btn btn-outline-danger mx-2" id="btn-Cancel">Cancel</button>
+
+    </form>
+    <div class="modal fade text-center" id="modalDialog" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span class="fs-5 fw-bold" id="modalBody"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    moduleURL = "[[@{/}]]";
+    contextPath = "[[@{/}]]";
+    let cityList;
+
+    $(document).ready(function () {
+        const NationSelector = $("#nation");
+        cityList = $("#cityList");
+        $("#btn-Cancel").on("click", function () {
+            window.location = moduleURL;
+        });
+
+
+        NationSelector.on("change", function () {
+            cityFetch();
+            $("#city").val("").focus();
+        });
+    });
+
+    function cityFetch() {
+        const chosen = $("#nation option:selected");
+        const NationId = chosen.val();
+        const URL = contextPath + "controls/listCities/" + NationId;
+
+
+        $.get(URL, function (responseJSON) {
+            cityList.empty();
+            $.each(responseJSON, function (index, nation) {
+                $("<option>").val(nation.name).text(nation.name).appendTo(cityList);
+            });
+        });
+    }
+
+    function checkPasswordMatch(confirmPassword) {
+        if (confirmPassword.value !== $("#Password").val()) {
+            confirmPassword.setCustomValidity("Your passwords aren't the same.");
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+    }
+
+    function checkEmailUnique(form) {
+
+        url = "[[@{/customer/checkEmail}]]";
+        customerEmail = $("#email").val();
+        customerId = $("#id").val();
+        csrfValue = $("input[name='_csrf']").val();
+        params = {id: customerId, email: customerEmail, _csrf: csrfValue};
+
+        $.post(url, params, function (response) {
+            if (response === "OK") {
+                form.submit();
+
+            } else if (response === "Duplicated") {
+
+                showModalDialog("Warning", "The email address is currently registered to another customer.");
+
+            } else {
+                showModalDialog("Error", "The server gave a response we can't identify");
+            }
+
+        }).fail(function () {
+            showModalDialog("Error", "We're having trouble linking to the server.");
+
+        });
+        return false;
+    }
+
+    function showModalDialog(title, message) {
+        $("#modalTitle").text(title);
+        $("#modalBody").text(message);
+        $("#modalDialog").modal("show");
+
+    }
+</script>
+
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

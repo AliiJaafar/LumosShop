@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+
+
+<head th:replace="~{fragment :: TheHeader(Account)}"></head>
+
+
+<style>
+    .container {
+        color: #fff;
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #040D12;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+    }
+
+    input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]) {
+        background-color: #040D12;
+        border: none;
+        border-bottom: 3px solid #2B8478;
+        color: white;
+        font-weight: bold;
+    }
+
+    input:enabled:not([type="submit"], [type="hidden"], [type="checkbox"]):focus {
+        color: white;
+        background-color: #071821;
+        border: 2px solid #2B8478;
+    }
+
+    .form-control:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+        -webkit-text-fill-color: white;
+        -webkit-box-shadow: 0 0 0px 1000px #071821 inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    label:not(.Enable) {
+        font-size: large;
+        margin: 1rem auto 2rem;
+    }
+
+    #enabled {
+        margin-left: 2rem;
+    }
+
+
+    .step-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin: 3rem auto;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .btn {
+        border-radius: 30px;
+        padding: 10px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 2rem;
+    }
+
+    .btn-primary {
+        background-color: #5C8374;
+        border-color: #5C8374;
+    }
+
+    .btn-primary:hover {
+        background-color: #93B1A6;
+        border-color: #93B1A6;
+    }
+
+    .btn-primary:active {
+        background-color: #93B1A6;
+        border-color: #93B1A6;
+    }
+
+    .btn-secondary {
+        background-color: #183D3D;
+        border-color: #183D3D;
+    }
+
+    .btn-secondary:hover {
+        background-color: #143333;
+        border-color: #143333;
+    }
+
+    .btn-secondary:active {
+        background-color: #545b62;
+        border-color: #4e555b;
+    }
+
+    .btn-danger {
+        background-color: #28353E;
+        border-color: #28353E;
+        color: #633D03;
+    }
+
+    .btn-danger:hover {
+        background-color: #3C2402;
+        border-color: #3C2402;
+    }
+
+
+</style>
+
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+
+
+<div class="container">
+    <div class="step-title my-lg-3">
+        <i class="fas fa-tasks"></i> Your Account
+    </div>
+    <div th:if="${message != null}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+    <form enctype="multipart/form-data" id="multiStepForm" th:action="@{/account/update}" method="post"
+          th:object="${user}">
+        <!-- Step 1: User Information -->
+        <div>
+            <input type="hidden" th:field="*{id}">
+            <h2 class="mb-2"><i class="fa-duotone fa-circle-quarter icon-blue me-3"></i>User Information</h2>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input th:field="*{email}" type="email" class="form-control" id="email" name="email"
+                       readonly="readonly">
+            </div>
+            <div class="form-group">
+                <label for="Password">Password:</label>
+                <input type="password" th:field="*{password}" id="Password" class="form-control"
+                       placeholder="Only fill in if you wish to alter your password."
+                       minlength="8" maxlength="20"
+                       oninput="checkPasswordMatch(document.getElementById('ConfirmPassword'))"/>
+            </div>
+            <div class="form-group">
+                <label for="ConfirmPassword">Confirm Password:</label>
+                <input type="password" id="ConfirmPassword" class="form-control"
+                       placeholder="" oninput="checkPasswordMatch(this)"/>
+            </div>
+        </div>
+        <!-- Step 2: Personal Information -->
+        <div>
+            <h2><i class="fa-duotone fa-circle-half icon-blue me-3"></i>Personal Information</h2>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input th:field="*{firstName}" type="text" class="form-control" id="firstName" name="firstName"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input th:field="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+        </div>
+        <div>
+            <h2><i class="fa-duotone fa-circle-three-quarters icon-blue me-3"></i>Additional Information</h2>
+            <div class="form-group">
+                <label class="Enable" for="enabled">Enabled:</label>
+                <input th:field="*{enabled}" type="checkbox" class="form-check-input" id="enabled" name="enabled">
+            </div>
+            <div class="form-group">
+                <label>Photos:</label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <input type="hidden" th:field="*{photos}">
+
+                    <input type="file" class="form-control" name="image" id="fileImage"
+                           accept="image/jpeg, image/png, image/jpg"/>
+                    <img id="thumbnail" class="ms-4" alt="personalImage"
+                         th:src="@{${user.getPhotosImagePath()}}" style="width:150px"/>
+                </div>
+            </div>
+        </div>
+        <!-- Step 4: Choose Roles -->
+        <div>
+            <h2><i class="fa-solid fa-circle icon-blue me-3"></i>Assigned Roles</h2>
+
+
+            <div>
+                        <span th:each="role : ${user.roles}"
+                              th:classappend="${user.roles == 'Admin'} ? 'badge text-bg-danger m-2' : 'badge text-bg-secondary m-2'"
+                              th:text="${role.name}">
+                        </span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit<i class="ms-1 fas fa-user-plus fa-lg"></i></button>
+
+        </div>
+        <button type="button" id="btn-cancel" class="btn btn-danger"><i class="fas fa-xmark fa-lg"></i> Cancel</button>
+    </form>
+</div>
+
+<footer>
+    <div th:replace="fragment/footer :: footer"></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+
+<script>
+    moduleURL = "[[@{/users}]]";
+
+    function checkPasswordMatch(confirmPassword) {
+        if (confirmPassword.value !== $("#Password").val()) {
+            confirmPassword.setCustomValidity("Your passwords aren't the same.");
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+    }
+</script>
+<script th:src="@{/js/Forms.js}"></script>
+</body>
+</html>

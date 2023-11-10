@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <div th:replace="~{fragment :: TheHeader(${PageTitle})}"></div>
+</head>
+<body data-bs-theme="dark">
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-info" th:text="${Title}"></h2>
+        <a th:href="@{/shipping/form}" class="btn text-info mb-3">
+            <i class="fa-duotone fa-truck-arrow-right fa-3x"></i>
+        </a>
+    </div>
+
+    <div th:replace="~{fragment :: searchFilter('/shipping/page/1')}"></div>
+
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+    <div>
+        <table class="table table-dark table-hover text-center">
+            <thead>
+
+            <tr>
+                <th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','tag')}"></th>
+                </th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'feeRate','Fee Rate','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'dayLong','Days Long','none')}"></th>
+                <th>Nation</th>
+                <th>City</th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'CashOnDelivery','Cash On Delivery','none')}"></th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="fee : ${shippingList}">
+                <td th:text="${fee.id}"></td>
+                <td th:text="${fee.feeRate}"></td>
+                <td th:text="${fee.dayLong}"></td>
+                <td th:text="${fee.nation.name}"></td>
+                <td th:text="${fee.city}"></td>
+                <td>
+                        <a th:if="${fee.cashOnDelivery == true}" class="fa-solid fa-check icon-green fa-lg mx-2"
+                           th:href="@{'shipping/'+${fee.id}+'/able/false'} "
+                           th:title="unable"></a>
+
+                        <a th:if="${fee.cashOnDelivery == false}" class="fa-solid fa-xmark icon-dark fa-lg mx-2"
+                           th:href="@{'shipping/'+${fee.id}+'/able/true'} "
+                           th:title="able"></a>
+                </td>
+                <td>
+                    <div th:replace="~{fragment :: edit('shipping','/shipping/edit/'+ ${fee.id})}"></div>
+                    <div th:replace="~{fragment :: delete('shipping', ${fee.id}, '/shipping/delete/' + ${fee.id}, true)}"></div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragment :: pagination(${moduleURL},'shippingFee')}"></div>
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+<script>
+    function clearFilter() {
+        window.location = "[[@{/shipping}]]";
+
+    }
+</script>
+</body>
+</html>

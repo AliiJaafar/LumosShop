@@ -1,0 +1,42 @@
+2023-09-24T12:01:49.533+03:00  INFO 19172 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2023-09-24T12:01:49.546+03:00  INFO 19172 --- [Thread-7] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-09-24T12:01:49.551+03:00  INFO 19172 --- [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-09-24T12:01:49.551+03:00  INFO 19172 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2023-09-24T12:01:49.557+03:00  INFO 19172 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2023-09-24T12:01:49.648+03:00  INFO 19172 --- [restartedMain] c.d.admin.LumosShopBackEndApplication    : Starting LumosShopBackEndApplication using Java 17.0.2 with PID 19172 (C:\Users\ali\Desktop\Java-BootCamp\LumosShop\LumosShopWebParent\LumosShopBackEnd\target\classes started by ali in C:\Users\ali\Desktop\Java-BootCamp\LumosShop)
+2023-09-24T12:01:49.648+03:00  INFO 19172 --- [restartedMain] c.d.admin.LumosShopBackEndApplication    : No active profile set, falling back to 1 default profile: "default"
+2023-09-24T12:01:49.849+03:00  INFO 19172 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-09-24T12:01:49.866+03:00  INFO 19172 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 3 JPA repository interfaces.
+2023-09-24T12:01:49.941+03:00  INFO 19172 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-09-24T12:01:49.941+03:00  INFO 19172 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-09-24T12:01:49.942+03:00  INFO 19172 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2023-09-24T12:01:49.959+03:00  INFO 19172 --- [restartedMain] o.a.c.c.C.[.[localhost].[/LumosAdmin]    : Initializing Spring embedded WebApplicationContext
+2023-09-24T12:01:49.959+03:00  INFO 19172 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 309 ms
+2023-09-24T12:01:49.991+03:00  INFO 19172 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-09-24T12:01:50.000+03:00  INFO 19172 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-09-24T12:01:50.001+03:00  INFO 19172 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-09-24T12:01:50.002+03:00  INFO 19172 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2023-09-24T12:01:50.010+03:00  INFO 19172 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@74c0c3d9
+2023-09-24T12:01:50.010+03:00  INFO 19172 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2023-09-24T12:01:50.011+03:00  WARN 19172 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2023-09-24T12:01:50.020+03:00  INFO 19172 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-09-24T12:01:50.049+03:00  INFO 19172 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-09-24T12:01:50.069+03:00  INFO 19172 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-09-24T12:01:50.130+03:00  WARN 19172 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-09-24T12:01:50.142+03:00  INFO 19172 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-09-24T12:01:50.412+03:00  INFO 19172 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4c8df319, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@461162fc, org.springframework.security.web.context.SecurityContextHolderFilter@67834247, org.springframework.security.web.header.HeaderWriterFilter@138bd419, org.springframework.security.web.authentication.logout.LogoutFilter@5c00e072, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@65b3d21b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1ecb7e7a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6c0a25f6, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@3eebadaf, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3dc9432f, org.springframework.security.web.access.ExceptionTranslationFilter@6ee8bae, org.springframework.security.web.access.intercept.AuthorizationFilter@2465de7a]
+2023-09-24T12:01:50.413+03:00  WARN 19172 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Mvc [pattern='/images/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-09-24T12:01:50.413+03:00  INFO 19172 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Mvc [pattern='/images/**']
+2023-09-24T12:01:50.413+03:00  WARN 19172 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Mvc [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-09-24T12:01:50.413+03:00  INFO 19172 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Mvc [pattern='/css/**']
+2023-09-24T12:01:50.413+03:00  WARN 19172 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Mvc [pattern='/webjars/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-09-24T12:01:50.413+03:00  INFO 19172 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Mvc [pattern='/webjars/**']
+2023-09-24T12:01:50.413+03:00  WARN 19172 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Mvc [pattern='/js/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-09-24T12:01:50.413+03:00  INFO 19172 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Mvc [pattern='/js/**']
+2023-09-24T12:01:50.442+03:00  INFO 19172 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-09-24T12:01:50.449+03:00  INFO 19172 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path '/LumosAdmin'
+2023-09-24T12:01:50.451+03:00  INFO 19172 --- [restartedMain] c.d.admin.LumosShopBackEndApplication    : Started LumosShopBackEndApplication in 0.841 seconds (process running for 127.257)
+2023-09-24T12:01:50.453+03:00  INFO 19172 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2023-09-24T12:01:51.948+03:00  INFO 19172 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-09-24T12:01:51.948+03:00  INFO 19172 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2023-09-24T12:01:51.953+03:00  INFO 19172 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.

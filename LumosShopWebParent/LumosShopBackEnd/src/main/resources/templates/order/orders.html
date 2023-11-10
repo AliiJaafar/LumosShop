@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: TheHeader(${pageTitle})}"></div>
+</head>
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-info">Manage Orders</h2>
+
+    </div>
+
+    <div th:replace="~{fragment :: searchFilter('/orders/page/1')}"></div>
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+
+    <div>
+        <table class="table table-dark table-hover text-center">
+            <thead>
+
+            <tr>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'customer','Customer','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'totalPrice','Total Price','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'summaryLocation','Location','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'paymentChoice','Payment Choice','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'phase','Phase','none')}"></th>
+
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="order : ${orderList}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.customer.fullName}"></td>
+                <td><span th:replace="~{fragment :: price(${order.totalPrice})}"></span></td>
+                <td th:text="${order.summaryLocation}"></td>
+                <td th:text="${order.paymentChoice}"></td>
+                <td th:text="${order.phase}"></td>
+
+                <td>
+                    <a class="btn fa-duotone fa-file-alt icon-green fa-2x link-detail"
+                       th:href="@{'/orders/info/'+${order.id}}"
+                       th:title="'view more details'"></a>
+                    <div th:replace="~{fragment :: delete('order', ${order.id}, '/orders/delete/' + ${order.id}, true)}"></div>
+                    <a title="change the order phase" class="btn" th:href="@{'/orders/phase/'+${order.id}}"><i class="fa-duotone fa-arrow-progress fa-2x text-white-50"></i></a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade text-center" id="confirmModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete User Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailModal" data-bs-theme="dark">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragment :: pagination(${moduleURL},'orders')}"></div>
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+
+<script type="text/javascript">
+    handleDefaultDetailLinkClick();
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            orderID = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this order with ID : " +orderID  + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
+
+    function handleDetailLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultDetailLinkClick() {
+        handleDetailLinkClick(".link-detail", "#detailModal");
+
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/orders}]]";
+
+    }
+</script>
+
+
+</body>
+</html>

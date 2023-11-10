@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head th:replace="~{fragments :: TheHeader('checkout')}">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark" class="d-flex flex-column min-vh-100 bg-body-tertiary">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+
+
+<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+            id="bd-theme"
+            type="button"
+            aria-expanded="false"
+            data-bs-toggle="dropdown"
+            aria-label="Toggle theme (auto)">
+        <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+            <use href="#circle-half"></use>
+        </svg>
+        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+                    aria-pressed="false">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                    <use href="#sun-fill"></use>
+                </svg>
+                Light
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                    <use href="#check2"></use>
+                </svg>
+            </button>
+        </li>
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+                    aria-pressed="false">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                    <use href="#moon-stars-fill"></use>
+                </svg>
+                Dark
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                    <use href="#check2"></use>
+                </svg>
+            </button>
+        </li>
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
+                    aria-pressed="true">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                    <use href="#circle-half"></use>
+                </svg>
+                Auto
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                    <use href="#check2"></use>
+                </svg>
+            </button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" th:src="@{/images/lumosOnlyShape.png}" alt="logo" width="72">
+            <h2>Checkout</h2>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-5 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Your cart</span>
+                    <span class="badge bg-primary rounded-pill">[[${#lists.size(bagStocks)}]]</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <th:block th:each="stock,status : ${bagStocks}">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6><small>[[${stock.quantity}]]<i class="fa-duotone fa-xmark"></i></small>&nbsp;[[${stock.product.name}]]
+                                </h6>
+
+                                <small class="text-body-secondary" th:text="${stock.product.category}"></small>
+                            </div>
+                            <span class="text-body-secondary">
+                                <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}"
+                                      th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                                            <span
+                                                    th:text="${#numbers.formatDecimal(stock.thePriceMultiplyByQty,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}"></span>
+                                            <span
+                                                    th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}"
+                                                    th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                            </span>
+                        </li>
+                    </th:block>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Shipping charge</span>
+                        <strong>
+                            <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}"
+                                  th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                            <span class="totalPrice"
+                                  th:text="${#numbers.formatDecimal(checkoutModel.shippingCharge,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}"></span>
+                            <span
+                                    th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}"
+                                    th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                        </strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total ([[${CURRENCY_FORMAT}]])</span>
+                        <strong>
+                            <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}"
+                                  th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                            <span class="totalPrice"
+                                  th:text="${#numbers.formatDecimal(checkoutModel.billTotal,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}"></span>
+                            <span
+                                    th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}"
+                                    th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 col-lg-7">
+                <h4 class="mb-3">Billing address</h4>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Shipping Address
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div>
+                                    <div class="my-2 d-inline">
+                                        <p class="info-title">Delivery destination:
+                                            <strong th:text="${shippingAddress}"></strong><a th:href="@{/addresses}">
+                                                <small>Choose another address <i
+                                                        class="fa-thin fa-arrow-right"></i></small></a></p>
+                                    </div>
+
+                                    <div class="my-2 d-inline">
+                                        <p class="info-title">Estimated time for delivery:
+                                            <strong th:text="${checkoutModel.deliveryETA}"></strong><span> Day(s)</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="my-2 d-inline">
+                                        <p class="info-title">Planned arrival date:
+                                            <strong th:text="${#dates.format(checkoutModel.getShippingDate(), 'EEE, dd MMM')}"></strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+
+                <h4 class="mb-3">Payment</h4>
+                <form method="post" th:action="@{/make_purchase}">
+                    <div class="my-3">
+
+
+                        <div th:if="${checkoutModel.cashOnDeliveryAbility}" class="form-check">
+                            <input id="cash" value="CASH_ON_DELIVERY" name="paymentMethod" type="radio"
+                                   class="form-check-input" checked
+                                   required>
+                            <label class="form-check-label" for="cash">Cash On Delivery</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="credit" name="paymentMethod" value="CREDIT_CARD" type="radio"
+                                   class="form-check-input" checked
+                                   required>
+                            <label class="form-check-label" for="credit">Credit card</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                            <label class="form-check-label" for="debit">Debit card</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="paypal" name="paymentMethod" value="PAYPAL" type="radio" class="form-check-input"
+                                   required>
+                            <label class="form-check-label" for="paypal">PayPal</label>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row gy-3 d-none" id="Card_inputs">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label">Name on card</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                            <small class="text-body-secondary">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cc-number" class="form-label">Card number</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                            <div class="invalid-feedback">
+                                card number is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label">Expiration</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary btn-lg d-none " id="continueCheckout" type="submit">Continue to checkout</button>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button id="placeOrderBtn" class="btn btn-primary w-100 btn-lg d-none" type="submit"
+                            onclick="placeOrder('CashOnDelivery')">Make a purchase with Cash On Delivery
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </main>
+
+</div>
+<script>
+    contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+
+
+    document.querySelectorAll('input[type=radio][name=paymentMethod]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            if (this.id === 'cash') {
+                document.getElementById('Card_inputs').classList.add('d-none');
+                document.getElementById('placeOrderBtn').classList.remove('d-none');
+                document.getElementById('continueCheckout').classList.add('d-none');
+                document.querySelectorAll('#Card_inputs input').forEach(input => {
+                    input.removeAttribute('required');
+                });
+
+            }
+            else {
+                document.getElementById('placeOrderBtn').classList.add('d-none');
+                document.getElementById('Card_inputs').classList.remove('d-none');
+                document.getElementById('continueCheckout').classList.remove('d-none');
+
+                document.querySelectorAll('#Card_inputs input').forEach(input => {
+                    input.setAttribute('required', 'required');
+                });
+
+            }
+        });
+    });
+
+    function placeOrder(paymentType) {
+        // Perform action when the "Place Order" button is clicked with the selected payment type
+        // You can add your logic here, for example, submitting the form or executing an API call.
+        console.log('Placing order with payment type: ' + paymentType);
+    }
+</script>
+
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

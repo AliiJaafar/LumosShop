@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><div th:replace="~{fragment :: TheHeader('Products')}">
+</div></head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-info">Manage Products</h2>
+        <a th:href="@{/products/add}" class="btn text-info mb-3">
+            <i class=" fa-duotone fa-folder-plus fa-3x"></i>
+        </a>
+    </div>
+
+
+    <form role="search" th:action="@{/products/page/1}"  id="SearchFunction">
+        <div class="d-inline-flex mb-3">
+
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+            <select class="form-control me-3" name="categoryId" id = "dropDownCategoryList">
+                <option value="0">Choose Category</option>
+                <th:block th:each="temp : ${categoryList}">
+                    <option th:value="${temp.id}" th:text="${temp.name}" th:selected="(${categoryId} == ${temp.id})"></option>
+
+                </th:block>
+            </select>
+            <input name="keyword" required class="form-control me-2" type="search" placeholder="Search"
+                   th:value="${keyword}">
+
+            <button type="submit" class="btn btn-outline-success">
+                <i class="fa-duotone fa-magnifying-glass"></i>
+            </button>
+            <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
+                <i class="fa-duotone fa-broom-wide"></i>
+            </button>
+        </div>
+    </form>
+
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+
+    <div>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+
+
+            <tr>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','none')}"></th>
+                <th>Image</th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'name','Name','none')}"></th>
+                <th>Category</th>
+                <th>enabled</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="product : ${productList}">
+                <td th:text="${product.id}"></td>
+                <td>
+                    <img th:src="@{${product.mainImagePath}}" style="width: 140px" class="img-fluid">
+
+                </td>
+                <td>
+                    <a class="text-success fw-bold link-detail"
+                       th:href="@{'/products/info/'+${product.id}}"
+                       th:title="'view details'"
+                       th:text="${product.name}">
+                    </a>
+                </td>
+                <td th:text="${product.category.name}"></td>
+                <td>
+                    <div th:replace="~{fragment :: StatusEnabling(${product.enabled},'product','/products/' + ${product.id})}"></div>
+                </td>
+                <td>
+                    <a class="btn fa-duotone fa-file-alt icon-green fa-2x link-detail"
+                       th:href="@{'/products/info/'+${product.id}}"
+                       th:title="'view details'">
+                    </a>
+                    <div th:replace="~{fragment :: edit('product','/products/edit/'+ ${product.id})}"></div>
+                    <div th:replace="~{fragment :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+<div class="modal fade text-center" id="confirmModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete User Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragment :: pagination('/products',products)}"></div>
+
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+
+<script type="text/javascript">
+
+    moduleURL = "[[@{/products}]]";
+
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (f) {
+            f.preventDefault();
+            Link = $(this);
+            //alert($(this).attr("href"));
+            categoryId = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this category with ID : " + categoryId + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+        $(".link-detail").on("click", function (f) {
+            f.preventDefault();
+            let linkDetailURL = $(this).attr("href");
+            $("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
+
+        });
+
+        $("#dropDownCategoryList").on("change", function () {
+            $("#SearchFunction").submit();
+        });
+
+    });
+
+    function clearFilter() {
+        window.location = "[[@{/products}]]";
+
+    }
+
+</script>
+
+
+</body>
+</html>

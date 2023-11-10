@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head th:replace="~{fragment :: TheHeader(Home)}"></head>
+
+<body data-bs-theme="dark" class="min-vh-100">
+
+
+
+<div th:replace="~{fragment/header :: header}"></div>
+
+<h3 class="m-4 flex-grow-1">Welcome,<a th:href="@{/account}" sec:authentication="principal.fullName"> </a>
+    <span sec:authentication="principal.authorities"> </span></h3>
+
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head th:replace="~{fragment :: TheHeader('ERROR')}"></head>
+
+<body>
+
+
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="text-white text-center m-3">
+    <h2>Oops! It seems you've hit a locked door. This page requires specific <i class="text-danger"> authorization</i>.</h2>
+</div>
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+
+
+
+</body>
+</html>

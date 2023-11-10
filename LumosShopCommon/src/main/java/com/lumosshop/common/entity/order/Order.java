@@ -1,0 +1,279 @@
+package com.lumosshop.common.entity.order;
+
+import com.lumosshop.common.entity.Customer;
+import com.lumosshop.common.entity.CustomerAddresses;
+import jakarta.persistence.*;
+
+import java.util.*;
+
+@Entity
+@Table(name = "orders")
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "first_name", nullable = false, length = 60)
+    private String firstName;
+    @Column(name = "last_name", nullable = false, length = 60)
+    private String lastName;
+    @Column(name = "phone_number", nullable = false, length = 20)
+    private String phoneNumber;
+
+    @Column(name = "address_line1", nullable = false, length = 256)
+    private String addressLine1;
+
+    @Column(name = "address_line2", length = 256)
+    private String addressLine2;
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "nation")
+    private String nation;
+
+    @Enumerated(EnumType.STRING)
+    private Order_Phase phase;
+
+    @Enumerated(EnumType.STRING)
+    private Payment_Choice paymentChoice;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_Id")
+    private Customer customer;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("Timestamp asc")
+    private List<Purchase_FollowUp> purchaseFollowUps = new ArrayList<>();
+    @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
+    private Set<Order_Summary> orderSummaries = new HashSet<>();
+    private Date orderDate;
+    private Date DeliverDate;
+
+    private int NumberOfDaysToDeliver;
+    private float VAT;
+    private float totalPrice;
+
+    private float shippingCharge;
+    private float productPrice;
+    private float InterSum;
+
+    public Order() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddressLine1() {
+        return addressLine1;
+    }
+
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public Order_Phase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(Order_Phase phase) {
+        this.phase = phase;
+    }
+
+    public Payment_Choice getPaymentChoice() {
+        return paymentChoice;
+    }
+
+    public void setPaymentChoice(Payment_Choice paymentChoice) {
+        this.paymentChoice = paymentChoice;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Set<Order_Summary> getOrderSummaries() {
+        return orderSummaries;
+    }
+
+    public void setOrderSummaries(Set<Order_Summary> orderSummaries) {
+        this.orderSummaries = orderSummaries;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public Date getDeliverDate() {
+        return DeliverDate;
+    }
+
+    public void setDeliverDate(Date deliverDate) {
+        DeliverDate = deliverDate;
+    }
+
+    public int getNumberOfDaysToDeliver() {
+        return NumberOfDaysToDeliver;
+    }
+
+    public void setNumberOfDaysToDeliver(int numberOfDaysToDeliver) {
+        NumberOfDaysToDeliver = numberOfDaysToDeliver;
+    }
+
+    public float getVAT() {
+        return VAT;
+    }
+
+    public void setVAT(float VAT) {
+        this.VAT = VAT;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public float getShippingCharge() {
+        return shippingCharge;
+    }
+
+    public void setShippingCharge(float shippingCharge) {
+        this.shippingCharge = shippingCharge;
+    }
+
+    public float getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(float productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public float getInterSum() {
+        return InterSum;
+    }
+
+    public void setInterSum(float interSum) {
+        InterSum = interSum;
+    }
+
+    public List<Purchase_FollowUp> getPurchaseFollowUps() {
+        return purchaseFollowUps;
+    }
+
+    public void setPurchaseFollowUps(List<Purchase_FollowUp> purchaseFollowUps) {
+        this.purchaseFollowUps = purchaseFollowUps;
+    }
+
+    @Transient
+    public String getSummaryLocation() {
+        return nation + ", " + city;
+    }
+
+
+
+    @Transient
+    public String retrieveTheFullAddress() {
+        String fullAddress = "";
+
+        if (nation != null) {
+            fullAddress += nation;
+        }
+        if (city != null) {
+            fullAddress += ", " +city;
+        }
+        if (addressLine1 != null) {
+            fullAddress += ", " + addressLine1;
+        }
+        if (addressLine2 != null) {
+            fullAddress += ", " + addressLine2;
+        }
+        if (phoneNumber != null) {
+            fullAddress += ", " + phoneNumber;
+        }
+
+        return fullAddress;
+    }
+    public void CustomerAddress() {
+        setFirstName(customer.getFirstName());
+        setLastName(customer.getLastName());
+        setPhoneNumber(customer.getPhoneNumber());
+        setAddressLine1(customer.getAddressLine1());
+        setAddressLine2(customer.getAddressLine2());
+        setCity(customer.getCity());
+        setNation(customer.getNation().getName());
+    }
+
+    public void ShippingAddress(CustomerAddresses address) {
+        setFirstName(address.getFirstName());
+        setLastName(address.getLastName());
+        setPhoneNumber(address.getPhoneNumber());
+        setAddressLine1(address.getAddressLine1());
+        setAddressLine2(address.getAddressLine2());
+        setCity(address.getCity());
+        setNation(address.getNation().getName());
+    }
+}

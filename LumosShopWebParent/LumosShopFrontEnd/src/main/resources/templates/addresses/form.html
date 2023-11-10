@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .form-control:focus {
+            border-color: #022e64;
+            box-shadow: none;
+        }
+
+
+    </style>
+</head>
+
+<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+<div th:replace="~{fragments :: messageFlash}"></div>
+
+<div class="form-container" data-bs-theme="dark">
+    <h2 class="text-center my-5"><i class="fa-duotone fa-address-book"></i>[[${title}]]</h2>
+
+
+    <form th:action="@{/addresses/save}" method="post" data-bs-theme="dark" th:object="${address}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{primary}">
+
+        <div class="input-group my-4">
+            <span class="input-group-text">First and last name</span>
+            <input type="text" th:field="*{firstName}" aria-label="First name" class="form-control" required
+                   maxlength="60" minlength="3">
+            <input type="text" th:field="*{lastName}" aria-label="Last name" class="form-control" required
+                   maxlength="60" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Phone Number"
+                   aria-label="Phone Number"
+                   aria-describedby="basic-addon1" required maxlength="16" minlength="8">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon2"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine1}" class="form-control" placeholder="Address Line 1"
+                   aria-label="Address Line 1"
+                   aria-describedby="basic-addon2" required maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon3"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine2}" class="form-control" placeholder="Address Line 2"
+                   aria-label="Address Line 2"
+                   aria-describedby="basic-addon3" maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon4"><i class="fa fa-globe"></i></span>
+            <select th:field="*{nation}" class="form-control">
+                <option th:each="nation : ${nationList}" th:value="${nation.id}">[[${nation.name}]]</option>
+            </select>
+        </div>
+
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon5"><i class="fa fa-city"></i></span>
+            <input type="text" th:field="*{city}" class="form-control" placeholder="City" aria-label="City"
+                   aria-describedby="basic-addon5" required maxlength="55" minlength="3" list="cityList">
+            <datalist id="cityList"></datalist>
+        </div>
+
+        <div class="justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary mx-2 ">Submit</button>
+            <button type="submit" class="btn btn-outline-danger mx-2" id="btn-Cancel">Cancel</button>
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    moduleURL = "[[@{/addresses}]]";
+    contextPath = "[[@{/}]]";
+    let cityList;
+
+    $(document).ready(function () {
+        const NationSelector = $("#nation");
+        cityList = $("#cityList");
+        $("#btn-Cancel").on("click", function () {
+            window.location = moduleURL;
+        });
+
+
+        NationSelector.on("change", function () {
+            cityFetch();
+            $("#city").val("").focus();
+        });
+    });
+
+    function cityFetch() {
+        const chosen = $("#nation option:selected");
+        const NationId = chosen.val();
+        const URL = contextPath + "controls/listCities/" + NationId;
+
+
+        $.get(URL, function (responseJSON) {
+            cityList.empty();
+            $.each(responseJSON, function (index, nation) {
+                $("<option>").val(nation.name).text(nation.name).appendTo(cityList);
+            });
+        });
+    }
+
+</script>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

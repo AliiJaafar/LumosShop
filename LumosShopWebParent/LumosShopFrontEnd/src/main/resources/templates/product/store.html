@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+
+<head th:replace="~{fragments :: TheHeader('store - HOME')}">
+</head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+
+
+<div class="container">
+    <h2 class="text-center mt-5">Featured categories</h2>
+
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col" th:each="category : ${categoryList}">
+            <div class="card border-0 m-3 text-center">
+                <div class="card-body">
+                    <div class="image-container">
+                            <img class="card-img-top" style="width: 100px" th:src="@{${category.imagePath}}"/>
+                    </div>
+                    <a th:href="@{'/store/c/'+${category.alias}}" class="card-title">[[${category.name}]]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

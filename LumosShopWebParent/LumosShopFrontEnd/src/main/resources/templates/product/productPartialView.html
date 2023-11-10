@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<body>
+<div th:fragment="productCard">
+    <div>
+        <a th:href="@{'/store/p/'+ ${product.alias}}">
+            <img width="200px" th:src="@{${product.mainImagePath}}">
+            <br>
+            <p class="fw-bold">[[${product.name}]]</p>
+        </a>
+        <div th:if="${product.discountPercent <= 0}">
+            <span class="fw-semibold">
+                <span th:replace="product/productPartialView :: price(${product.price})"></span>
+            </span>
+        </div>
+        <div th:if="${product.discountPercent > 0}">
+            <span class="text-danger fw-bolder">
+                <span th:replace="product/productPartialView :: price(${product.discountPrice})"></span>
+            </span>
+            <del><span>
+                <span th:replace="product/productPartialView :: price(${product.price})"></span>
+            </span></del>
+        </div>
+    </div>
+</div>
+
+
+<span th:fragment="price(type)" th:remove="tag">
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+    [[${#numbers.formatDecimal(type,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}]]
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+</span>
+</body>
+</html>

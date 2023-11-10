@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragment :: TheHeader(Users)}"></head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-info">Manage Categories</h2>
+        <a th:href="@{/categories/add}" class="btn text-info mb-3">
+            <i class=" fa-duotone fa-folder-plus fa-3x"></i>
+        </a>
+    </div>
+
+
+    <div th:replace="~{fragment :: searchFilter('/categories/page/1')}"></div>
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+    <div>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+
+
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'name','Name','tag')}"></th>
+                </th>
+                <th>Alias</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="category : ${listCategories}">
+                <td th:text="${category.id}"></td>
+                <td>
+                    <img style="width: 100px; border-radius: 20%" th:src="@{${category.getImagePath()}}"/>
+                </td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.alias}"></td>
+                <td>
+                    <div th:replace="~{fragment :: StatusEnabling(${category.enabled},'category','/categories/' + ${category.id})}"></div>
+                    <div th:replace="~{fragment :: edit('Category','/categories/edit/'+ ${category.id})}"></div>
+                    <div th:replace="~{fragment :: delete('Category', ${category.id}, '/categories/delete/' + ${category.id}, ${!category.hasChildren})}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="~{fragment :: pagination(${moduleURL},'main categories')}"></div>
+
+
+</div>
+<div class="modal fade text-center" id="confirmModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete User Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer th:replace="~{fragment :: footer}"></footer>
+
+
+<script type="text/javascript">
+    moduleURL = "[[@{/categories}]]";
+
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            //alert($(this).attr("href"));
+            categoryId = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this category with ID : " + categoryId + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
+
+    function clearFilter() {
+        window.location = "[[@{/categories}]]";
+
+    }
+
+</script>
+
+
+</body>
+</html>

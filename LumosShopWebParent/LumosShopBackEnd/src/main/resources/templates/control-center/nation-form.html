@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<div th:fragment="data">
+
+    <div class="container">
+        <h3 class="text-center">Select your targeted nation <i class="fa-light fa-earth-americas"></i></h3>
+        <hr>
+
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-md-2 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" id="buttonLoadNations">Bring up data</button>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="dropDownNations"></label>
+                <select class="form-select form-select-lg" id="dropDownNations">
+                </select>
+            </div>
+        </div>
+
+        <form id="formNation">
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6 mb-3">
+                    <div class="input-group">
+                        <label class="input-group-text" id="labelNationName">Name</label>
+                        <input type="text" class="form-control" id="Name-field" required minlength="3" maxlength="65"/>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="input-group">
+                        <label class="input-group-text">Code</label>
+                        <input type="text" class="form-control " id="Code-field" required minlength="2" maxlength="65"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <div class="d-grid gap-2">
+                        <input id="btn-AddNation" class="btn btn-secondary" type="button" value="ADD"/>
+                        <input id="btn-UpdateNation" class="btn btn-secondary" type="button" disabled value="UPDATE"/>
+                        <input id="btn-DeleteNation" class="btn btn-secondary" type="button" disabled value="DELETE"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="container">
+        <h3 class="text-center">Select your targeted city <i class="fa-regular fa-city"></i></h3>
+        <hr class="my-4">
+
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-md-2 mb-3">
+                <button class="btn btn-primary btn-lg btn-block" id="buttonLoadNationsForCity">Retrieve up data
+                </button>
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="dropDownNationsForCity"></label>
+                <select class="form-select form-select-lg" id="dropDownNationsForCity">
+                </select>
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="dropDownCities"></label>
+                <select class="form-select form-select-lg" id="dropDownCities">
+                </select>
+            </div>
+        </div>
+
+        <form id="formCity">
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6 mb-3">
+                    <div class="input-group">
+                        <label class="input-group-text" id="labelCityName">Name</label>
+                        <input type="text" class="form-control" id="City-Name-field" required minlength="3"
+                               maxlength="65"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <div class="d-grid gap-2">
+                        <input id="btn-AddCity" class="btn btn-dark" type="button" value="ADD"/>
+                        <input id="btn-UpdateCity" class="btn btn-dark" type="button" disabled value="UPDATE"/>
+                        <input id="btn-DeleteCity" class="btn btn-dark" type="button" disabled value="DELETE"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

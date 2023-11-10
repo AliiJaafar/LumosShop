@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+    <style>
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-control button {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .quantity-control input {
+            width: 40px;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .quantity-control button:hover {
+            color: #a2a2a2;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+<div th:replace="~{breadcrumb :: category-chain}"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div style="width: 500px; height: 500px;">
+                <img id="Primary-Image" th:src="@{${product.mainImagePath}}" class="img-fluid">
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-2 m-2 p-1">
+                    <img class="image-thumbnail" th:src="@{${product.mainImagePath}}" height="50px"/>
+                </div>
+                <th:block th:each="extraImage, status : ${product.images}">
+                    <div class=" col-md-2 m-2  p-1">
+                        <img class="image-thumbnail" th:src="@{${extraImage.imagePath}}"
+                             height="50px"/>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+
+        <div class="col-sm">
+            <div>
+                <h2 th:text="${product.name}"></h2>
+            </div>
+            <div>
+                <h5><span class="badge bg-secondary">[[${product.category}]]</span></h5>
+            </div>
+            <div th:if="${product.discountPercent <= 0}">
+                <p class="fs-5 fw-semibold">Price: [[${CURRENCY_SYMBOL}]][[${product.price}]]</p>
+            </div>
+            <div th:if="${product.discountPercent > 0}">
+
+                <p class="text-danger fw-semibold fs-5" style="margin-bottom: 0">Price:
+                    <span th:replace="product/productPartialView :: price(${product.discountPrice})"></span>
+                </p>
+                <span class="fw-lighter">was <del>
+                    <span th:replace="product/productPartialView :: price(${product.price})"></span>
+                </del></span>
+                <p class="fw-lighter">Discount ([[${product.discountPercent}]] <i class="fa-duotone fa-percent"></i>)</p>
+            </div>
+            <div th:text="${product.shortDescription}"></div>
+        </div>
+        <div class="col-sm-2">
+            <div class="mt-4 text-center">
+                <span th:if="${product.inStock}" class="text-success"><b>In Stock</b></span>
+                <span th:unless="${product.inStock}" class="text-danger"><b>Out of Stock</b></span>
+            </div>
+            <th:block th:if="${product.inStock}">
+                <div class="mt-2 text-center">
+                    <div th:replace="~{Bag/AddToBag :: stock_qty(1,${product.id})}"></div>
+                </div>
+                <div class="mt-1 text-center">
+                    <input id="btnAddToCart" type="button" value="Add to Cart" class="btn btn-outline-success">
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-5 p-5">
+    <hr>
+    <p class="fs-4 my-4">Description <i class="fa-duotone fa-ampersand"></i> Information</p>
+    <hr>
+    <p class="fs-5 text-secondary">Description</p>
+    <div class="my-4" th:text="${product.fullDescription}"></div>
+
+    <div th:if="${not #lists.isEmpty(product.details)}" class="container">
+        <p class="fs-5 text-secondary my-4">Some Additional Information</p>
+        <th:block th:each="info : ${product.details}">
+            <div class="row">
+                <p class="fw-semibold col-2" th:text="${info.name}"></p>
+                <p class="col-2" th:text="${info.value}"></p>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<div th:fragment="priceOfProduct(product)">
+    <div class="d-flex" th:if="${product.discountPercent <= 0}">
+        <p>[[${CURRENCY_SYMBOL}]][[${product.price}]]</p>
+    </div>
+    <div th:if="${product.discountPercent > 0}">
+        <p class="fw-semibold">
+            <span th:replace="product/productPartialView :: price(${product.discountPrice})"></span>
+            <del class="ms-1 fw-lighter">
+                <span th:replace="product/productPartialView :: price(${product.price})"></span>
+            </del>
+        </p>
+    </div>
+</div>
+
+<div data-bs-theme="dark" class="modal fade text-center" id="modalDialog" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ">
+            <div class="modal-header text-warning">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold" id="modalBody"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{product/Carousel-image :: image-coursel}"></div>
+<script th:src="@{/JS/Inc_dec_Qty.js}"></script>
+<script>
+    contextPath = "[[@{/}]]";
+    productId = "[[${product.id}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+
+
+    $(document).ready(function () {
+        PrimaryImage = $("#Primary-Image");
+
+        $(".image-thumbnail").mouseover(function () {
+            currentImageSource = $(this).attr("src");
+
+            PrimaryImage.attr("src", currentImageSource);
+        });
+
+        PrimaryImage.on("click", function () {
+            $("#image-coursel").modal("show");
+
+        });
+
+        /*$(".linkVoteReview").on("click", function (e) {
+            e.preventDefault();
+            doVote($(this), "review");
+        });
+
+        $(".linkVoteQuestion").on("click", function (e) {
+            e.preventDefault();
+            doVote($(this), "question");
+        });*/
+
+    });
+
+</script>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

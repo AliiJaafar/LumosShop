@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+
+<head th:replace="~{fragments :: TheHeader(${pageTitle})}"></head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+<div th:replace="~{breadcrumb :: category-chain}"></div>
+<div class="container">
+
+
+    <div class="row text-center mb-4">
+        <th:block th:each="category : ${category.children}">
+            <div class="col" th:if="${category.enabled == true}">
+                <a th:href="@{'/store/c/'+${category.alias}}">
+                    <img width="80px" class="mb-4" th:src="@{${category.imagePath}}">
+                    <p class="fw-semibold" th:text="${category.name}"></p>
+                </a>
+            </div>
+        </th:block>
+        <hr class="hr">
+    </div>
+
+
+    <div class="row text-center">
+        <th:block th:each="product : ${productList}">
+            <div class="col">
+                <div th:replace="product/productPartialView :: productCard"></div>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: pagination('/store/c/'+${category.alias},products)}">
+
+
+</div>
+
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

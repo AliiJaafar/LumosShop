@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<body>
+<div th:fragment="category-chain">
+
+    <div th:if="${ChainCategory != null  && !ChainCategory.isEmpty()}">
+
+        <div class="row ms-2 pt-2 mb-4" style="background-color: rgba(0,0,0,0.07)">
+            <div class="col">
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a class="text-success fw-semibold" th:href="@{/store}">Store</a>
+                        </li>
+                        <th:block th:each="parent : ${ChainCategory}">
+                            <li class="breadcrumb-item">
+                                <a class="text-success fw-semibold" th:href="@{'/store/c/'+${parent.alias}}">
+                                    [[${parent.name}]]
+                                </a>
+                            </li>
+                        </th:block>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

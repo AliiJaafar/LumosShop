@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader('finished_purchase')}"></div>
+
+</head>
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+<div class="container text-center mt-5">
+    <h1 class="text-success">Order Confirmed!</h1>
+    <p class="lead">Your order has been successfully completed.</p>
+    <p class="lead">An email has been sent to you with the order details.</p>
+    <p class="lead">Our team is preparing your order with the most care.</p>
+    <hr>
+    <p class="text-muted">Thank you for choosing our services. We strive to provide the best for our valued customers.</p>
+</div>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

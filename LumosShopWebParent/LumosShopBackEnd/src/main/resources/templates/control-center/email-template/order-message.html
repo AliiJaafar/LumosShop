@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<div th:fragment="data">
+    <div class="container mt-5" data-bs-theme="dark">
+        <h3>
+            Order Acknowledgment
+        </h3>
+        <hr class="my-5"/>
+        <form th:action="@{/control/update-message-design}" method="post">
+            <div class="mb-3">
+                <label for="orderTitle" class="form-label">Subject/Title:</label>
+                <input id="orderTitle" name="ORDER_emailTitle" th:value="${ORDER_emailTitle}" type="text" class="form-control w-50" required/>
+            </div>
+            <section id="editor" class="mb-3">
+                <label for="edit" class="form-label">Template: </label>
+                <textarea id="edit" name="Order_messageContent" th:text="${Order_messageContent}" required></textarea>
+            </section>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

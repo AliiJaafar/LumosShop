@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<div th:fragment="data">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-Verification-tab" data-bs-toggle="pill" data-bs-target="#pills-Verification"
+                    type="button" role="tab" aria-controls="pills-Verification" aria-selected="true">Verification
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill" data-bs-target="#pills-password"
+                    type="button" role="tab" aria-controls="pills-password" aria-selected="false">Password Recovery
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-Order-tab" data-bs-toggle="pill" data-bs-target="#pills-Order"
+                    type="button" role="tab" aria-controls="pills-Order" aria-selected="false">Order
+            </button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-Verification" role="tabpanel" aria-labelledby="pills-Verification-tab"
+             tabindex="0">
+            <div th:replace="~{control-center/email-template/Verfication-message :: data}"></div>
+        </div>
+        <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab" tabindex="0">
+            <div th:replace="~{control-center/email-template/RecoverPassword :: data}"></div>
+        </div>
+        <div class="tab-pane fade" id="pills-Order" role="tabpanel" aria-labelledby="pills-Order-tab" tabindex="0">
+            <div th:replace="~{control-center/email-template/order-message :: data}"></div>
+        </div>
+    </div>
+    <!--<div class="d-flex align-items-start" data-bs-theme="dark">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-Verification-tab" data-bs-toggle="pill" data-bs-target="#v-pills-Verification" type="button" role="tab" aria-controls="v-pills-Verification" aria-selected="false">Verification</button>
+            <button class="nav-link" id="v-pills-Order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-Order" type="button" role="tab" aria-controls="v-pills-Order" aria-selected="false">Order</button>
+        </div>
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade" id="v-pills-Verification" role="tabpanel" aria-labelledby="v-pills-Verification-tab" tabindex="0">
+                <div th:replace="~{control-center/email-template/Verfication-message :: data}"></div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-Order" role="tabpanel" aria-labelledby="v-pills-Order-tab" tabindex="0">
+                <div th:replace="~{control-center/email-template/order-message :: data}"></div>
+            </div>
+        </div>
+    </div>-->
+
+
+</div>
+</body>
+</html>

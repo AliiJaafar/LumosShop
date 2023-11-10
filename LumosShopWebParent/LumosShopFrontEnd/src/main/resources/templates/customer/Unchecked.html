@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader('Verification Failed')}"></div>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="container flex-grow-1" >
+    <div class="text-center mt-5">
+        <h1 class="text-danger">Verification Failed</h1>
+        <p>Your account could not be verified.</p>
+    </div>
+</div>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

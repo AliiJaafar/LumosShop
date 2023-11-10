@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragment :: TheHeader(${pageTitle})}">
+    </div>
+    <link th:href="@{/css/category-form.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+<div class="container">
+    <h2>Add Category</h2>
+    <div class="text-center">
+        <img th:src="@{/images/_Lumus-LogoDefault.jpg}"
+             class="default-image" alt="Default Image"
+             id="thumbnail">
+    </div>
+    <form th:action="@{/categories/save}" method="post" enctype="multipart/form-data"
+          th:object="${category}" onsubmit="return checkUnique(this);">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input th:field="*{name}" type="text" class="form-control" id="name" required
+                   minlength="3" maxlength="128">
+        </div>
+        <div class="form-group">
+            <label for="alias">Alias</label>
+            <input th:field="*{alias}" type="text" class="form-control" id="alias" required
+                   minlength="3" maxlength="64">
+        </div>
+        <div class="form-group">
+            <label for="parent">Parent Category</label>
+            <select class="form-control" th:field="*{parent}" id="parent">
+                <option value="0">[No Parent]</option>
+
+                <th:block th:each="category : ${listCategories}">
+                    <option th:value="${category.id}">[[${category.name}]]</option>
+                </th:block>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fileImage">Image</label>
+            <div class="d-flex align-items-center justify-content-between">
+                <input type="hidden" th:field="*{image}">
+                <input type="file" class="form-control" name="fileImage" id="fileImage"
+                       accept="image/jpeg, image/png, image/jpg"/>
+            </div>
+        </div>
+        <div class="form-check my-2">
+            <input th:field="*{enabled}" type="checkbox" class="form-check-input " id="enable" checked>
+            <label class="form-check-label" for="enable">Enable</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">
+            Add Category
+        </button>
+        <button type="button" id="btn-cancel" class="btn btn-danger mt-3">
+            <i class="fas fa-xmark fa-lg"></i>Cancel
+        </button>
+
+    </form>
+</div>
+<div class="modal fade text-center" id="modalDialog" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold" id="modalBody"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragment :: footer}"></footer>
+</body>
+<script>
+
+    moduleURL = "[[@{/categories}]]";
+
+
+    function checkUnique(form) {
+        catId = $("#id").val();
+        catName = $("#name").val();
+        catAlias = $("#alias").val();
+
+        csrfValue = $("input[name='_csrf']").val();
+
+        console.log("ID Value: " + catId);
+        console.log("catName Value: " + catName);
+        console.log("catAlias Value: " + catAlias);
+        console.log("csrfValue Value: " + csrfValue);
+
+        url = "[[@{/categories/check_unique}]]";
+
+        params = {id: catId, name: catName, alias: catAlias, _csrf: csrfValue};
+
+        $.post(url, params, function (response) {
+            if (response === "OK") {
+                form.submit();
+            } else if (response === "Duplicated") { // Adjusted response value for duplication
+                showModalDialog("Warning", "Another category shares an identical name or alias.");
+            } else {
+                showModalDialog("Error", "It seems the server has given us an unfamiliar response that requires further investigation.");
+            }
+        }).fail(function () {
+            showModalDialog("Error", "Unfortunately, we were unable to establish a connection with the server at this time.");
+        });
+
+        return false;
+    }
+
+
+    function showModalDialog(title, message) {
+        $("#modalTitle").text(title);
+        $("#modalBody").text(message);
+        $("#modalDialog").modal("show");
+
+    }
+</script>
+<script th:src="@{/js/Forms.js}"></script>
+
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head th:replace="~{fragments :: TheHeader(${title})}"></head>
+
+<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<div th:replace="~{navbar :: navbar}"></div>
+<!--<div th:replace="~{navbar :: searchBar}"></div>-->
+
+<!--<div class="container flex-grow-1">
+    <h1 class="text-center my-3">Welcome To LUMOS Shop Store</h1>
+    <th:block sec:authorize="isAuthenticated()">
+        <h3 class="m-4">Welcome,<a th:href="@{/my-account}" sec:authentication="principal.fullName"> </a></h3>
+    </th:block>
+</div>-->
+
+<div class="p-0 wow fadeIn" data-wow-delay="0.1s">
+    <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="w-100" th:src="@{/images/StockSnap_EPYDFKPLZJ.jpg}" alt="Image">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <h1 class="display-1 text-white mb-5 animated slideInDown">Harness the Power of Solar Energy</h1>
+                                <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="w-100" th:src="@{/images/StockSnap_XHNPB4QMEY.jpg}" alt="Image">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <h1 class="display-1 text-white mb-5 animated slideInDown">Create a Sustainable Future with Solar Solutions</h1>
+                                <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- Carousel End -->
+<!-- Top Feature Start -->
+<div class="top-feature py-5 pt-lg-0">
+    <div class="container py-5 pt-lg-0">
+        <div class="row gx-0">
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                <div class="feeture shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 btn-lg-square">
+                            <i class="fa-duotone fa-sun-alt fa-2x text-danger"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h4>Clean Energy</h4>
+                            <span>Switch to solar power and reduce your carbon footprint</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
+                <div class="feeture shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 btn-lg-square ">
+                            <i class="fa-duotone fa-bolt fa-2x text-danger"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h4>Reliable Solutions</h4>
+                            <span>Benefit from efficient and dependable solar energy systems</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 wow fadeIn" data-wow-delay="0.5s">
+                <div class="feeture shadow d-flex align-items-center h-100 px-5" style="min-height: 160px;">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 btn-lg-square">
+                            <i class="fa-duotone fa-cog fa-2x text-danger"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h4>Custom Solutions</h4>
+                            <span>Get personalized solar energy solutions for your specific needs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Top Feature End -->
+<div class="about container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-end">
+            <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
+                <img class="AboutImage img-fluid rounded" data-wow-delay="0.1s" th:src="@{/images/StockSnap_Y6UVCWEUN4.jpg}">
+            </div>
+            <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
+                <h1 class="display-1 text-primary mb-0">5</h1>
+                <p class="text-primary mb-4">Years of Experience</p>
+                <h1 class="display-5 mb-4">We Bring Solar Power to Your Home</h1>
+                <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
+            </div>
+            <div class="col-lg-3 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="row g-5">
+                    <div class="col-12 col-sm-6 col-lg-12">
+                        <div class="border-start ps-4">
+                            <i class="fa fa-star fa-3x text-primary mb-3"></i>
+                            <h4 class="mb-3">Award Winning</h4>
+                            <span>Switch to solar energy and experience the benefits</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-12">
+                        <div class="border-start ps-4">
+                            <i class="fa fa-users fa-3x text-primary mb-3"></i>
+                            <h4 class="mb-3">Dedicated Team</h4>
+                            <span>Our team of experts is committed to delivering exceptional solar solutions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

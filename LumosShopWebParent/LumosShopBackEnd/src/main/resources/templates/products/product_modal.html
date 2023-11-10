@@ -1,0 +1,201 @@
+<div class="modal-header">
+    <h3 class="modal-title">Product - Information</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview"
+               role="tab">Overview</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="description-tab" data-bs-toggle="tab" href="#description"
+               role="tab">Description</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="images-tab" data-bs-toggle="tab" href="#images" role="tab">Images</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="details-tab" data-bs-toggle="tab" href="#details" role="tab">Details</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="shipping-tab" data-bs-toggle="tab" href="#shipping" role="tab">shipping</a>
+
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade p-5 show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            <div class="overview">
+                <div class="form-group row mt-3">
+                    <div class="col-sm-2">
+                        <label class="form-check-label">Last Update:</label>
+                    </div>
+                    <div class="col-sm-10 fw-bold">
+                        <p th:text="${#dates.format(product.createdTime, 'yyyy/MM/dd HH:mm')}"></p>
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Product Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control w-50" th:value="${product.name}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Alias:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control w-50" th:value="${product.alias}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Category:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control w-25" th:value="${product.category.name}" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-sm-2">
+                        <label class="form-check-label" for="enableCheckbox">Enable:</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enableCheckbox"
+                                   th:checked="${product.enabled}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <div class="col-sm-2">
+                        <label class="form-check-label" for="inStockCheckbox">In Stock:</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="inStockCheckbox"
+                                   th:checked="${product.inStock}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Cost:</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control w-25" th:value="${product.cost}" readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Price:</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control w-25" th:value="${product.price}" readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label class="col-sm-2 col-form-label">Discount:</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control w-25" th:value="${product.discountPercent}" readonly/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade p-4" id="description" role="tabpanel" aria-labelledby="description-tab">
+            <div class="m-2">
+                <label>Short Description</label>
+                <textarea class="form-control" th:text="${product.shortDescription}" readonly></textarea>
+            </div>
+            <div class="m-2">
+                <label>Full Description</label>
+                <textarea class="form-control" th:text="${product.fullDescription}" readonly></textarea>
+            </div>
+        </div>
+        <div class="tab-pane fade p-4" id="images" role="tabpanel" aria-labelledby="images-tab">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <!-- Main Image -->
+                    <div class="col">
+                        <div class="card border-0 m-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Main Image</h5>
+                                <div class="image-container">
+                                    <img class="card-img-top img-fluid" alt="Main image preview" th:src="@{${product.mainImagePath}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extra Images -->
+                    <th:block th:each="productImage, status : ${product.images}">
+                        <div class="col">
+                            <div class="card border-0 m-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Extra Image ([[${status.index + 1}]])</h5>
+                                    <div class="image-container">
+                                        <img th:id="'extraThumbnail' + ${status.index}"
+                                             th:alt="'Extra image -' + ${status.index + 1} + '- preview'" class="card-img-top img-fluid"
+                                             th:src="@{${productImage.imagePath}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade p-4" id="details" role="tabpanel" aria-labelledby="details-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="card">
+                            <div class="card-header bg-dark-subtle">
+                                Details
+                            </div>
+                            <div class="card-body">
+                                <th:block th:each=" info : ${product.details}">
+                                    <p><strong>[[${info.name}]]</strong> [[${info.value}]]</p>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane fade p-4" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+            <div class="form-group row mt-3">
+                <label class="col-sm-2 col-form-label">Length (cm):</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control w-25" th:value="${product.length}" readonly/>
+                </div>
+            </div>
+            <div class="form-group row mt-3">
+                <label class="col-sm-2 col-form-label">Width (cm):</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control w-25" th:value="${product.width}" readonly/>
+                </div>
+
+            </div>
+            <div class="form-group row mt-3">
+                <label class="col-sm-2 col-form-label">Height (cm):</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control w-25" th:value="${product.height}" readonly/>
+                </div>
+            </div>
+            <div class="form-group row mt-3">
+                <label class="col-sm-2 col-form-label">Weight (K):</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control w-25" th:value="${product.weight}" readonly/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <a type="button" data-bs-dismiss="modal">
+        <i class="fa-duotone fa-rectangle-xmark fa-3x text-danger"></i>
+    </a>
+</div>
+</div>

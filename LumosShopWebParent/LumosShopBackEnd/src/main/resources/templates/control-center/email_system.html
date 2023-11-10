@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<div th:fragment="data">
+    <div class="container mt-5" data-bs-theme="dark">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        Email System Configuration
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/control/update-mail-system}" method="post">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input name="USERNAME" th:value="${USERNAME}" type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" required
+                                       name="PASSWORD" th:value="${PASSWORD}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="HOST" class="form-label">Host Mail</label>
+                                <input name="HOST" th:value="${HOST}" type="text" class="form-control" id="HOST" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="from_mail" class="form-label">From Mail</label>
+                                <input name="FROM" th:value="${FROM}"
+                                        type="email" class="form-control" id="from_mail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="port" class="form-label">Port</label>
+                                <input name="PORT" th:value="${PORT}"
+                                        type="number" class="form-control" id="port" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sender_characteristic" class="form-label">Sender Characteristic</label>
+                                <input name="SENDER_CHARACTERISTIC" th:value="${SENDER_CHARACTERISTIC}"
+                                        type="text" class="form-control" id="sender_characteristic" required>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label class="form-check-label" for="smtp_auth">SMTP Authentication</label>
+                                <select name="SMPT_AUTH" class="form-control" id="smtp_auth">
+                                    <option value="true" th:selected="(${SMPT_AUTH} == 'true')">True</option>
+                                    <option value="false" th:selected="(${SMPT_AUTH} == 'false')">False</option>
+                                </select>
+
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label class="form-check-label" for="smtp_secured">SMTP Secured</label>
+                                <select name="SMPT_SECURED" class="form-control" id="smtp_secured">
+                                    <option value="true" th:selected="(${SMPT_SECURED} == 'true')">True</option>
+                                    <option value="false" th:selected="(${SMPT_SECURED} == 'false')">False</option>
+                                </select>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

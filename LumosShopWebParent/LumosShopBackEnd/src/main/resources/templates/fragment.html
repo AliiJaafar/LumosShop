@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<div th:fragment="TheHeader(title)">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>[[${title}]]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+    <script th:src="@{/css/category-form.css}"></script>
+
+
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/dist/jquery.min.js}"></script>
+
+</div>
+
+<body>
+
+<div th:fragment="searchFilter(moduleURL)">
+
+
+    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}" data-bs-theme="dark">
+
+        <input type="hidden" name="sortField" th:value="${sortField}">
+        <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+
+        <input name="keyword" required class="form-control me-2" type="search" placeholder="Search"
+               th:value="${keyword}">
+
+        <button type="submit" class="btn btn-outline-success">
+            <i class="fa-duotone fa-magnifying-glass"></i>
+        </button>
+        <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
+            <i class="fa-duotone fa-broom-wide"></i>
+        </button>
+
+    </form>
+</div>
+<div th:fragment="messageFlash">
+    <div th:if="${message != null}" class="my-2 alert alert-success text-center">
+        [[${message}]]
+    </div>
+    <div th:if="${error != null}" class="my-2 alert alert-danger text-center">
+        [[${error}]]
+    </div>
+</div>
+
+<th th:fragment="column_link(moduleURL,fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
+    <a class="text-light"
+       th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDirection=' + ${sortField != fieldName ? sortDirection : reverseSortDirection} + ${keyword != null ? '&keyword='+ keyword : ''} +${categoryId != null ? '&categoryId='+ categoryId : ''}}">
+        [[${columnLabel}]]
+    </a>
+    <span th:if="${sortField == fieldName}"
+          th:class="${sortDirection == 'asc' ? 'fa-duotone fa-sort-up' :'fa-duotone fa-sort-down'}">
+    </span>
+</th>
+<a th:fragment="page_link(moduleURL,pageNumber,label)"
+   class="page-link"
+   th:href="@{${moduleURL} +'/page/' + ${pageNumber} + '?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+ ${keyword != null ? '&keyword='+ keyword : ''} +${categoryId != null ? '&categoryId='+ categoryId : ''}}">
+    [[${label}]]
+</a>
+
+
+<div th:fragment="pagination(moduleURL,entityName)" th:remove="tag">
+
+    <div class="text-light m-3 p-3" style="background-color: rgba(0,0,0,0.07)">
+        <div class="text-center m-1" th:if="${totalElement > 0}">
+            <span>Showing [[${entityName}]] [[${startCount}]] to [[${endCount}]] of [[${totalElement}]]</span>
+        </div>
+        <div class="text-center m-1" th:unless="${totalElement > 0}">
+            <span>No [[${entityName}]] Found</span>
+        </div>
+
+        <div th:if="${totalPages > 1}">
+            <nav class="my-3" data-bs-theme="dark">
+                <ul class="pagination  justify-content-center">
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="~{fragment :: page_link(${moduleURL}, 1,'First')}"></a>
+
+                    </li>
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="~{fragment :: page_link(${moduleURL},${currentPage - 1},'Previous')}"></a>
+                    </li>
+                    <li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a th:replace="~{fragment :: page_link(${moduleURL},${i},${i})}"></a>
+                    </li>
+
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="~{fragment :: page_link(${moduleURL},${currentPage + 1},'Next')}"></a>
+
+                    </li>
+
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="~{fragment :: page_link(${moduleURL},${totalPages},'Last')}"></a>
+
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- FORMAT CURRENCY -->
+<span th:fragment="price(price)" th:remove="tag">
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+    [[${#numbers.formatDecimal(price,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}]]
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+</span>
+<!--Status Enabling-->
+
+<div th:fragment="StatusEnabling(enabled,entityName,entityURL)" th:remove="tag">
+    <a th:if="${enabled == true}" class="fa-solid fa-check icon-green fa-lg mx-2"
+       th:href="@{${entityURL} + '/enabled/false'} "
+       th:title="Disable+ ' ' + ${entityName}"></a>
+
+    <a th:if="${enabled == false}" class="fa-solid fa-xmark icon-dark fa-lg mx-2"
+       th:href="@{${entityURL} + '/enabled/true'} "
+       th:title="Enable + ' '  + ${entityName}"></a>
+</div>
+<!-- EDIT -->
+
+<div th:fragment="edit(entityName, editURL)" th:remove="tag">
+    <a style="text-decoration: none;" class="btn text-secondary fa-duotone fa-cog fa-2x" th:href="@{${editURL}}"
+       th:title="'Edit this ' + ${entityName}"></a>
+</div>
+
+
+<!-- DELETE -->
+<div th:fragment="delete(entityName, entityId, deleteURL,visible)" th:remove="tag">
+    <th:block th:if="${visible}">
+        <a class="btn text-danger link-delete fa-duotone fa-trash-alt fa-2x mx-1 "
+           th:href="@{${deleteURL}}"
+           th:entityId="${entityId}"
+           th:title="'Delete this ' + ${entityName}"></a>
+    </th:block>
+</div>
+
+</body>
+<footer th:fragment="footer" class="text-center py-3 mt-5" id="footer" style="background-color: rgba(0,0,0,0.6)">
+    <p class="text-light">&copy; 2023 . All rights reserved.</p>
+</footer>
+</html>

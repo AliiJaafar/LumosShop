@@ -1,0 +1,70 @@
+:root {
+    --white: #fff;
+    --black: #000;
+    --blue: rgb(39, 56, 133, 0.7);
+    --deepblue: #001057;
+}
+body{
+    background-image: radial-gradient(circle, #183d3d, #143134, #11252a, #0e1a1e, #040d12);
+}
+.formwarp {
+    height: 100vh;
+    overflow-x: auto;
+    /*background-image: url(https://rb.gy/prqm6i);*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+}
+.login-register {
+    height: 100%;
+    display: flex;
+}
+.form {
+    background-color: rgba(0, 28, 48, 0.59);
+
+    width: 450px;
+    margin: auto;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 2px #27374D;
+}
+.form .form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.form .form-header img {
+    width: 150px;
+}
+.form .form-group {
+    margin-bottom: 15px;
+}
+.form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--white);
+}
+.form .content input {
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 3px;
+    color: var(--black);
+}
+.form input:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--white);
+}
+.form-bottom {
+    margin-top: 20px;
+}
+.form-bottom p {
+    margin: 5px 0;
+    color: var(--black);
+}
+.form-bottom a {
+    color: var(--white);
+    font-weight: bold;
+    text-decoration: none;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control:focus {
+            border-color: #022e64;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="form-container">
+    <h2 class="text-center my-5"><i class="fa fa-solid fa-file-user"></i> Your Account Details</h2>
+
+    <form th:action="@{/alter-Account}" method="post" data-bs-theme="dark" th:object="${customer}">
+        <div th:if="${message != null}" class="my-2 alert alert-success text-center">
+            [[${message}]]
+        </div>
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" name="redirect" th:value="${param.redirect}">
+
+        <div class="input-group my-4">
+            <span class="input-group-text">First and last name</span>
+            <input type="text" th:field="*{firstName}" aria-label="First name" class="form-control" required
+                   maxlength="60" minlength="3">
+            <input type="text" th:field="*{lastName}" aria-label="Last name" class="form-control" required
+                   maxlength="60" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Phone Number"
+                   aria-label="Phone Number"
+                   aria-describedby="basic-addon1" maxlength="16" minlength="8">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon2"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine1}" class="form-control" placeholder="Address Line 1"
+                   aria-label="Address Line 1"
+                   aria-describedby="basic-addon2" maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon3"><i class="fa fa-address-card"></i></span>
+            <input type="text" th:field="*{addressLine2}" class="form-control" placeholder="Address Line 2"
+                   aria-label="Address Line 2"
+                   aria-describedby="basic-addon3" maxlength="64" minlength="3">
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon4"><i class="fa fa-globe"></i></span>
+            <select th:field="*{nation}" class="form-control">
+                <option th:each="nation : ${nationList}" th:value="${nation.id}">[[${nation.name}]]</option>
+            </select>
+        </div>
+
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon5"><i class="fa fa-city"></i></span>
+            <input type="text" th:field="*{city}" class="form-control" placeholder="City" aria-label="City"
+                   aria-describedby="basic-addon5" maxlength="55" minlength="3" list="cityList">
+            <datalist id="cityList"></datalist>
+        </div>
+        <div class="input-group my-4">
+            <span class="input-group-text" id="basic-addon6"><i class="fa fa-envelope"></i></span>
+            <input type="text" th:field="*{email}" class="form-control" placeholder="Email" aria-label="Email"
+                   aria-describedby="basic-addon6" readonly>
+        </div>
+        <th:block th:if="${customer.identification_method.name() == 'SYSTEM'}">
+            <div class="input-group my-4">
+                <span class="input-group-text" id="basic-addon7"><i class="fa fa-lock"></i></span>
+                <input type="password" th:field="*{password}" id="Password" class="form-control"
+                       placeholder="Don't write if you Do not want to change"
+                       aria-label="Password"
+                       aria-describedby="basic-addon7">
+            </div>
+        </th:block>
+        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+        <button type="submit" class="btn btn-outline-danger mx-2" id="btn-Cancel">Cancel</button>
+
+    </form>
+</div>
+</body>
+<script>
+    moduleURL = "[[@{/}]]";
+    contextPath = "[[@{/}]]";
+    let cityList;
+
+    $(document).ready(function () {
+        const NationSelector = $("#nation");
+        cityList = $("#cityList");
+        $("#btn-Cancel").on("click", function () {
+            window.location = moduleURL;
+        });
+
+
+        NationSelector.on("change", function () {
+            cityFetch();
+            $("#city").val("").focus();
+        });
+    });
+
+    function cityFetch() {
+        const chosen = $("#nation option:selected");
+        const NationId = chosen.val();
+        const URL = contextPath + "controls/listCities/" + NationId;
+
+
+        $.get(URL, function (responseJSON) {
+            cityList.empty();
+            $.each(responseJSON, function (index, nation) {
+                $("<option>").val(nation.name).text(nation.name).appendTo(cityList);
+            });
+        });
+    }
+
+</script>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

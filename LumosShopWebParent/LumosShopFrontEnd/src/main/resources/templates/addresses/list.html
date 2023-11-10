@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+</head>
+
+<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+<div th:replace="~{fragments :: messageFlash}"></div>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between">
+        <h1 class="mb-4">Address Book</h1>
+        <a class="btn text-success fs-4" th:href="@{/addresses/add}">Add Address-Book<i
+                class="fa-duotone fa-address-book"></i></a>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card bg-dark text-white" th:classappend="${letTheMainAddressBePrimary ? 'border-4 border-primary' : ''}">
+                <div class="card-header border-primary">
+                    <div class="d-flex justify-content-between">
+                        <span>Primary Address</span>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" disabled
+                                   th:checked="${letTheMainAddressBePrimary}">
+                            <th:block th:if="${letTheMainAddressBePrimary}">
+                                <p class="opacity-50 badge bg-primary">Primary</p>
+                            </th:block>
+                            <th:block th:unless="${letTheMainAddressBePrimary}">
+                                <a class="btn btn-sm btn-outline-primary" th:href="@{'/addresses/primary/0'}">
+                                    Make it primary
+                                </a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${customer.retrieveTheFullAddress()}"></p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a class="btn text-primary-emphasis me-2" th:href="@{/my-account(redirect=addresses)}"><i
+                            class="fa-duotone fa-location-pen fa-xl"></i></a>
+                </div>
+            </div>
+
+        </div>
+        <th:block th:each="address , status : ${ALlAddresses}">
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-white" th:classappend="${address.primary ? 'border-4 border-primary' : ''}">
+                    <div class="card-header ">
+                        <div class="d-flex justify-content-between">
+                            <span th:text="'Address ' + ${status.count +1}"></span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" disabled
+                                       th:checked="${address.primary}">
+                                <th:block th:if="${address.primary}">
+                                    <p class="opacity-50 badge bg-primary">Primary</p>
+                                </th:block>
+                                <th:block th:unless="${address.primary}">
+                                    <a class="btn btn-sm btn-outline-primary" th:href="@{'/addresses/primary/'+${address.id}}">
+                                        Make it primary
+                                    </a>
+                                </th:block>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${address}"></p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between" >
+                        <a class="btn text-primary-emphasis me-2" th:href="@{'/addresses/edit/'+${address.id}}"><i
+                                class="fa-duotone fa-location-pen fa-xl"></i></a>
+
+                        <a class="btn text-danger link-delete" th:entityId="${address.firstName}"
+                           th:href="@{'/addresses/delete/'+${address.id}}"><i
+                                class="fa-duotone fa-delete-left fa-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+<div class="modal fade text-center" id="confirmModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Address Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            FirstName = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this Address with first name : " + FirstName + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
+
+    function myFunction() {
+        addressId = $(this).attr("address-id");
+        contextPath = "[[@{/}]]";
+
+        $.ajax({
+            type: 'GET',
+            url: contextPath + 'addresses/primary/' + addressId,
+            success: function (data) {
+                window.location.href = contextPath + 'addresses';
+            },
+            error: function (error) {
+                alert('Error: ' + error.responseText);
+            }
+        });
+    }
+
+    $('.primary-switch').on('change', myFunction);
+</script>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

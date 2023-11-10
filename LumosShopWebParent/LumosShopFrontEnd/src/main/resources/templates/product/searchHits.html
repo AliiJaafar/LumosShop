@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+
+<head th:replace="~{fragments :: TheHeader('Search')}"></head>
+<body data-bs-theme="dark">
+<div th:replace="~{navbar :: navbar}"></div>
+<div th:replace="~{navbar :: searchBar}"></div>
+
+<div th:if="${totalElement > 0}">
+    <h2>Search Results for '[[${keyword}]]'</h2>
+</div>
+<div th:unless="${totalElement > 0}">
+    <h3>No match found for '[[${keyword}]]'</h3>
+</div>
+
+<div class="container text-center">
+    <div class="row">
+        <div th:each="product, iterStat : ${productList}" class="col-md-3 my-4">
+            <div th:replace="~{product/productPartialView :: productCard}"></div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{fragments :: pagination('/store/search','product')}"></div>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

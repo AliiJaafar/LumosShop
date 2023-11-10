@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{fragment :: TheHeader(${pageTitle})}"></div>
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-info">Manage Customers</h2>
+        <a th:href="@{/customers/add}" class="btn text-info mb-3">
+            <i class=" fa-duotone fa-user-plus fa-3x"></i>
+        </a>
+    </div>
+
+    <div th:replace="~{fragment :: searchFilter('/customers/page/1')}"></div>
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+
+    <div>
+        <table class="table table-dark table-hover text-center">
+            <thead>
+
+            <tr>
+                <th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'id','Customer ID','tag')}"></th>
+                </th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'firstName','First Name','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'lastName','Last Name','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'email','Email','none')}"></th>
+                <th>Nation</th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'enabled','Enable','none')}"></th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="customer : ${customerList}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.firstName}"></td>
+                <td th:text="${customer.lastName}"></td>
+                <td th:text="${customer.email}"></td>
+                <td th:text="${customer.nation.name}"></td>
+
+                <td>
+                    <div th:replace="~{fragment :: StatusEnabling(${customer.enabled},'customer','/customers/' + ${customer.id})}"></div>
+                </td>
+                <td>
+                    <a class="btn fa-duotone fa-file-alt icon-green fa-2x link-detail"
+                       th:href="@{'/customers/info/'+${customer.id}}"
+                       th:title="'view more details'"></a>
+                    <div th:replace="~{fragment :: edit('customer','/customers/showFormForUpdate/'+ ${customer.id})}"></div>
+                    <div th:replace="~{fragment :: delete('customer', ${customer.id}, '/customers/delete/' + ${customer.id}, true)}"></div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade text-center" id="confirmModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete User Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragment :: pagination(${moduleURL},'customers')}"></div>
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+
+<script type="text/javascript">
+    handleDefaultDetailLinkClick();
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            customerID = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this customer with ID : " +customerID  + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
+
+    function handleDetailLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultDetailLinkClick() {
+        handleDetailLinkClick(".link-detail", "#detailModal");
+
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/customers}]]";
+
+    }
+</script>
+
+
+</body>
+</html>
