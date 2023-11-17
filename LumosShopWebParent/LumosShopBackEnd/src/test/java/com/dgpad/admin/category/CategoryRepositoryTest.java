@@ -21,10 +21,10 @@ public class CategoryRepositoryTest {
 
     @Test
     public void testCreateRootCategory() {
-        Category Rcategory = new Category("Solar Panel");
-        Category Rcategory2 = new Category("Inverter");
-        Category Rcategory3 = new Category("Solar Accessories");
-        categoryRepository.save(Rcategory3);
+        Category category = new Category("Solar Panel");
+        Category category2 = new Category("Inverter");
+        Category category3 = new Category("Solar Accessories");
+        categoryRepository.save(category3);
     }
 
 
