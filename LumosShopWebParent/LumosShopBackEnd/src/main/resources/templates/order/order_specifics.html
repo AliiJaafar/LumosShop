@@ -4,36 +4,35 @@
 </div>
 <div class="modal-body bg-dark text-light">
     <div class="form-container">
-        <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i>[[${title}]]</h2>
+        <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i> [[${title}]]</h2>
 
 
-        <div class="d-flex align-items-start">
-            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link active" id="v-pills-follow-Up-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-follow-Up"
-                        type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Purchase Follow
-                    Up
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link text-success" id="nav-follow-Up-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-follow-Up"
+                        type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Follow Up
                 </button>
-                <button class="nav-link " id="v-pills-Highlights-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-Highlights"
-                        type="button" role="tab" aria-controls="v-pills-Highlights" aria-selected="true">Highlights
+                <button class="nav-link active text-success" id="nav-Highlights-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-Highlights"
+                        type="button" role="tab" aria-controls="nav-Highlights" aria-selected="true">Highlights
                 </button>
-                <button class="nav-link" id="v-pills-Stock-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-Stock"
-                        type="button" role="tab" aria-controls="v-pills-Stock" aria-selected="false">Stock
+                <button class="nav-link text-success" id="nav-Stock-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-Stock"
+                        type="button" role="tab" aria-controls="nav-Stock" aria-selected="false">Stock
                 </button>
-                <button class="nav-link" id="v-pills-shipping-tab" data-bs-toggle="pill"
-                        data-bs-target="#v-pills-shipping"
-                        type="button" role="tab" aria-controls="v-pills-shipping" aria-selected="false">Shipping
+                <button class="nav-link text-success" id="nav-shipping-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-shipping"
+                        type="button" role="tab" aria-controls="nav-shipping" aria-selected="false">Shipping
                 </button>
 
             </div>
-            <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-follow-Up" role="tabpanel"
-                     aria-labelledby="v-pills-follow-Up-tab"
+            <div class="tab-content p-4" id="nav-tabContent">
+                <div class="tab-pane fade " id="nav-follow-Up" role="tabpanel"
+                     aria-labelledby="nav-follow-Up-tab"
                      tabindex="0">
                     <div class="container">
-                        <h4 class="text-center">Purchase Follow-ups</h4>
+                        <h4 class="text-center">Follow-ups</h4>
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -45,7 +44,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="followUp : ${order.purchaseFollowUps}">
+                            <tr th:each="followUp : ${order.orderFollowUps}">
                                 <td th:text="${followUp.id}"></td>
                                 <td th:text="${followUp.order.id}"></td>
                                 <td th:text="${#dates.format(followUp.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -57,156 +56,121 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade " id="v-pills-Highlights" role="tabpanel"
-                     aria-labelledby="v-pills-Highlights-tab"
+                <div class="tab-pane fade show active " id="nav-Highlights" role="tabpanel"
+                     aria-labelledby="nav-Highlights-tab"
                      tabindex="0">
                     <div class="container">
                         <div class="card">
-                            <div class="card-body">
-                                <form th:action="@{/orders/save}" method="post" data-bs-theme="dark"
-                                      th:object="${order}">
-                                    <div class="form-group mb-3">
-                                        <label for="id">ID</label>
-                                        <input type="text" id="id" class="form-control" th:value="*{id}" readonly>
-                                    </div>
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title">Order Highlight</h5>
+                                <span class="badge bg-primary-subtle px-3 " th:text="${order.id}"></span>
+                            </div>
+                            <div class="card-body" th:object="${order}">
+                                <div class="info-item">
+                                    <p><strong>Customer Name:</strong> <span th:text="*{customer.fullName}"></span></p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="customer-name">Customer Name</label>
-                                        <input type="text" id="customer-name" class="form-control"
-                                               th:value="*{customer.fullName}" readonly>
-                                    </div>
+                                <div class="info-item">
+                                    <p><strong>Product Cost:</strong>
+                                        <span th:replace="~{fragment :: price(${order.productCost})}"></span>
+                                    </p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="product-price">Product Price</label>
-                                        <input type="text" id="product-price" class="form-control"
-                                               th:value="*{productPrice}" readonly>
-                                    </div>
+                                <div class="info-item">
+                                    <p><strong>InterSum:</strong>
+                                        <span th:replace="~{fragment :: price(*{interSum})}"></span>
+                                    </p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="inter-sum">InterSum</label>
-                                        <input type="text" id="inter-sum" class="form-control" th:value="*{interSum}"
-                                               readonly>
-                                    </div>
+                                <div class="info-item">
+                                    <p><strong>Shipping Charge:</strong>
+                                        <span th:replace="~{fragment :: price(*{shippingCharge})}"></span>
+                                    </p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="shipping-charge">Shipping Charge</label>
-                                        <input type="text" id="shipping-charge" class="form-control"
-                                               th:value="*{shippingCharge}" readonly>
-                                    </div>
+                                <div class="info-item">
 
-                                    <div class="form-group mb-3">
-                                        <label for="vat">VAT</label>
-                                        <input type="text" id="vat" class="form-control" th:value="*{VAT}" readonly>
-                                    </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="total-price">Total Price</label>
-                                        <input type="text" id="total-price" class="form-control"
-                                               th:value="*{totalPrice}" readonly>
-                                    </div>
+                                    <p><strong>VAT(Tax):</strong>
+                                        <span th:replace="~{fragment :: price(*{VAT})}"></span>
+                                    </p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="payment-choice">Payment Choice</label>
-                                        <select id="payment-choice" th:field="*{paymentChoice}" class="form-control"
-                                                required>
-                                            <option th:each="choice : ${T(com.lumosshop.common.entity.order.Payment_Choice).values()}"
-                                                    th:value="${choice}" th:text="${choice}"></option>
-                                        </select>
-                                    </div>
+                                <div class="info-item">
+                                    <p><strong>Total Price:</strong>
+                                        <span th:replace="~{fragment :: price(*{totalPrice})}"></span>
+                                    </p>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="order-phase">Order Phase</label>
-                                        <select id="order-phase" th:field="*{phase}" class="form-control" required>
-                                            <option th:each="phase : ${T(com.lumosshop.common.entity.order.Order_Phase).values()}"
-                                                    th:value="${phase}" th:text="${phase}"></option>
-                                        </select>
-                                    </div>
+                                <div class="info-item">
+                                    <p><strong>Payment Choice:</strong> <span th:text="*{paymentChoice}"></span></p>
+                                </div>
 
-                                    <button class="btn btn-success">Submit</button>
-                                </form>
+                                <div class="info-item">
+                                    <p><strong>Order Phase:</strong> <span th:text="*{phase}"></span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-Stock" role="tabpanel"
-                     aria-labelledby="v-pills-Stock-tab" tabindex="0">
-
-
+                <div class="tab-pane fade" id="nav-Stock" role="tabpanel"
+                     aria-labelledby="nav-Stock-tab" tabindex="0">
                     <th:block th:each="order, status : ${order.orderSummaries}">
                         <div class="border rounded p-1" th:id="'row' + ${status.count}">
                             <div class="row">
-                                <div class="col-1">
+                                <div class="col-md-1">
                                     <div class="divCount">[[${status.count}]]</div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-5">
                                     <img th:src="@{${order.product.mainImagePath}}" class="img-fluid" alt="stockPhoto"/>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="row m-2">
+                                        <b>[[${order.product.name}]]</b>
+                                    </div>
+                                    <div class="row m-2 p-4">
+                                        <div>
+                                            <div>
+                                                <p><strong>product cost:</strong>
+                                                    <span th:replace="~{fragment :: price(${order.productCost})}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Qty:</strong>
+                                                    <span class="m-1" th:text="${order.qty}"></span>
+                                                </p>
+                                            </div>
+                                            <div th:if="${order.qty == 1}">
+                                                <p><strong>Product Price:</strong>
+                                                    <span th:replace="~{fragment :: price(${order.itemPrice})}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p th:if="${order.qty != 1}">
+                                                    <strong>Intermediate Sum:</strong>
+                                                    <span class="m-1" th:text="${order.qty}"></span>
+                                                    <i class="fa-thin fa-xmark"></i>
+                                                    <span th:replace="~{fragment :: price(${order.itemPrice})}"></span>
+                                                    <span>=</span>
+                                                    <span th:replace="~{fragment :: price(${order.interSum})}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Shipping charge:</strong>
+                                                    <span th:replace="~{fragment :: price(${order.shippingCharge})}"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-
-                            <div class="row m-2">
-                                <b>[[${order.product.name}]]</b>
-                            </div>
-                            <div class="row m-2">
-                                <table>
-                                    <tr>
-                                        <td>product price (cost)</td>
-                                        <td>
-                                            <input type="text" required class="form-control m-1"
-                                                   name="productCost"
-                                                   th:rowNumber="${status.count}"
-                                                   th:value="${order.productPrice}"/>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Qty</td>
-                                        <td>
-
-                                            <input type="number" step="1" min="1" max="5"
-                                                   class="form-control m-1 "
-                                                   name="quantity"
-                                                   th:id="'qty' + ${status.count}"
-                                                   th:rowNumber="${status.count}"
-                                                   th:value="${order.qty}"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>item price</td>
-                                        <td>
-                                            <input type="text" required class="form-control m-1"
-                                                   name="itemPrice"
-                                                   th:id="'itemprice' + ${status.count}"
-                                                   th:rowNumber="${status.count}"
-                                                   th:value="${order.itemPrice}"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>InterSum</td>
-                                        <td>
-                                            <input type="text" readonly="readonly"
-                                                   class="form-control m-1"
-                                                   name="productInterSum"
-                                                   th:id="'InterSum' + ${status.count}"
-                                                   th:value="${order.interSum}"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>shipping charge</td>
-                                        <td>
-                                            <input type="text" required class="form-control m-1"
-                                                   name="productShipCharge"
-                                                   th:value="${order.shippingCharge}"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-
                         </div>
 
                     </th:block>
                 </div>
-                <div class="tab-pane fade" id="v-pills-shipping" role="tabpanel"
-                     aria-labelledby="v-pills-shipping-tab"
+                <div class="tab-pane fade" id="nav-shipping" role="tabpanel"
+                     aria-labelledby="nav-shipping-tab"
                      tabindex="0">
                     <div class="form-group row mb-2">
                         <label class="col-4 col-form-label">order date</label>
@@ -265,10 +229,8 @@
                     </div>
 
                 </div>
-
             </div>
-        </div>
-
+        </nav>
         <div class="modal fade text-center" id="modalDialog" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -3,7 +3,7 @@
 <head>
     <div th:replace="~{fragment :: TheHeader(${pageTitle})}"></div>
 </head>
-<body>
+<body data-bs-theme="dark">
 <div th:replace="~{fragment/header :: header}"></div>
 
 <div class="container">
@@ -35,7 +35,13 @@
             <tbody>
             <tr th:each="order : ${orderList}">
                 <td th:text="${order.id}"></td>
-                <td th:text="${order.customer.fullName}"></td>
+                <td>
+                    <a class="text-success fw-bold customer-detail"
+                       th:href="@{'/customers/info/'+${order.customer.id}}"
+                       th:title="'view customer details'"
+                       th:text="${order.customer.fullName}">
+                    </a>
+                </td>
                 <td><span th:replace="~{fragment :: price(${order.totalPrice})}"></span></td>
                 <td th:text="${order.summaryLocation}"></td>
                 <td th:text="${order.paymentChoice}"></td>
@@ -44,9 +50,14 @@
                 <td>
                     <a class="btn fa-duotone fa-file-alt icon-green fa-2x link-detail"
                        th:href="@{'/orders/info/'+${order.id}}"
-                       th:title="'view more details'"></a>
+                       th:title="'view more details'">
+                    </a>
                     <div th:replace="~{fragment :: delete('order', ${order.id}, '/orders/delete/' + ${order.id}, true)}"></div>
-                    <a title="change the order phase" class="btn" th:href="@{'/orders/phase/'+${order.id}}"><i class="fa-duotone fa-arrow-progress fa-2x text-white-50"></i></a>
+<!--                    <a title="change the order phase" class="btn" th:href="@{'/orders/phase/'+${order.id}}"><i class="fa-duotone fa-arrow-progress fa-2x text-white-50"></i></a>-->
+                    <a th:title="'Order Edit'"
+                       class="btn fa-duotone fa-gear fa-2x text-white-50 link-detail"
+                       th:href="@{'/order/edit/'+${order.id}}">
+                    </a>
                 </td>
             </tr>
 
@@ -56,7 +67,7 @@
 </div>
 
 
-<div class="modal fade text-center" id="confirmModal" role="dialog">
+<div class="modal fade text-center" id="confirmModal" role="dialog" data-bs-theme="dark">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,6 +90,12 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="customerModal" data-bs-theme="dark">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 
 <div th:replace="~{fragment :: pagination(${moduleURL},'orders')}"></div>
 <footer th:replace="~{fragment/footer :: footer}"></footer>
@@ -86,6 +103,7 @@
 
 <script type="text/javascript">
     handleDefaultDetailLinkClick();
+    handleDefaultCustomerLinkClick();
     $(document).ready(function () {
         $(".link-delete").on("click", function (e) {
             e.preventDefault();
@@ -97,6 +115,19 @@
         });
 
     });
+
+    function handleCustomerLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultCustomerLinkClick() {
+        handleCustomerLinkClick(".customer-detail", "#customerModal");
+
+    }
 
     function handleDetailLinkClick(cssClass, modalId) {
         $(cssClass).on("click", function(e) {

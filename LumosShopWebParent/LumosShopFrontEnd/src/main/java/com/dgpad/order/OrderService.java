@@ -29,7 +29,7 @@ public class OrderService {
         createdOrder.setOrderDate(new Date());
 
         if (paymentChoice.equals(Payment_Choice.CASH_ON_DELIVERY)) {
-            createdOrder.setPhase(Order_Phase.INITIATED);
+            createdOrder.setPhase(Order_Phase.NEW);
         } else {
             createdOrder.setPhase(Order_Phase.PAID);
         }
@@ -40,7 +40,7 @@ public class OrderService {
         createdOrder.setNumberOfDaysToDeliver(checkoutModel.getDeliveryETA());
         createdOrder.setDeliverDate(checkoutModel.getShippingDate());
         createdOrder.setCustomer(customer);
-        createdOrder.setProductPrice(checkoutModel.getCost());
+        createdOrder.setProductCost(checkoutModel.getCost());
         createdOrder.setInterSum(checkoutModel.getTotalPrice());
         createdOrder.setShippingCharge(checkoutModel.getShippingCharge());
 
@@ -61,7 +61,7 @@ public class OrderService {
             orderSummary.setProduct(product);
             orderSummary.setQty(stock.getQuantity());
             orderSummary.setItemPrice(product.getDiscountPrice());
-            orderSummary.setProductPrice(product.getCost() * stock.getQuantity());
+            orderSummary.setProductCost(product.getCost() * stock.getQuantity());
             orderSummary.setInterSum(stock.getThePriceMultiplyByQty());
             orderSummary.setShippingCharge(stock.getShippingCharge());
 

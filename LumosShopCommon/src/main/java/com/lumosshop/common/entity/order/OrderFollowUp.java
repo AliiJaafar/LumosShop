@@ -2,12 +2,11 @@ package com.lumosshop.common.entity.order;
 
 import jakarta.persistence.*;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 @Entity
-@Table(name = "purchase_followUp")
-public class Purchase_FollowUp {
+@Table(name = "order_followUp")
+public class OrderFollowUp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

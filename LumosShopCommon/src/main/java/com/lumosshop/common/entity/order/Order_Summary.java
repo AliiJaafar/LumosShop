@@ -9,7 +9,7 @@ public class Order_Summary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private float productPrice;
+    private float productCost;
     private float InterSum;
     private float shippingCharge;
     private float ItemPrice;
@@ -35,12 +35,12 @@ public class Order_Summary {
         this.id = id;
     }
 
-    public float getProductPrice() {
-        return productPrice;
+    public float getProductCost() {
+        return productCost;
     }
 
-    public void setProductPrice(float productPrice) {
-        this.productPrice = productPrice;
+    public void setProductCost(float productPrice) {
+        this.productCost = productPrice;
     }
 
     public float getInterSum() {

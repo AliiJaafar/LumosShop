@@ -2,15 +2,10 @@ package com.dgpad.admin.order;
 
 import com.dgpad.admin.control.ControlService;
 import com.dgpad.admin.customer.CustomerService;
-import com.dgpad.admin.user.UserNotFoundException;
-import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.control.Control;
 import com.lumosshop.common.entity.control.Nation;
 import com.lumosshop.common.entity.order.Order;
 import com.lumosshop.common.entity.order.Order_Phase;
-import com.lumosshop.common.entity.order.Payment_Choice;
-import com.lumosshop.common.entity.order.Purchase_FollowUp;
-import com.lumosshop.common.exception.CustomerNotFoundException;
 import com.lumosshop.common.exception.OrderNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -101,9 +95,9 @@ public class OrderController {
 
         return "order/order-form";
     }
-    @GetMapping("/orders/edit/{id}")
+    @GetMapping("/order/edit/{id}")
     public String edit(@PathVariable(name = "id") int theId,
-                                    Model theModel, RedirectAttributes redirectAttributes,HttpServletRequest httpServletRequest) {
+                       Model theModel, RedirectAttributes redirectAttributes,HttpServletRequest httpServletRequest) {
         try {
             Order order = orderService.findOrderById(theId);
             FetchingAllCurrencyControl(httpServletRequest);
@@ -158,7 +152,7 @@ public class OrderController {
         try {
             Order order = orderService.findOrderById(id);
 
-            FetchingAllCurrencyControl(httpServletRequest);
+             FetchingAllCurrencyControl(httpServletRequest);
 
             model.addAttribute("order", order);
             model.addAttribute("title", "Orders specifics");
