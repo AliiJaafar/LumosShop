@@ -37,7 +37,6 @@ public class ControlService {
         Control control = controlRepository.findByKey("CURRENCY_ID");
         Integer currencyId = Integer.parseInt(control.getValue());
         Currency currency = currencyRepository.findById(currencyId).get();
-
         return currency.getCode();
     }
 }

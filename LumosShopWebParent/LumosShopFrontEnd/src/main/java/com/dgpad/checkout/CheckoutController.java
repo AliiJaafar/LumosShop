@@ -64,7 +64,7 @@ public class CheckoutController {
         return customerService.getCustomerByEmail(email);
     }
     @GetMapping("/checkout")
-    public String showCheckoutPage(Model model, HttpServletRequest httpServletRequest) throws CustomerNotFoundException, MessagingException, UnsupportedEncodingException {
+    public String displayCheckoutPage(Model model, HttpServletRequest httpServletRequest) throws CustomerNotFoundException, MessagingException, UnsupportedEncodingException {
 
 
         Customer customer = isTheCustomerAuthenticate(httpServletRequest);
@@ -89,6 +89,8 @@ public class CheckoutController {
         List<ShoppingBag> bagStocks = shoppingBagService.bagList(customer);
         CheckoutModel checkoutModel = checkoutService.SettingUp(bagStocks, fee);
 
+        String currencyFormat = controlService.getCurrencyFormat();
+
        /* // Paypal
         String currencyCode = settingService.getCurrencyCode();
         PaymentSettingBag paymentSettings = settingService.getPaymentSettings();
@@ -96,6 +98,7 @@ public class CheckoutController {
 
         model.addAttribute("customer", customer);
 
+        model.addAttribute("currencyFormat", currencyFormat);
         model.addAttribute("checkoutModel", checkoutModel);
         model.addAttribute("bagStocks", bagStocks);
 

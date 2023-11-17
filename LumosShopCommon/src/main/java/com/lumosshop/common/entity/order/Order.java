@@ -4,6 +4,9 @@ import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.CustomerAddresses;
 import jakarta.persistence.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -43,7 +46,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("Timestamp asc")
-    private List<Purchase_FollowUp> purchaseFollowUps = new ArrayList<>();
+    private List<OrderFollowUp> orderFollowUps = new ArrayList<>();
     @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
     private Set<Order_Summary> orderSummaries = new HashSet<>();
     private Date orderDate;
@@ -54,7 +57,7 @@ public class Order {
     private float totalPrice;
 
     private float shippingCharge;
-    private float productPrice;
+    private float productCost;
     private float InterSum;
 
     public Order() {
@@ -204,12 +207,12 @@ public class Order {
         this.shippingCharge = shippingCharge;
     }
 
-    public float getProductPrice() {
-        return productPrice;
+    public float getProductCost() {
+        return productCost;
     }
 
-    public void setProductPrice(float productPrice) {
-        this.productPrice = productPrice;
+    public void setProductCost(float productPrice) {
+        this.productCost = productPrice;
     }
 
     public float getInterSum() {
@@ -220,12 +223,12 @@ public class Order {
         InterSum = interSum;
     }
 
-    public List<Purchase_FollowUp> getPurchaseFollowUps() {
-        return purchaseFollowUps;
+    public List<OrderFollowUp> getOrderFollowUps() {
+        return orderFollowUps;
     }
 
-    public void setPurchaseFollowUps(List<Purchase_FollowUp> purchaseFollowUps) {
-        this.purchaseFollowUps = purchaseFollowUps;
+    public void setOrderFollowUps(List<OrderFollowUp> purchaseFollowUps) {
+        this.orderFollowUps = purchaseFollowUps;
     }
 
     @Transient
@@ -275,5 +278,32 @@ public class Order {
         setAddressLine2(address.getAddressLine2());
         setCity(address.getCity());
         setNation(address.getNation().getName());
+    }
+
+    @Transient
+    public String getFormDeliveryDate() {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        //dateFormatter.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Istanbul"));
+        return dateFormatter.format(this.DeliverDate);
+    }
+
+    public void setFormDeliveryDate(String dateString) {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        //dateFormatter.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Istanbul"));
+        try {
+            this.DeliverDate = dateFormatter.parse(dateString);
+        } catch (ParseException ignored) {
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", city='" + city + '\'' +
+                ", nation='" + nation + '\'' +
+                ", phase=" + phase +
+                '}';
     }
 }

@@ -4,9 +4,6 @@
     --blue: rgb(39, 56, 133, 0.7);
     --deepblue: #001057;
 }
-body{
-    background-image: radial-gradient(circle, #183d3d, #143134, #11252a, #0e1a1e, #040d12);
-}
 .formwarp {
     height: 100vh;
     overflow-x: auto;

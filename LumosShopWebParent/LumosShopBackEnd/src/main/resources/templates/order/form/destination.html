@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="form" th:remove="tag">
+    <div>
+        <form class="form-floating mb-3">
+            <input type="date" class="form-control"
+                   id="formDeliveryDate" th:value="${order.formDeliveryDate}" required>
+            <label for="formDeliveryDate">Delivery Date</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="number" class="form-control"
+                   id="NumberOfDaysToDeliver" step="1" th:value="${order.NumberOfDaysToDeliver}" required>
+            <label for="NumberOfDaysToDeliver">Delivery Days</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="firstName" th:value="${order.firstName}" required>
+            <label for="firstName">firstName</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="lastName" th:value="${order.lastName}" required>
+            <label for="lastName">lastName</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="phoneNumber" th:value="${order.phoneNumber}" required>
+            <label for="phoneNumber">phoneNumber</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="addressLine1" th:value="${order.addressLine1}" required>
+            <label for="addressLine1">addressLine1</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="addressLine2" th:value="${order.addressLine2}" required>
+            <label for="addressLine2">addressLine2</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="city" th:value="${order.city}" required>
+            <label for="city">city</label>
+        </form>
+        <form class="form-floating mb-3">
+            <input type="text" class="form-control"
+                   id="nation" th:value="${order.nation}" required>
+            <label for="nation">nation</label>
+        </form>
+    </div>
+</div>

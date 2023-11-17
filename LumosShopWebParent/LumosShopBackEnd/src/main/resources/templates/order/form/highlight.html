@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="form" th:remove="tag">
+    <div>
+        <div class="row">
+            <p>
+                <strong class="mx-3">ID</strong>
+                <span class="badge bg-secondary">[[${order.id}]]</span>
+            </p>
+        </div>
+        <div class="form-group mb-3">
+            <label for="customerName" class="col-sm-2 col-form-label">Customer Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="customerName" readonly
+                       th:value="${order.customer.fullName}">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="productCost" class="col-sm-2 col-form-label">Product Cost</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" th:field="${order.productCost}" required id="productCost">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="InetSum" class="col-sm-2 col-form-label">Intermediate Sum</label>
+            <div class="col-sm-10">
+                <input id="InetSum" type="text" th:field="${order.interSum}" required class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="shippingCost" class="col-sm-2 col-form-label">Shipping Charge</label>
+            <div class="col-sm-10">
+                <input id="shippingCost" type="text" th:field="${order.shippingCharge}" required class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="tax" class="col-sm-2 col-form-label">VAT(Tax)</label>
+            <div class="col-sm-10">
+                <input id="tax" type="text" th:field="${order.VAT}" required class="form-control">
+
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="total" class="col-sm-2 col-form-label">Total Price</label>
+            <div class="col-sm-10">
+                <input id="total" type="text" th:field="${order.totalPrice}" required class="form-control">
+            </div>
+        </div>
+        <br>
+        <div class="form-group mb-3">
+            <label for="total" class="col-sm-2 col-form-label">Payment with</label>
+            <div class="col-sm-10">
+                <select th:field="${order.paymentChoice}" class="form-control" required>
+                    <option th:value="${payment}" th:text="${payment}"
+                            th:each="payment : ${T(com.lumosshop.common.entity.order.Payment_Choice).values()}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="total" class="col-sm-2 col-form-label">Phase</label>
+            <div class="col-sm-10">
+                <select th:field="${order.phase}" class="form-control" required>
+                    <option th:value="${phase}" th:text="${phase}"
+                            th:each="phase : ${T(com.lumosshop.common.entity.order.Order_Phase).values()}"></option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

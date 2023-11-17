@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<div th:fragment="form" th:remove="tag">
+    <th:block th:each="order, status : ${order.orderSummaries}">
+        <div class="border rounded p-1" th:id="'row' + ${status.count}">
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="divCount">[[${status.count}]]</div>
+                </div>
+                <div class="col-md-5">
+                    <img th:src="@{${order.product.mainImagePath}}" class="img-fluid" alt="stockPhoto"/>
+                </div>
+                <div class="col-md-6">
+                    <div class="row m-2">
+                        <b>[[${order.product.name}]]</b>
+                    </div>
+                    <div class="row m-2 p-4">
+                        <div>
+                            <form class="form-floating mb-3">
+                                <input type="text" class="form-control"
+                                       id="inputCost" th:value="${order.productCost}" required>
+                                <label for="inputCost">Product Cost ([[${CURRENCY_SYMBOL}]])</label>
+                            </form>
+
+                            <form class="form-floating mb-3">
+                                <input type="number" step="1" min="1" max="6" class="form-control"
+                                       id="itemPrice" th:value="${order.itemPrice}" required>
+                                <label for="itemPrice">Product Price ([[${CURRENCY_SYMBOL}]])</label>
+                            </form>
+
+                            <form class="form-floating mb-3">
+                                <input type="number" step="1" min="1" max="6" class="form-control"
+                                       id="floatingInputValue" th:value="${order.qty}" required>
+                                <label for="floatingInputValue">Qty</label>
+                            </form>
+
+                            <form class="form-floating mb-3">
+                                <input type="text" class="form-control"
+                                       id="interSum" th:value="${order.interSum}" required>
+                                <label for="interSum">Sum</label>
+                            </form>
+
+                            <form class="form-floating">
+                                <input type="text" class="form-control" id="shippingCharge"
+                                       th:value="${order.shippingCharge}" required>
+                                <label for="shippingCharge">Shipping charge</label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </th:block>
+
+</div>

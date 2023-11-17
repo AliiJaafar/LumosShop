@@ -1,12 +1,8 @@
 package com.dgpad.admin.order;
 
-import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.order.Order;
 import com.lumosshop.common.entity.order.Order_Phase;
-import com.lumosshop.common.entity.order.Purchase_FollowUp;
-import com.lumosshop.common.exception.CustomerNotFoundException;
 import com.lumosshop.common.exception.OrderNotFoundException;
-import jakarta.persistence.Access;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 

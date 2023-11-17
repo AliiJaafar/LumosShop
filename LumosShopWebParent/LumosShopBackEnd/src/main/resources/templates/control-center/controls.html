@@ -4,7 +4,10 @@
 <head><div th:replace="~{fragment :: TheHeader('Control-Center')}">
 </div>
 
-    <script src="https://cdn.tiny.cloud/1/9ggur390z4pgx4f4b4g5bv95tttbvxw2ibmrj6gdyn3mi6ka/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!--    <script src="https://cdn.tiny.cloud/1/9ggur390z4pgx4f4b4g5bv95tttbvxw2ibmrj6gdyn3mi6ka/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
+<!--    <script src="https://cdn.tiny.cloud/1/778xk4j8f2w6nbtucbqovl506je3c9c18zx6kbtssx6hbm1x/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
 
 
@@ -88,14 +91,11 @@
 
 <footer th:replace="~{fragment/footer :: footer}"></footer>
 
-<script>
+<!--<script>
     function updateTextAreaBackgroundColor(color) {
         var textarea = document.getElementById('edit');
         textarea.style.backgroundColor = color;
     }
-</script>
-
-<script>
     tinymce.init({
         selector: 'textarea',
         plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss code', // Include the "code" plugin
@@ -107,6 +107,16 @@
             { value: 'Email', title: 'Email' },
         ],
         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+    });
+
+</script>-->
+
+<script>
+
+        $(document).ready(function() {
+        $('#edit').summernote();
+        $('#recover').summernote();
+        $('#order').summernote();
     });
 </script>
 

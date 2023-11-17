@@ -248,7 +248,7 @@
 
                         <div th:if="${checkoutModel.cashOnDeliveryAbility}" class="form-check">
                             <input id="cash" value="CASH_ON_DELIVERY" name="paymentMethod" type="radio"
-                                   class="form-check-input" checked
+                                   class="form-check-input"
                                    required>
                             <label class="form-check-label" for="cash">Cash On Delivery</label>
                         </div>
@@ -256,11 +256,7 @@
                             <input id="credit" name="paymentMethod" value="CREDIT_CARD" type="radio"
                                    class="form-check-input" checked
                                    required>
-                            <label class="form-check-label" for="credit">Credit card</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" for="debit">Debit card</label>
+                            <label class="form-check-label" for="credit">Credit/Debit card</label>
                         </div>
                         <div class="form-check">
                             <input id="paypal" name="paymentMethod" value="PAYPAL" type="radio" class="form-check-input"
@@ -313,6 +309,9 @@
                     <button id="placeOrderBtn" class="btn btn-primary w-100 btn-lg d-none" type="submit"
                             onclick="placeOrder('CashOnDelivery')">Make a purchase with Cash On Delivery
                     </button>
+                    <button id="placeOrderPayPalBtn" class="btn btn-primary w-100 btn-lg d-none" type="submit"
+                            onclick="placeOrder('PayPal')">Make a purchase with <i class="fa-brands fa-paypal"></i>
+                    </button>
                 </form>
 
             </div>
@@ -331,16 +330,29 @@
             if (this.id === 'cash') {
                 document.getElementById('Card_inputs').classList.add('d-none');
                 document.getElementById('placeOrderBtn').classList.remove('d-none');
+                document.getElementById('placeOrderPayPalBtn').classList.add('d-none');
                 document.getElementById('continueCheckout').classList.add('d-none');
                 document.querySelectorAll('#Card_inputs input').forEach(input => {
                     input.removeAttribute('required');
                 });
 
             }
-            else {
+            if (this.id === 'paypal') {
+                document.getElementById('Card_inputs').classList.add('d-none');
+                document.getElementById('placeOrderBtn').classList.add('d-none');
+                document.getElementById('continueCheckout').classList.add('d-none');
+                document.getElementById('placeOrderPayPalBtn').classList.remove('d-none');
+                document.querySelectorAll('#Card_inputs input').forEach(input => {
+                    input.removeAttribute('required');
+                });
+
+            }
+            if (this.id === 'credit'){
                 document.getElementById('placeOrderBtn').classList.add('d-none');
                 document.getElementById('Card_inputs').classList.remove('d-none');
                 document.getElementById('continueCheckout').classList.remove('d-none');
+                document.getElementById('placeOrderPayPalBtn').classList.add('d-none');
+
 
                 document.querySelectorAll('#Card_inputs input').forEach(input => {
                     input.setAttribute('required', 'required');
