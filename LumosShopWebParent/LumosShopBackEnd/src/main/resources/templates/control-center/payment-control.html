@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Payment Control
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/control/payment-update}" method="post">
+                            <div class="mb-3">
+                                <label for="STRIPE_API_KEY" class="form-label">STRIPE API KEY</label>
+                                <input name="STRIPE_API_KEY" th:value="${STRIPE_API_KEY}" type="text" class="form-control" id="STRIPE_API_KEY" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="STRIPE_PUBLIC_KEY" class="form-label">STRIPE PUBLIC KEY</label>
+                                <input name="STRIPE_PUBLIC_KEY" th:value="${STRIPE_PUBLIC_KEY}" type="text" class="form-control" id="STRIPE_PUBLIC_KEY" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="STRIPE_URL" class="form-label">STRIPE URL</label>
+                                <input name="STRIPE_URL" th:value="${STRIPE_URL}"
+                                       type="text" class="form-control" id="STRIPE_URL" required>
+                            </div>
+
+                            <p class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="form" th:remove="tag">
+<div th:fragment="form" th:remove="tag" >
     <div>
         <div class="row">
             <p>
@@ -20,40 +20,40 @@
         <div class="form-group mb-3">
             <label for="productCost" class="col-sm-2 col-form-label">Product Cost</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" th:field="${order.productCost}" required id="productCost">
+                <input id="productCost" class="form-control" type="text" th:field="*{productCost}" required >
             </div>
         </div>
 
         <div class="form-group mb-3">
-            <label for="InetSum" class="col-sm-2 col-form-label">Intermediate Sum</label>
+            <label for="interSum"  class="col-sm-2 col-form-label">Intermediate Sum</label>
             <div class="col-sm-10">
-                <input id="InetSum" type="text" th:field="${order.interSum}" required class="form-control">
+                <input id="interSum" type="text" th:field="*{interSum}" required class="form-control">
             </div>
         </div>
 
         <div class="form-group mb-3">
-            <label for="shippingCost" class="col-sm-2 col-form-label">Shipping Charge</label>
+            <label for="shippingCharge" class="col-sm-2 col-form-label">Shipping Charge</label>
             <div class="col-sm-10">
-                <input id="shippingCost" type="text" th:field="${order.shippingCharge}" required class="form-control">
+                <input  id="shippingCharge" type="text" th:field="*{shippingCharge}" required class="form-control">
             </div>
         </div>
 
         <div class="form-group mb-3">
-            <label for="tax" class="col-sm-2 col-form-label">VAT(Tax)</label>
+            <label for="vatField"  class="col-sm-2 col-form-label">VAT(Tax)</label>
             <div class="col-sm-10">
-                <input id="tax" type="text" th:field="${order.VAT}" required class="form-control">
+                <input id="vatField" type="text" th:field="*{VAT}" required class="form-control">
 
             </div>
         </div>
         <div class="form-group mb-3">
-            <label for="total" class="col-sm-2 col-form-label">Total Price</label>
+            <label for="totalPriceField" class="col-sm-2 col-form-label">Total Price</label>
             <div class="col-sm-10">
-                <input id="total" type="text" th:field="${order.totalPrice}" required class="form-control">
+                <input id="totalPriceField" type="text" th:field="*{totalPrice}"  required class="form-control">
             </div>
         </div>
         <br>
         <div class="form-group mb-3">
-            <label for="total" class="col-sm-2 col-form-label">Payment with</label>
+            <label  class="col-sm-2 col-form-label">Payment with</label>
             <div class="col-sm-10">
                 <select th:field="${order.paymentChoice}" class="form-control" required>
                     <option th:value="${payment}" th:text="${payment}"
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group mb-3">
-            <label for="total" class="col-sm-2 col-form-label">Phase</label>
+            <label class="col-sm-2 col-form-label">Phase</label>
             <div class="col-sm-10">
                 <select th:field="${order.phase}" class="form-control" required>
                     <option th:value="${phase}" th:text="${phase}"

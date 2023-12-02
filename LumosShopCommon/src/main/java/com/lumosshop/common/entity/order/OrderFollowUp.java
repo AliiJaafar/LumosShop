@@ -2,6 +2,10 @@ package com.lumosshop.common.entity.order;
 
 import jakarta.persistence.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -42,6 +46,17 @@ public class OrderFollowUp {
         return Timestamp;
     }
 
+    public String getFormattedTimeStamp() {
+        DateFormat dateFormatter = new SimpleDateFormat("dd MMM yy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.Timestamp);
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String month = dateFormatter.format(this.Timestamp).split(" ")[1];
+        String year = String.format("%02d", calendar.get(Calendar.YEAR) % 100);
+
+        return String.format("%02d %s %s", day, month, year);
+    }
     public void setTimestamp(Date timestamp) {
         Timestamp = timestamp;
     }
@@ -60,5 +75,19 @@ public class OrderFollowUp {
 
     public void setOrderPhase(Order_Phase orderPhase) {
         this.orderPhase = orderPhase;
+    }
+
+    @Transient
+    public String retrieveTimeStamp() {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        return dateFormatter.format(this.Timestamp);
+    }
+    public void modifyTimeStamp(String dateInString) throws ParseException {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        try {
+            this.Timestamp = dateFormatter.parse(dateInString);
+        } catch (ParseException exception) {
+            exception.printStackTrace();
+        }
     }
 }

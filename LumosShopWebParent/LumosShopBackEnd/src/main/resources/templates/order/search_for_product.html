@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: TheHeader('searching for products')}"></div>
+</head>
+<body data-bs-theme="dark">
+<div class="container">
+
+    <div>
+        <form th:action="@{/orders/products-search/page/1}" class="d-inline-flex my-4">
+            <input th:value="${keyword}" type="search" required class="form-control" name="keyword"
+                   placeholder="search">
+
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+            <button type="submit" class="btn btn-outline-success ms-1">
+                <i class="fa-duotone fa-magnifying-glass"></i>
+            </button>
+            <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
+                <i class="fa-duotone fa-broom-wide"></i>
+            </button>
+        </form>
+
+        <div class="row row-cols-2 text-center">
+            <th:block th:each="product : ${productList}">
+                <div class="col">
+                    <div class="border rounded my-1 pt-2">
+                        <a href="" class="productSrc" th:pid="${product.id}">
+                            <img width="200px" th:src="@{${product.mainImagePath}}" alt="product-img">
+                            <br>
+                            <p class="fw-bold" th:id="'productName'+${product.id}">[[${product.name}]]</p>
+                        </a>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <div th:replace="~{fragment :: pagination('/orders/products-search',products)}"></div>
+</div>
+<div th:replace="~{fragment/modal_fragments :: staticModal}"></div>
+<div th:replace="~{fragment/modal_fragments :: normalModal}"></div>
+</body>
+<script th:src="@{/js/modalSystems.js}"></script>
+
+<script>
+    moduleURL = "[[@{/orders}]]";
+    contextPath = "[[@{/}]]";
+    const csrfHeaderName = "[[${_csrf.headerName}]]";
+    let csrfValue = "[[${_csrf.token}]]";
+    function clearFilter() {
+        window.location = "[[@{/orders/products-search}]]";
+
+    }
+
+    $(document).ready(function () {
+        chooseProduct();
+
+    });
+
+    function chooseProduct() {
+        $(".productSrc").on("click", function (event) {
+            event.preventDefault();
+            productId = $(this).attr("pid");
+            productNAME = $("#productName" + productId).text();
+
+            if (window.parent.isInTheOrder(productId)) {
+                displayingNormalModal("This product " + productNAME + " Is already in the order");
+            } else {
+                window.parent.addNewProductToThOrder(productId, productNAME);
+
+            }
+        });
+    }
+
+
+</script>
+</html>

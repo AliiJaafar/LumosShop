@@ -106,12 +106,6 @@ public class ProductController {
         if (endCount > productPage.getTotalElements()) {
             endCount = productPage.getTotalElements();
         }
-        System.out.println("currentPage: "+ pageNumber);
-        System.out.println("totalPages: "+ productPage.getTotalPages());
-        System.out.println("startCount: "+ startCount);
-        System.out.println("endCount: "+ endCount);
-        System.out.println("totalElement: "+ productPage.getTotalElements());
-        System.out.println("keyword: " + keyword);
 
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", productPage.getTotalPages());

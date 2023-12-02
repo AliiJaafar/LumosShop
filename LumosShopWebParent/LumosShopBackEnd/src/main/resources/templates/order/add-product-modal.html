@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="modal" tabindex="-1" class="modal fade" id="addProductModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="staticBackdropLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+                <h3 class="modal-title">Product - Add</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="ratio ratio-16x9">
+                <iframe class="iframe" title="Products results"></iframe>
+            </div>
+            <div class="modal-footer bg-dark text-light">
+                <a type="button" data-bs-dismiss="modal">
+                    <i class="fa-duotone fa-rectangle-xmark fa-3x text-danger"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

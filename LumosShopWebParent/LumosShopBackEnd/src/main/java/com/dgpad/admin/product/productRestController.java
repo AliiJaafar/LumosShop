@@ -1,9 +1,9 @@
 package com.dgpad.admin.product;
 
+import com.lumosshop.common.entity.product.Product;
+import com.lumosshop.common.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class productRestController {
@@ -20,4 +20,14 @@ public class productRestController {
         return Unique ? "OK" : "Duplicated";
     }
 
+
+    @GetMapping("/products/get/{id}")
+    public ProductDTO getProductInfo(@PathVariable("id") Integer id)
+            throws ProductNotFoundException {
+
+        Product product = productService.findProductById(id);
+
+        return new ProductDTO(product.getName(), product.getMainImagePath(),
+                product.getDiscountPrice(), product.getCost());
+    }
 }

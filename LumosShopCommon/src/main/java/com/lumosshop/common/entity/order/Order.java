@@ -47,7 +47,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("Timestamp asc")
     private List<OrderFollowUp> orderFollowUps = new ArrayList<>();
-    @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<Order_Summary> orderSummaries = new HashSet<>();
     private Date orderDate;
     private Date DeliverDate;
@@ -237,7 +237,6 @@ public class Order {
     }
 
 
-
     @Transient
     public String retrieveTheFullAddress() {
         String fullAddress = "";
@@ -246,7 +245,7 @@ public class Order {
             fullAddress += nation;
         }
         if (city != null) {
-            fullAddress += ", " +city;
+            fullAddress += ", " + city;
         }
         if (addressLine1 != null) {
             fullAddress += ", " + addressLine1;
@@ -260,6 +259,7 @@ public class Order {
 
         return fullAddress;
     }
+
     public void CustomerAddress() {
         setFirstName(customer.getFirstName());
         setLastName(customer.getLastName());
@@ -283,19 +283,101 @@ public class Order {
     @Transient
     public String getFormDeliveryDate() {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        //dateFormatter.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Istanbul"));
         return dateFormatter.format(this.DeliverDate);
     }
 
     public void setFormDeliveryDate(String dateString) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        //dateFormatter.setTimeZone(java.util.TimeZone.getTimeZone("Asia/Istanbul"));
         try {
             this.DeliverDate = dateFormatter.parse(dateString);
         } catch (ParseException ignored) {
         }
     }
 
+    public String getFormattedOrderDate() {
+        DateFormat dateFormatter = new SimpleDateFormat("dd MMM yy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.orderDate);
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String month = dateFormatter.format(this.orderDate).split(" ")[1];
+        String year = String.format("%02d", calendar.get(Calendar.YEAR) % 100);
+
+        return String.format("%02d %s %s", day, month, year);
+    }
+    public boolean phaseExist(Order_Phase phase) {
+
+        for (OrderFollowUp trace : orderFollowUps) {
+            if (trace.getRemarks().equals(phase)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transient
+    public boolean isREVOKED() {
+        return phaseExist(Order_Phase.REVOKED);
+    }
+
+    @Transient
+    public boolean isIN_PROGRESS() {
+        return phaseExist(Order_Phase.IN_PROGRESS);
+    }
+
+    @Transient
+    public boolean isPACKAGED() {
+        return phaseExist(Order_Phase.PACKAGED);
+    }
+
+    @Transient
+    public boolean isSECURED() {
+        return phaseExist(Order_Phase.SECURED);
+    }
+
+    @Transient
+    public boolean isRECEIVED() {
+        return phaseExist(Order_Phase.RECEIVED);
+    }
+
+    @Transient
+    public boolean isInTransit() {
+        return phaseExist(Order_Phase.IN_TRANSIT);
+    }
+
+    @Transient
+    public boolean isREVERTED() {
+        return phaseExist(Order_Phase.REVERTED);
+    }
+
+    @Transient
+    public boolean isPAID() {
+        return phaseExist(Order_Phase.PAID);
+    }
+
+    @Transient
+    public boolean isREFUNDED() {
+        return phaseExist(Order_Phase.REFUNDED);
+    }
+
+    @Transient
+    public boolean isCUSTOMER_REQUESTED_RETURN() {
+        return phaseExist(Order_Phase.CUSTOMER_REQUESTED_RETURN);
+    }
+
+    @Transient
+    public String getProductList() {
+        StringBuilder productNamesBuilder = new StringBuilder();
+        productNamesBuilder.append("<ul>");
+
+        for (Order_Summary summary : orderSummaries) {
+            productNamesBuilder.append("<li>").append(summary.getProduct().getName()).append("</li>");
+        }
+
+        productNamesBuilder.append("</ul>");
+
+        return productNamesBuilder.toString();
+    }
     @Override
     public String toString() {
         return "Order{" +

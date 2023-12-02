@@ -55,7 +55,7 @@
                     <div th:replace="~{fragment :: delete('order', ${order.id}, '/orders/delete/' + ${order.id}, true)}"></div>
 <!--                    <a title="change the order phase" class="btn" th:href="@{'/orders/phase/'+${order.id}}"><i class="fa-duotone fa-arrow-progress fa-2x text-white-50"></i></a>-->
                     <a th:title="'Order Edit'"
-                       class="btn fa-duotone fa-gear fa-2x text-white-50 link-detail"
+                       class="btn fa-duotone fa-gear fa-2x text-white-50"
                        th:href="@{'/order/edit/'+${order.id}}">
                     </a>
                 </td>
@@ -71,7 +71,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Delete User Confirmation</h3>
+                <h3 class="modal-title">Delete Order Confirmation</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

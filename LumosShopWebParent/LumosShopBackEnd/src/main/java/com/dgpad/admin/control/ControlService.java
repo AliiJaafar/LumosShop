@@ -42,6 +42,9 @@ public class ControlService {
     public List<Control> getAllMessageOutlines() {
         return controlRepository.findByType(ControlType.MESSAGE_OUTLINE);
     }
+    public List<Control> getAllPaymentControl() {
+        return controlRepository.findByType(ControlType.PAYMENT);
+    }
 }
 
 

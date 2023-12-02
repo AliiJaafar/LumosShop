@@ -40,8 +40,29 @@
     </div>
 </div>
 
+<!--SEARCH-->
+<div th:fragment="searchFilter(moduleURL)">
 
-<!--<th th:fragment="column_link(moduleURL,fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
+
+    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}" data-bs-theme="dark">
+
+        <input type="hidden" name="sortField" th:value="${sortField}">
+        <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+
+        <input name="keyword" required class="form-control me-2" type="search" placeholder="Search"
+               th:value="${keyword}">
+
+        <button type="submit" class="btn btn-outline-success">
+            <i class="fa-duotone fa-magnifying-glass"></i>
+        </button>
+        <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
+            <i class="fa-duotone fa-broom-wide"></i>
+        </button>
+
+    </form>
+</div>
+
+<th th:fragment="column_link(moduleURL,fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
     <a class="text-light"
        th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDirection=' + ${sortField != fieldName ? sortDirection : reverseSortDirection} + ${keyword != null ? '&keyword='+ keyword : ''}}">
         [[${columnLabel}]]
@@ -49,7 +70,7 @@
     <span th:if="${sortField == fieldName}"
           th:class="${sortDirection == 'asc' ? 'fa-duotone fa-sort-up' :'fa-duotone fa-sort-down'}">
     </span>
-</th>-->
+</th>
 <a th:fragment="page_link(targetURL,pageNumber,label)"
    class="page-link"
    th:href="@{${targetURL} +'/page/' + ${pageNumber} + '?sortField=' + ${sortField}+ '&sortDirection=' + ${sortDirection}+ ${keyword != null ? '&keyword='+ keyword : ''}}">
@@ -95,9 +116,17 @@
         </div>
     </div>
 </div>
+<!-- FORMAT PRICES CURRENCY -->
+<span th:fragment="price(price)" th:remove="tag">
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+    [[${#numbers.formatDecimal(price,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}]]
+    <span th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+</span>
 
-
-
+<!-- FORMAT DATE -->
+<div th:fragment="format_date(date)" th:remove="tag">
+    <span th:text="${#dates.format(date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+</div>
 
 
 <div th:fragment="footer">

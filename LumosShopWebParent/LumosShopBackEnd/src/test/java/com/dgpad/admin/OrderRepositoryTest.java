@@ -1,14 +1,16 @@
 package com.dgpad.admin;
 
+import com.dgpad.admin.Shipping.ShippingRepository;
+import com.dgpad.admin.Shipping.ShippingService;
 import com.dgpad.admin.order.OrderRepository;
 import com.dgpad.admin.product.ProductRepository;
 import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.order.Order;
-import com.lumosshop.common.entity.order.Order_Phase;
-import com.lumosshop.common.entity.order.Order_Summary;
-import com.lumosshop.common.entity.order.Payment_Choice;
+import com.lumosshop.common.entity.Shipping;
+import com.lumosshop.common.entity.order.*;
 import com.lumosshop.common.entity.product.Product;
+import com.lumosshop.common.exception.ShippingFeeNotFoundException;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ShippingRepository shippingRepository;
     @Autowired
     private TestEntityManager entityManager;
 
@@ -129,5 +134,30 @@ public class OrderRepositoryTest {
         assertThat(orders).hasSizeGreaterThan(0);
 
         orders.forEach(System.out::println);
+    }
+
+    @Test
+    public void OrderFollowUp() {
+        Integer OrderId = 1;
+        Order order = orderRepository.findById(1).get();
+        OrderFollowUp record = new OrderFollowUp();
+        record.setOrder(order);
+        record.setOrderPhase(Order_Phase.IN_TRANSIT);
+        record.setRemarks(Order_Phase.IN_TRANSIT.getRemark());
+        record.setTimestamp(new Date());
+        List<OrderFollowUp> orderFollowUps = order.getOrderFollowUps();
+        orderFollowUps.add(record);
+
+        orderRepository.save(order);
+    }
+    @Test
+    public void DetermineShippingCharge() throws ShippingFeeNotFoundException {
+
+        Integer productID = 1;
+        Integer NationID = 19;
+        String city = "Beirut";
+        Shipping shipping = shippingRepository.findByNationAndCity(NationID, city);
+        System.out.println(shipping);
+
     }
 }

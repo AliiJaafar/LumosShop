@@ -94,7 +94,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Delete User Confirmation</h3>
+                <h3 class="modal-title">Delete Product Confirmation</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -128,7 +128,6 @@
         $(".link-delete").on("click", function (f) {
             f.preventDefault();
             Link = $(this);
-            //alert($(this).attr("href"));
             categoryId = Link.attr("entityId");
             $("#confirmButton").attr("href", Link.attr("href"));
             $(".confirmText").text("Are you certain of your choice to delete this category with ID : " + categoryId + " ?")

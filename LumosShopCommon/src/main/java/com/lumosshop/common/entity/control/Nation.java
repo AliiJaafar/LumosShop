@@ -76,4 +76,11 @@ public class Nation {
     }
 
 
+    @Override
+    public String toString() {
+        return "Nation{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }

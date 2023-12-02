@@ -4,6 +4,7 @@ import com.dgpad.ShippingCharge.ShippingFeeService;
 import com.dgpad.Utility;
 import com.dgpad.address.CustomerAddressesService;
 import com.dgpad.controlCenter.ControlService;
+import com.dgpad.controlCenter.PaymentControlCenter;
 import com.dgpad.customer.CustomerService;
 import com.dgpad.order.OrderService;
 import com.dgpad.shoppingBag.ShoppingBagService;
@@ -15,16 +16,21 @@ import com.lumosshop.common.entity.control.MailCenter;
 import com.lumosshop.common.entity.order.Order;
 import com.lumosshop.common.entity.order.Payment_Choice;
 import com.lumosshop.common.exception.CustomerNotFoundException;
+import com.stripe.Stripe;
+import com.stripe.StripeClient;
+import com.stripe.model.PaymentIntent;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
@@ -96,6 +102,12 @@ public class CheckoutController {
         PaymentSettingBag paymentSettings = settingService.getPaymentSettings();
         String paypalClientId = paymentSettings.getClientID();*/
 
+        PaymentControlCenter paymentControlCenter = controlService.RetrievePaymentControl();
+        String stripeAPIKey = paymentControlCenter.getStripeAPIKey();
+        String stripePublicKey = paymentControlCenter.getStripePublicKey();
+        model.addAttribute("stripeAPIKey", stripeAPIKey);
+        model.addAttribute("stripePublicKey", stripePublicKey);
+
         model.addAttribute("customer", customer);
 
         model.addAttribute("currencyFormat", currencyFormat);
@@ -106,7 +118,6 @@ public class CheckoutController {
 
         return "Bag/checkout/checkout";
     }
-
     @PostMapping("/make_purchase")
     public String Make_a_purchase(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
 
@@ -157,11 +168,12 @@ public class CheckoutController {
 
             messageHelper.setText(Message, true);
             mailSender.send(mimeMessage);
+            return "Bag/checkout/PurchaseClosed";
         } catch (UnsupportedEncodingException | MessagingException e) {
-            throw new RuntimeException(e);
+            return "Bag/checkout/PurchaseClosedWithError";
         }
 
-        return "Bag/checkout/PurchaseClosed";
+
 
     }
 

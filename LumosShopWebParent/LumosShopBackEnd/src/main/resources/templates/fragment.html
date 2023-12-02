@@ -106,7 +106,7 @@
     <span th:text="${#dates.format(date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 </div>
 
-<!-- FORMAT CURRENCY -->
+<!-- FORMAT PRICES CURRENCY -->
 <span th:fragment="price(price)" th:remove="tag">
     <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
     [[${#numbers.formatDecimal(price,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}]]

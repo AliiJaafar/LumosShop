@@ -26,10 +26,12 @@ public interface ProductRepository extends CrudRepository<Product, Integer>, Pag
             "or p.shortDescription like %?1%" +
             "or p.fullDescription like %?1%")
     public Page<Product> findAll(String keyword, Pageable pageable);
-
-
     @Query("select p from Product p where p.category.id = ?1 or " +
             "p.category.allParentIDs like %?2%")
     public Page<Product> findAllByCategory(Integer categoryId, String retrieveCategoryMatchingId, Pageable pageable);
+
+
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
+    public Page<Product> searchProductsByName(String keyword, Pageable pageable);
 
 }

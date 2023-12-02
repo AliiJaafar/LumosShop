@@ -36,8 +36,6 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Order</th>
                                 <th>Timestamp</th>
                                 <th>Remarks</th>
                                 <th>Order Phase</th>
@@ -45,8 +43,6 @@
                             </thead>
                             <tbody>
                             <tr th:each="followUp : ${order.orderFollowUps}">
-                                <td th:text="${followUp.id}"></td>
-                                <td th:text="${followUp.order.id}"></td>
                                 <td th:text="${#dates.format(followUp.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td th:text="${followUp.orderPhase.remark}"></td>
                                 <td th:text="${followUp.orderPhase}"></td>

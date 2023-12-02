@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 
 public class ProductService {
     public static final int PRODUCT_PER_PAGE = 5;
+    public static final int SEARCH_RESULTS_PER_PAGE_IN_ORDER = 4;
 
     @Autowired
     private ProductRepository productRepository;
@@ -109,5 +111,32 @@ public class ProductService {
         return productRepository.findAll(pageable);
 
     }
+
+    public Page<Product> searchForProduct(int pageNum, String sortField, String sortDirection, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDirection.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, SEARCH_RESULTS_PER_PAGE_IN_ORDER, sort);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            return productRepository.searchProductsByName(keyword, pageable);
+        }
+        return productRepository.findAll(pageable);
+    }
+   /*public void searchForProduct(int pageNum, String sortField, String sortDirection, String keyword) {
+       Sort sort = Sort.by(sortField);
+       sort = sortDirection.equals("asc") ? sort.ascending() : sort.descending();
+
+       Pageable pageable = PageRequest.of(pageNum - 1, SEARCH_RESULTS_PER_PAGE_IN_ORDER, sort);
+
+       Page<Product> page = null;
+
+       if (keyword != null && !keyword.isEmpty()) {
+            page = productRepository.searchProductsByName(keyword, pageable);
+       }
+
+   }*/
+
+
 
 }

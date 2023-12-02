@@ -2,56 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
 <div th:fragment="form" th:remove="tag">
-    <th:block th:each="order, status : ${order.orderSummaries}">
-        <div class="border rounded p-1" th:id="'row' + ${status.count}">
-            <div class="row">
-                <div class="col-md-1">
-                    <div class="divCount">[[${status.count}]]</div>
-                </div>
-                <div class="col-md-5">
-                    <img th:src="@{${order.product.mainImagePath}}" class="img-fluid" alt="stockPhoto"/>
-                </div>
-                <div class="col-md-6">
-                    <div class="row m-2">
-                        <b>[[${order.product.name}]]</b>
-                    </div>
-                    <div class="row m-2 p-4">
+    <div id="productList">
+        <th:block th:each="order, status : ${order.orderSummaries}">
+            <div class="border rounded p-1 my-2" th:id="'row' + ${status.count}">
+                <input th:value="${order.product.id}" name="productID" class="ProductIdInStocks" hidden>
+                <input th:value="${order.id}" name="summaryID" hidden>
+                <div class="row">
+                    <div class="col-md-1 d-flex align-items-start flex-column">
+                        <div class="divCount ms-2 mt-2 mb-auto">[[${status.count}]]</div>
                         <div>
-                            <form class="form-floating mb-3">
-                                <input type="text" class="form-control"
-                                       id="inputCost" th:value="${order.productCost}" required>
+                            <a class="fa-regular fa-circle-trash text-danger fa-xl removeProductTrash" href="" th:rowNumber="${status.count}"></a>
+                        </div>
+
+                    </div>
+                    <div class="col-md-5">
+                        <img th:src="@{${order.product.mainImagePath}}" class="img-fluid" alt="stockPhoto"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row m-2">
+                            <b>[[${order.product.name}]]</b>
+                        </div>
+                        <div class="row m-2 p-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control cost-input"
+                                       id="inputCost" th:value="${order.productCost}"
+                                       name="productSummaryCost"
+                                       th:rowNumber="${status.count}" required>
                                 <label for="inputCost">Product Cost ([[${CURRENCY_SYMBOL}]])</label>
-                            </form>
-
-                            <form class="form-floating mb-3">
-                                <input type="number" step="1" min="1" max="6" class="form-control"
-                                       id="itemPrice" th:value="${order.itemPrice}" required>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control price-input"
+                                       id="itemPrice" th:value="${order.itemPrice}" required
+                                       name="productPrice"
+                                       th:id="'price' + ${status.count}"
+                                       th:rowNumber="${status.count}">
                                 <label for="itemPrice">Product Price ([[${CURRENCY_SYMBOL}]])</label>
-                            </form>
+                            </div>
 
-                            <form class="form-floating mb-3">
-                                <input type="number" step="1" min="1" max="6" class="form-control"
-                                       id="floatingInputValue" th:value="${order.qty}" required>
+                            <div class="form-floating mb-3">
+                                <input type="number" step="1" min="1" max="6" class="form-control quantity-input"
+                                       id="floatingInputValue" th:value="${order.qty}" required
+                                       name="quantity"
+                                       th:id="'quantity' + ${status.count}"
+                                       th:rowNumber="${status.count}">
                                 <label for="floatingInputValue">Qty</label>
-                            </form>
+                            </div>
 
-                            <form class="form-floating mb-3">
-                                <input type="text" class="form-control"
-                                       id="interSum" th:value="${order.interSum}" required>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control interSum-output"
+                                       id="interSum" th:value="${order.interSum}" required readonly
+                                       name="productInterSum"
+                                       th:id="'interSum' + ${status.count}">
                                 <label for="interSum">Sum</label>
-                            </form>
+                            </div>
 
-                            <form class="form-floating">
-                                <input type="text" class="form-control" id="shippingCharge"
-                                       th:value="${order.shippingCharge}" required>
+                            <div class="form-floating">
+                                <input type="text" class="form-control ship-input" id="shippingCharge"
+                                       th:value="${order.shippingCharge}" required
+                                       name="productShippingCharge">
                                 <label for="shippingCharge">Shipping charge</label>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-    </th:block>
-
+            <div th:id="'Gap' + ${status.count}" class="row">&nbsp;</div>
+        </th:block>
+    </div>
+    <p class="text-center">
+        <a id="linkAddProduct" th:href="@{/orders/products-search}" type="button"
+           class="btn btn-success btn-sm">Add-Product</a>
+    </p>
 </div>
+<div th:replace="~{order/add-product-modal :: modal}"></div>
+
+</body>
+</html>

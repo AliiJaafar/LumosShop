@@ -18,6 +18,10 @@ public class ControlService {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    public PaymentControlCenter RetrievePaymentControl() {
+        List<Control> paymentControl = controlRepository.findByType(ControlType.PAYMENT);
+        return new PaymentControlCenter(paymentControl);
+    }
     public List<Control> getStandardControl() {
         return controlRepository.findByManyType(ControlType.STANDARD, ControlType.CURRENCY_UNIT);
     }

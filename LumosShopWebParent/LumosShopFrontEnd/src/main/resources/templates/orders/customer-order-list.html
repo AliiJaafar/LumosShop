@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+</head>
+
+<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<div th:replace="~{navbar :: navbar}"></div>
+<ul class="nav justify-content-center ">
+    <th:block sec:authorize="isAuthenticated()">
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/my-account}" sec:authentication="principal.fullName"></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/orders}"><i class="fa-thin fa-bags-shopping"></i>Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/addresses}"><i class="fa-duotone fa-location-dot"></i>
+                Addresses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/FAQ}">FAQ</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/bag}"><i class="fa-duotone fa-bag-shopping"></i></a>
+        </li>
+        <li class="nav-item">
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" name="csrf.parameterName" value="{_csrf.token}"/>
+                <button title="Logout" type="submit" class="btn nav-link text-success"><i
+                        class="fa-duotone fa-right-from-bracket"></i></button>
+            </form>
+        </li>
+    </th:block>
+
+
+</ul>
+
+<div th:replace="~{fragments :: messageFlash}"></div>
+
+
+<div class="container mt-3">
+
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-success">Orders</h2>
+    </div>
+    <div th:replace="~{fragments :: searchFilter('/orders/page/1')}"></div>
+
+    <div>
+        <table class="table table-hover text-center">
+            <thead>
+
+            <tr>
+                <th th:replace="~{fragments :: column_link(${moduleURL},'id','ID','none')}"></th>
+                <th th:replace="~{fragments :: column_link(${moduleURL},'orderData','Order Date','none')}"></th>
+                <th>Products</th>
+                <th th:replace="~{fragments :: column_link(${moduleURL},'totalPrice','Total Price','none')}"></th>
+                <th th:replace="~{fragments :: column_link(${moduleURL},'phase','Phase','none')}"></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="order : ${orderList}">
+                <td th:text="${order.id}"></td>
+                <td><div th:replace="~{fragments :: format_date(${order.orderDate})}">Order Date</div></td>
+                <td class="text-start" th:utext="${order.productList}">
+                </td>
+                <td><span th:replace="~{fragments :: price(${order.totalPrice})}"></span></td>
+                <td th:text="${order.phase}"></td>
+                <td>
+                    <a th:title="'Order Progress'"
+                       class="btn progress-link"
+                       th:href="@{'/orders/progress/'+${order.id}}">
+                        <i class="fa-duotone fa-arrow-progress fa-2x"></i>
+                    </a>
+                    <a class="btn">
+                        <img th:src="@{/images/returnShipment.png}" alt="return" width="30px">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: pagination(${moduleURL},'orders')}"></div>
+<footer th:replace="~{fragments :: footer}"></footer>
+
+
+<!-- Modal -->
+<div class="modal fade" id="OrderProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    handleDefaultDetailLinkClick();
+    function handleDetailLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultDetailLinkClick() {
+        handleDetailLinkClick(".progress-link", "#OrderProgressModal");
+
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/orders}]]";
+
+    }
+
+</script>
+
+</html>

@@ -18,4 +18,7 @@ public interface ShippingRepository extends PagingAndSortingRepository<Shipping,
     @Modifying
     @Query("update Shipping sh set sh.CashOnDelivery = ?2 where sh.id = ?1")
     public void updateCashOnDeliveryAbility(Integer id, boolean ability);
+
+    @Query("select sh from Shipping sh where sh.nation.id = ?1 and sh.city = ?2")
+    public Shipping findByNationAndCity(Integer nationID, String city);
 }

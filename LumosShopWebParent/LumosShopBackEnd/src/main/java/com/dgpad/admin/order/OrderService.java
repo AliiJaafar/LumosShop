@@ -1,6 +1,7 @@
 package com.dgpad.admin.order;
 
 import com.lumosshop.common.entity.order.Order;
+import com.lumosshop.common.entity.order.OrderFollowUp;
 import com.lumosshop.common.entity.order.Order_Phase;
 import com.lumosshop.common.exception.OrderNotFoundException;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,15 +25,14 @@ public class OrderService {
     public static final int ORDER_PER_PAGE = 9;
 
 
-
     public List<Order> findAll() {
         return (List<Order>) orderRepository.findAll();
     }
 
     public Page<Order> listOrderByPage(int pageNumber,
-                                             String sortField,
-                                             String sortDirection,
-                                             String Keyword) {
+                                       String sortField,
+                                       String sortDirection,
+                                       String Keyword) {
 
         Sort sort = null;
 
@@ -44,7 +45,6 @@ public class OrderService {
 
         sort = sortDirection.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNumber - 1, ORDER_PER_PAGE, sort);
-
 
 
         if (Keyword != null) {
@@ -78,21 +78,28 @@ public class OrderService {
 
     }
 
-    public void updateOrderPhase(Integer orderId, Order_Phase newPhase) throws OrderNotFoundException {
+    public void changeOrderPhase(Integer orderId, String newPhase) {
 
-        try {
-            Order order = orderRepository.findById(orderId).get();
-            orderRepository.updatePhase(orderId, newPhase);
-        } catch (NoSuchElementException e) {
-            throw new OrderNotFoundException("Could not found this order id :  " + orderId);
+        Order orderDB = orderRepository.findById(orderId).get();
+        Order_Phase orderPhase = Order_Phase.valueOf(newPhase);
+        if (!orderDB.phaseExist(orderPhase)) {
+            List<OrderFollowUp> orderFollowUps = orderDB.getOrderFollowUps();
 
+            OrderFollowUp follow = new OrderFollowUp();
+            follow.setOrder(orderDB);
+            follow.setTimestamp(new Date());
+
+            follow.setOrderPhase(orderPhase);
+            follow.setRemarks(orderPhase.getRemark());
+
+            orderFollowUps.add(follow);
+            orderDB.setPhase(orderPhase);
+
+            orderRepository.save(orderDB);
         }
 
 
     }
-
-
-
 
 
 }

@@ -113,5 +113,15 @@ public class ControlController {
 
         return "redirect:/controlCenter";
     }
+    @PostMapping("/control/payment-update")
+    public String update_payment(HttpServletRequest httpServletRequest,
+                                     RedirectAttributes redirectAttributes) {
+        List<Control> paymentControl = controlService.getAllPaymentControl();
+        updateControls(httpServletRequest, paymentControl);
+
+        redirectAttributes.addFlashAttribute("message", "The Payment data has been updated");
+
+        return "redirect:/controlCenter";
+    }
 }
 

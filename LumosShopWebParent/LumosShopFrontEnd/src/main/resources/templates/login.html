@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/login.css}">
 
 </head>
-<div th:replace="~{navbar :: navbar}"></div>
+<!--<div th:replace="~{navbar :: navbar}"></div>-->
 
 
 <body data-bs-theme="dark">
@@ -22,7 +22,9 @@
             <!--   login form   -->
             <form th:action="@{/login}" method="post" id="login" class="active">
                 <div class="form-header">
-                    <img th:src="@{/images/lumos.coLogoWithoutSlogan.png}" alt="logo-image">
+                    <a th:href="@{/}">
+                        <img th:src="@{/images/lumos.coLogoWithoutSlogan.png}" alt="logo-image">
+                    </a>
                     <div th:if="${param.error}">
                         <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
                     </div>

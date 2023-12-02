@@ -34,7 +34,7 @@
             <a class="nav-link" id="outline-tab" data-bs-toggle="tab" href="#outline" role="tab">Outline</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" id="shipping-tab" data-bs-toggle="tab" href="#shipping" role="tab">shipping</a>
+            <a class="nav-link" id="payment-tab" data-bs-toggle="tab" href="#payment" role="tab">Payment</a>
 
         </li>
     </ul>
@@ -55,7 +55,8 @@
         <div class="tab-pane fade p-4" id="outline" role="tabpanel" aria-labelledby="outline-tab">
             <div th:replace="~{control-center/email-template/email-templates :: data}"></div>
         </div>
-        <div class="tab-pane fade p-4" id="shipping" role="tabpanel" aria-labelledby="details-tab">
+        <div class="tab-pane fade p-4" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+            <div th:replace="~{control-center/payment-control :: content}"></div>
         </div>
     </div>
 

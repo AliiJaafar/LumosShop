@@ -32,5 +32,7 @@ public class StandardControlCenter extends ControlCenter {
         // Log a message after the update
         logger.info("Currency format updated successfully.");
     }
+
+
 }
 

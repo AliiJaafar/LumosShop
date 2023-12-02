@@ -31,14 +31,16 @@
         <div class="input-group my-4">
             <span class="input-group-text" id="basic-addon4"><i class="fa fa-globe"></i></span>
             <select th:field="*{nation}" class="form-control">
-                <option th:each="nation : ${nationList}" th:value="${nation.id}">[[${nation.name}]]</option>
+                <option th:each="nation : ${nationList}" th:value="${nation.id}" th:text="${nation.name}"></option>
             </select>
         </div>
 
         <div class="input-group my-4">
             <span class="input-group-text" id="basic-addon5"><i class="fa fa-city"></i></span>
             <input type="text" th:field="*{city}" class="form-control" placeholder="City" aria-label="City"
-                   aria-describedby="basic-addon5" required maxlength="55" minlength="3">
+                   aria-describedby="basic-addon5" required maxlength="55" minlength="3" list="cityList">
+            <datalist id="cityList"></datalist>
+
         </div>
         <div class="form-group mb-3">
             <label for="feeRate" class="col-form-label">Fee Rate <i class="fa-duotone fa-wave-pulse"></i></label>
@@ -88,5 +90,39 @@
 
 <footer th:replace="~{fragment/footer :: footer}"></footer>
 
+<script>
+    moduleURL = "[[@{/shipping}]]";
+    contextPath = "[[@{/}]]";
+
+    let cityList;
+
+    $(document).ready(function () {
+        const NationSelector = $("#nation");
+        cityList = $("#cityList");
+        $("#btn-Cancel").on("click", function () {
+            window.location = moduleURL;
+        });
+
+
+        NationSelector.on("change", function () {
+            cityFetch();
+            $("#city").val("").focus();
+        });
+    });
+
+    function cityFetch() {
+        const chosen = $("#nation option:selected");
+        const NationId = chosen.val();
+        const URL = contextPath + "city/list/" + NationId;
+
+
+        $.get(URL, function (responseJSON) {
+            cityList.empty();
+            $.each(responseJSON, function (index, nation) {
+                $("<option>").val(nation.name).text(nation.name).appendTo(cityList);
+            });
+        });
+    }
+</script>
 </body>
 </html>

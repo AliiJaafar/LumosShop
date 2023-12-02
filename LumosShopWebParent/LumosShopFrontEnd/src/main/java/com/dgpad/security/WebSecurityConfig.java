@@ -48,7 +48,7 @@ public class WebSecurityConfig {
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
         http.authorizeHttpRequests(request ->
                 request
-                        .requestMatchers("/customers","/bag","/my-account","/addresses").authenticated()
+                        .requestMatchers("/customers","/bag","/my-account","/addresses","/orders").authenticated()
                         .anyRequest().permitAll()
         );
         http.formLogin(formLogin ->
