@@ -114,5 +114,35 @@ public class OrderService {
         }
         return orderRepository.findAllByCustomer(customer.getId(), pageable);
     }
+
+
+    public void setOrderCUSTOMER_REQUESTED_RETURN(Customer customer,
+                                                  Request_Reverted requestReverted) throws OrderNotFoundException {
+
+        Order order = orderRepository.findByIdAndCustomer(requestReverted.getOrderID(), customer);
+        if (order == null) {
+            throw new OrderNotFoundException("Order ID #" + requestReverted.getOrderID() + " Couldn't be found.");
+        }
+
+        if (order.isCUSTOMER_REQUESTED_RETURN()) {
+            return;
+        }
+        OrderFollowUp followUp = new OrderFollowUp();
+        followUp.setOrder(order);
+        followUp.setOrderPhase(Order_Phase.CUSTOMER_REQUESTED_RETURN);
+        followUp.setTimestamp(new Date());
+        String remark = "Justification is " + requestReverted.getJustification() + "; ";
+        remark += handleNull(requestReverted.getComment());
+        followUp.setRemarks(remark);
+
+        order.getOrderFollowUps().add(followUp);
+        order.setPhase(Order_Phase.CUSTOMER_REQUESTED_RETURN);
+
+        orderRepository.save(order);
+    }
+    private String handleNull(String value) {
+        return (value != null) ? value : ".";
+    }
+
 }
 

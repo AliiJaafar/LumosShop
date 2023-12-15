@@ -56,6 +56,8 @@ public class Product {
     @Column(name = "main_image", nullable = false)
     private String mainImage;
 
+    private int reviews;
+    private float rating_avg;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -72,6 +74,10 @@ public class Product {
 
     public Product(Integer id) {
         this.id = id;
+    }
+
+    public Product(String name) {
+        this.name = name;
     }
 
     public Integer getId() {
@@ -238,6 +244,22 @@ public class Product {
         return "/product-images/" + this.id + "/" + this.mainImage;
     }
 
+    public int getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(int reviews) {
+        this.reviews = reviews;
+    }
+
+    public float getRating_avg() {
+        return rating_avg;
+    }
+
+    public void setRating_avg(float rating_avg) {
+        this.rating_avg = rating_avg;
+    }
+
     public Set<ProductDetail> getDetails() {
         return details;
     }
@@ -253,6 +275,10 @@ public class Product {
         this.details.add(new ProductDetail(id,name, value, this));
     }
 
+    @Transient
+    public String getAddressID() {
+        return "/p/" + this.alias + "/";
+    }
 
     @Override
     public String toString() {
@@ -283,4 +309,24 @@ public class Product {
         return this.price;
     }
 
+    @Transient
+    private boolean reviewedAlready;
+    @Transient
+    private boolean customerIsAbleToWriteReview;
+
+    public boolean isReviewedAlready() {
+        return reviewedAlready;
+    }
+
+    public void setReviewedAlready(boolean reviewedAlready) {
+        this.reviewedAlready = reviewedAlready;
+    }
+
+    public boolean isCustomerIsAbleToWriteReview() {
+        return customerIsAbleToWriteReview;
+    }
+
+    public void setCustomerIsAbleToWriteReview(boolean customerIsAbleToWriteReview) {
+        this.customerIsAbleToWriteReview = customerIsAbleToWriteReview;
+    }
 }

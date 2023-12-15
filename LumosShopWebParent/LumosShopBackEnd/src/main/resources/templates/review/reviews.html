@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragment :: TheHeader(${pageTitle})}"></div>
+</head>
+<body data-bs-theme="dark">
+<div th:replace="~{fragment/header :: header}"></div>
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <h2 class="text-center">Manage Review <i class="fa-duotone fa-star-sharp text-warning"></i></h2>
+    </div>
+
+    <div th:replace="~{fragment :: searchFilter('/review/page/1')}"></div>
+    <div th:replace="~{fragment :: messageFlash}"></div>
+
+
+    <div>
+        <table class="table table-dark table-hover text-center">
+            <thead>
+            <tr>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'product.name','Product','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'customer','Customer','none')}"></th>
+                <th th:replace="~{fragment :: column_link(${moduleURL},'rating','Rating','none')}"></th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="review : ${reviewList}">
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.product.name}"></td>
+                <td>
+                    <a class="text-success fw-bold customer-detail"
+                       th:href="@{'/customers/info/'+${review.customer.id}}"
+                       th:title="'view customer details'"
+                       th:text="${review.customer.fullName}">
+                    </a>
+                </td>
+                <td th:text="${review.rating}"></td>
+                <td th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></td>
+                <td>
+                    <a class="btn fa-duotone fa-file-alt icon-green fa-2x link-detail"
+                       th:href="@{'/review/info/'+${review.id}}"
+                       th:title="'view more details'">
+                    </a>
+                    <div th:replace="~{fragment :: delete('review', ${review.id}, '/review/delete/' + ${review.id}, true)}"></div>
+                    <div th:replace="~{fragment :: edit('review','/review/update/'+ ${review.id})}"></div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade text-center" id="confirmModal" role="dialog" data-bs-theme="dark">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Review Confirmation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold confirmText"></span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" id="confirmButton">Yes</a>
+                <a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailModal" data-bs-theme="dark">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="customerModal" data-bs-theme="dark">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragment :: pagination(${moduleURL},'review')}"></div>
+<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+
+<script type="text/javascript">
+    handleDefaultDetailLinkClick();
+    handleDefaultCustomerLinkClick();
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            orderID = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this review with ID : " +orderID  + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
+
+    function handleCustomerLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultCustomerLinkClick() {
+        handleCustomerLinkClick(".customer-detail", "#customerModal");
+
+    }
+
+    function handleDetailLinkClick(cssClass, modalId) {
+        $(cssClass).on("click", function(e) {
+            e.preventDefault();
+            linkDetailURL = $(this).attr("href");
+            $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+    function handleDefaultDetailLinkClick() {
+        handleDetailLinkClick(".link-detail", "#detailModal");
+
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/review}]]";
+
+    }
+</script>
+
+
+</body>
+</html>

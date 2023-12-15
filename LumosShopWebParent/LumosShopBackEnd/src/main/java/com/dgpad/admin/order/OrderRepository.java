@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Date;
+import java.util.List;
+
 public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>, CrudRepository<Order, Integer> {
 
     public Long countById(Integer id);
@@ -23,5 +26,11 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
     @Transactional
     @Query("UPDATE Order o SET o.phase = ?2 WHERE o.id = ?1")
     public void updatePhase(Integer orderId, Order_Phase newPhase);
+
+
+    @Query("select new com.lumosshop.common.entity.order.Order(o.id,o.orderDate,o.totalPrice,o.productCost,o.InterSum) from Order o where " +
+            "o.orderDate between ?1 and ?2 order by o.orderDate asc ")
+    public List<Order> findOrdersByDate(Date startDate, Date endDate);
+
 
 }

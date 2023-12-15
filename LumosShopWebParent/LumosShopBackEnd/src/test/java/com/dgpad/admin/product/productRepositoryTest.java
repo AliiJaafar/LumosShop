@@ -24,6 +24,12 @@ public class productRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
+    public void testImproveRatingsAndAverageScore() {
+        Integer productID = 5;
+        productRepository.improveRatingsAndAverageScore(productID);
+
+    }
+    @Test
     public void testCreateProduct() {
         Category category = entityManager.find(Category.class, 1);
 

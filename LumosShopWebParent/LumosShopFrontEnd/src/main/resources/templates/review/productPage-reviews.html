@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+    <link th:href="@{/rating-plugin/css/star-rating.css}" media="all" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/rating-plugin/js/star-rating.js}" type="text/javascript"></script>
+    <link th:href="@{/rating-plugin/themes/krajee-fas/theme.css}" media="all" rel="stylesheet" type="text/css"/>
+    <script th:src="@{/rating-plugin/themes/krajee-fas/theme.js}"></script>
+</head>
+
+<body data-bs-theme="dark">
+
+
+<div class="container">
+    <div th:replace="~{navbar :: navbar}"></div>
+    <div th:replace="~{navbar :: searchBar}"></div>
+    <div class="row mt-5">
+        <div class="col-sm">
+            <div style="width: 300px; height: 300px;">
+                <img th:src="@{${product.mainImagePath}}" class="img-fluid" alt="product">
+            </div>
+        </div>
+        <div class="col-sm">
+            <div>
+                <h5 th:text="${product.name}"></h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-5">
+        <hr>
+        <h3>Reviews</h3>
+        <th:block th:each="review : ${reviewList}">
+            <div class="mt-5">
+                <div class="row">
+                    <input type="text" class="productPage-ratingStar" dir="ltr" data-size="xs"
+                           th:value="${review.rating}">
+                </div>
+                <div class="row">
+                    <div class="col"><strong th:text="${review.title}"></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col"><span th:text="${review.reviewComment}"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col ms-3">
+                        <small th:text="${review.customer.fullName}"></small>
+                        <small th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></small>
+
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+    <div th:replace="~{fragments :: pagination('/review/'+${product.alias},'review')}"></div>
+</div>
+<script>
+    contextPath = "[[@{/}]]";
+    productId = "[[${product.id}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+    currencyS = "[[${CURRENCY_SYMBOL}]]";
+    currencyGrSep = "[[${CURRENCY_GROUPING_SEPARATOR == 'COMMA' ? ',' : '.'}]]";
+    currencyDisSep = "[[${CURRENCY_DECIMAL_SEPARATOR == 'COMMA' ? ',' : '.'}]]";
+    cuurencyWay = "[[${CURRENCY_SYMBOL_PLACE}]]";
+    decimalPrec = "[[${CURRENCY_DISPLAY_PRECISION}]]";
+
+
+    $(document).ready(function () {
+        PrimaryImage = $("#Primary-Image");
+
+        $(".image-thumbnail").mouseover(function () {
+            currentImageSource = $(this).attr("src");
+            PrimaryImage.attr("src", currentImageSource);
+        });
+
+        PrimaryImage.on("click", function () {
+            $("#image-coursel").modal("show");
+
+        });
+
+
+        /*$(".linkVoteReview").on("click", function (e) {
+            e.preventDefault();
+            doVote($(this), "review");
+        });
+
+        $(".linkVoteQuestion").on("click", function (e) {
+            e.preventDefault();
+            doVote($(this), "question");
+        });*/
+
+    });
+
+    $(".productPage-ratingStar").rating({
+        displayOnly: true,
+        hoverOnClear: false,
+        showCaption: false,
+        theme: 'krajee-fas'
+
+    });
+
+
+</script>
+</body>
+<footer th:replace="~{fragments :: footer}"></footer>
+</html>

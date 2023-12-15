@@ -22,7 +22,7 @@ public enum Order_Phase {
             case SECURED -> "The order has been secured and is ready for the next phase.";
             case IN_TRANSIT -> "The order is currently in transit, being shipped to its destination.";
             case RECEIVED -> "The order has been received at its destination or by the customer.";
-            case REVERTED -> "The order has been reversed or rolled back to a previous state.";
+            case REVERTED -> "The order has been returned or rolled back to a previous state.";
             case PAID -> "The order has been paid for and is awaiting further processing.";
             case REFUNDED -> "The order has undergone a refund process, returning the payment to the customer.";
             case CUSTOMER_REQUESTED_RETURN -> "The customer has requested to return the order for specific reasons.";

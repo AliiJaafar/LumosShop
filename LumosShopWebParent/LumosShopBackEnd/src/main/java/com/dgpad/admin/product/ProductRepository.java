@@ -11,6 +11,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends CrudRepository<Product, Integer>, PagingAndSortingRepository<Product, Integer> {
 
+
+    @Query("update Product p set " +
+            "p.rating_avg = CAST(COALESCE((select avg(r.rating) from Review r where r.product.id = ?1), 0) AS java.lang.Float), " +
+            "p.reviews = (select count(r.id) from Review r where r.product.id = ?1) " +
+            "where p.id = ?1")
+    @Modifying
+    public void improveRatingsAndAverageScore(Integer productId);
+
     @Query("SELECT p FROM Product p WHERE p.name = :name")
     public Product getProductByName(@Param("name") String name);
 

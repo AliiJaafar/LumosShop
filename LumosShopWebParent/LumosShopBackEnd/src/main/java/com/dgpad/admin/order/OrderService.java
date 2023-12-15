@@ -65,6 +65,10 @@ public class OrderService {
     }
 
     public Order save(Order order) {
+        Order orderInTheSystem = orderRepository.findById(order.getId()).get();
+        order.setOrderDate(orderInTheSystem.getOrderDate());
+        order.setCustomer(orderInTheSystem.getCustomer());
+
         return orderRepository.save(order);
     }
 

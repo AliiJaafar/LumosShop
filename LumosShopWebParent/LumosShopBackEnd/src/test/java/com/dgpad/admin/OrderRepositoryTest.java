@@ -1,16 +1,14 @@
 package com.dgpad.admin;
 
 import com.dgpad.admin.Shipping.ShippingRepository;
-import com.dgpad.admin.Shipping.ShippingService;
 import com.dgpad.admin.order.OrderRepository;
-import com.dgpad.admin.product.ProductRepository;
-import com.lumosshop.common.entity.Category;
+import com.dgpad.admin.review.ReviewRepository;
 import com.lumosshop.common.entity.Customer;
+import com.lumosshop.common.entity.Review;
 import com.lumosshop.common.entity.Shipping;
 import com.lumosshop.common.entity.order.*;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.ShippingFeeNotFoundException;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,9 +16,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,6 +34,8 @@ public class OrderRepositoryTest {
     private ShippingRepository shippingRepository;
     @Autowired
     private TestEntityManager entityManager;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Test
     public void testCreateOrder() {
@@ -159,5 +161,42 @@ public class OrderRepositoryTest {
         Shipping shipping = shippingRepository.findByNationAndCity(NationID, city);
         System.out.println(shipping);
 
+    }
+    @Test
+    public void TestGettingOrdersByDate() throws ParseException {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startIn = dateFormat.parse("2022-12-23");
+        Date endIn = dateFormat.parse("2030-01-23");
+        List<Order> orderList = orderRepository.findOrdersByDate(startIn, endIn);
+        assertThat(orderList.size()).isGreaterThan(0);
+
+        for (Order order : orderList) {
+            System.out.printf("%s | %s | %f | %f | | %f \n",
+                    order.getId(), order.getOrderDate(), order.getTotalPrice(), order.getProductCost(), order.getInterSum());
+
+        }
+    }
+
+    @Test
+    public void testRateProduct() {
+        Integer productID = 1;
+        Product product = new Product(productID);
+
+        Integer customerID = 35;
+        Customer customer = new Customer(customerID);
+
+        Review review = new Review();
+        review.setRating(4);
+        review.setReviewDate(new Date());
+        review.setTitle("nice Quality");
+        review.setCustomer(customer);
+        review.setProduct(product);
+        review.setReviewComment("That something deserve waiting for a years!");
+        review.setLikes(1);
+
+        Review saveR = reviewRepository.save(review);
+        assertThat(saveR).isNotNull();
+        assertThat(saveR.getId()).isGreaterThan(0);
     }
 }

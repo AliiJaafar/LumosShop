@@ -13,6 +13,7 @@
     <form th:action="@{/order/saving}" th:object="${order}" method="post" onsubmit="return processFormBeforeSubmit();">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{customer.id}">
+
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -112,7 +113,7 @@
                                                     <th:block
                                                             th:each="phase : ${T(com.lumosshop.common.entity.order.Order_Phase).values()}">
                                                         <option th:value="${phase}" th:text="${phase}"
-                                                                th:selected="${phase == followUp.orderPhase}"
+                                                                th:selected="${followUp.orderPhase.name() == phase.name()}"
                                                                 th:Preset="${phase.remark}"/>
                                                     </th:block>
 

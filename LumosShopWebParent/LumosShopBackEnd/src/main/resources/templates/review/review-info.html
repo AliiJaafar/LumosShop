@@ -1,0 +1,114 @@
+<div class="modal-header justify-content-between">
+    <h4 class="modal-title">Review ID - <span class="badge bg-primary-subtle" th:text="${review.id}"></span> details</h4>
+
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-7 mx-auto">
+                <div class="card mt-2 mx-auto p-4">
+                    <div class="card-body">
+                        <div class="container">
+                            <form id="contact-form" role="form">
+                                <div class="controls">
+                                    <div class="row my-2">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="form_product">Product</label>
+                                                <input th:value="${review.product.name}" id="form_product" type="text"
+                                                       name="email" class="form-control" readonly>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="form_name">Customer Name</label>
+                                                <input th:value="${review.customer.fullName}" id="form_name" type="text"
+                                                       name="name" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input th:value="${review.title}" id="title" type="text" name="name"
+                                                   class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Rating</label>
+                                            <div th:switch="${review.rating}">
+                                                <p th:case="1">
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                </p>
+                                                <p th:case="2">
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                </p>
+                                                <p th:case="3">
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                </p>
+                                                <p th:case="4">
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                </p>
+                                                <p th:case="5">
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                    <span class="fa-duotone fa-star-sharp text-warning"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="form_message">Review comment</label>
+                                            <textarea th:text="${review.reviewComment}" id="form_message" name="message" class="form-control" rows="4" readonly>
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-6">
+                                        <strong>Likes:</strong>
+                                        <p><i class="fa-duotone fa-heart text-danger"></i>[[${review.likes}]]</p>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col-md-6">
+                                        <strong>Review Date:</strong>
+                                        <p th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.8 -->
+
+            </div>
+            <!-- /.row-->
+
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

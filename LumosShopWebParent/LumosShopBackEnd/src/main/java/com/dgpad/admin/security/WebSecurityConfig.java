@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class  WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -39,10 +39,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").hasAuthority("Admin")
                         .requestMatchers("/categories/**").hasAnyAuthority("Admin", "Content Manager")
                         .requestMatchers("/products/**").hasAnyAuthority("Admin", "product Manager", "Content Manager", "Customer Service")
-                        .requestMatchers("/customers/**").hasAnyAuthority("Admin", "product Manager")
+                        .requestMatchers("/customers/**","/Analyses/**").hasAnyAuthority("Admin", "product Manager")
                         .requestMatchers("/shipping/**").hasAnyAuthority("Admin", "product Manager")
                         .requestMatchers("/orders/**").hasAnyAuthority("Admin", "product Manager", "Customer Service")
                         .requestMatchers("/menus/**").hasAnyAuthority("Admin", "Content Manager")
+                        .requestMatchers("/review/**").hasAnyAuthority("Admin", "Content Manager","Customer Service")
                         .requestMatchers("/controlCenter/**").hasAuthority("Admin"));
 
         http.authorizeHttpRequests((requests) -> {

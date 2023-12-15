@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="requestReturn">
+
+    <div class="modal fade" id="RequestRevertedModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="RequestRevertedModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="card">
+                    <div class="card-header d-inline-flex justify-content-between">
+                        <div>
+                            <h2 id="ReturnOrderTitle">Return Order Request</h2>
+                        </div>
+                        <div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <form onsubmit="return submitRequestRevertedForm();">
+                            <div class="form-group" id="Justifications">
+                                <label for="justification">Select Justification:</label>
+                                <select class="form-control" id="justification" name="justification" required>
+                                    <option value="" selected disabled>Select Justification</option>
+                                    <option value="size_issue">Size Issue</option>
+                                    <option value="quality_issue">Quality Issue</option>
+                                    <option value="wrong_item">Wrong Item Received</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div id="CommentField" class="form-group">
+                                <label for="comment">Additional Comments:</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                            </div>
+
+                            <div id="messageSection" class="text-center"></div>
+
+                            <button id="RevertedTheOrder" type="submit" class="btn btn-success btn-sm my-4">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</html>

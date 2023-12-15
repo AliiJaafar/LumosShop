@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class ProductService {
 
@@ -38,5 +40,14 @@ public class ProductService {
 
         Pageable pageable = PageRequest.of(pageNumber - 1, SEARCH_RESULTS_PER_PAGE);
         return productRepository.search(keyword, pageable);
+    }
+
+    public Product retrieveProduct(Integer ID) throws ProductNotFoundException {
+        try {
+            return productRepository.findById(ID).get();
+        } catch (NoSuchElementException e) {
+            throw new ProductNotFoundException("could not found this Product with ID - " + ID);
+        }
+
     }
 }

@@ -3,11 +3,12 @@
 
 <head>
     <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+
 </head>
 
 <body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
 <div th:replace="~{navbar :: navbar}"></div>
-<ul class="nav justify-content-center ">
+<ul class="nav justify-content-center bg-secondary-subtle mb-3">
     <th:block sec:authorize="isAuthenticated()">
         <li class="nav-item">
             <a class="nav-link text-success" th:href="@{/my-account}" sec:authentication="principal.fullName"></a>
@@ -24,6 +25,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link text-success" th:href="@{/bag}"><i class="fa-duotone fa-bag-shopping"></i></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-success" th:href="@{/review}">My Review</a>
         </li>
         <li class="nav-item">
             <form th:action="@{/logout}" method="post">
@@ -64,30 +68,36 @@
             <tbody>
             <tr th:each="order : ${orderList}">
                 <td th:text="${order.id}"></td>
-                <td><div th:replace="~{fragments :: format_date(${order.orderDate})}">Order Date</div></td>
+                <td>
+                    <div th:replace="~{fragments :: format_date(${order.orderDate})}">Order Date</div>
+                </td>
                 <td class="text-start" th:utext="${order.productList}">
                 </td>
                 <td><span th:replace="~{fragments :: price(${order.totalPrice})}"></span></td>
-                <td th:text="${order.phase}"></td>
+                <td th:class="'OrderPhase' + ${order.id}" th:text="${order.phase}"></td>
                 <td>
                     <a th:title="'Order Progress'"
                        class="btn progress-link"
                        th:href="@{'/orders/progress/'+${order.id}}">
-                        <i class="fa-duotone fa-arrow-progress fa-2x"></i>
+                        <i class="fa-duotone fa-info fa-lg text-primary-emphasis"></i>
                     </a>
-                    <a class="btn">
-                        <img th:src="@{/images/returnShipment.png}" alt="return" width="30px">
-                    </a>
+                    <th:block th:if="${order.CUSTOMER_REQUESTED_RETURN == false && order.REVERTED == false && order.RECEIVED == true}">
+                        <a class="btn request-return-btn" th:classappend="'Request-returnOrder' + ${order.id}" th:orderID="${order.id}" href="">
+                            <i class="fa-duotone fa-arrow-rotate-left fa-lg text-success"></i>
+                        </a>
+                    </th:block>
+
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+<div th:replace="~{orders/request-reverted-modal :: requestReturn}"></div>
+
 
 <div th:replace="~{fragments :: pagination(${moduleURL},'orders')}"></div>
 <footer th:replace="~{fragments :: footer}"></footer>
-
 
 <!-- Modal -->
 <div class="modal fade" id="OrderProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -98,11 +108,17 @@
     </div>
 </div>
 </body>
+<script th:src="@{/JS/process-customer_return_request.js}"></script>
 
 <script type="text/javascript">
+    contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+
     handleDefaultDetailLinkClick();
+
     function handleDetailLinkClick(cssClass, modalId) {
-        $(cssClass).on("click", function(e) {
+        $(cssClass).on("click", function (e) {
             e.preventDefault();
             linkDetailURL = $(this).attr("href");
             $(modalId).modal("show").find(".modal-content").load(linkDetailURL);
@@ -118,6 +134,8 @@
         window.location = "[[@{/orders}]]";
 
     }
+
+
 
 </script>
 

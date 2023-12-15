@@ -85,7 +85,7 @@
                                                            target="_blank" th:text="${item.product.name}"></a>
                                                         <div th:replace="~{Bag/AddToBag :: stock_qty(${item.quantity},${item.product.id})}"></div>
                                                         <div class="mt-2">
-                                                            <div th:replace="~{product/product-page :: priceOfProduct(${item.product})}"></div>
+                                                            <div th:replace="~{fragments :: priceOfProduct(${item.product})}"></div>
                                                         </div>
                                                         <span class="fs-4">
                                                     = <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">

@@ -1,5 +1,6 @@
 package com.lumosshop.common.entity.order;
 
+import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.product.Product;
 import jakarta.persistence.*;
 
@@ -25,6 +26,25 @@ public class Order_Summary {
     private Order order;
 
     public Order_Summary() {
+    }
+
+    public Order_Summary(float productCost, float interSum, float shippingCharge, int qty, String category) {
+        this.product = new Product();
+        this.product.setCategory(new Category(category));
+
+        this.productCost = productCost * qty;
+        this.InterSum = interSum;
+        this.shippingCharge = shippingCharge;
+        this.Qty = qty;
+
+    }
+    public Order_Summary(String product,float productCost, float interSum, float shippingCharge, int qty) {
+        this.product = new Product(product);
+
+        this.productCost = productCost * qty;
+        this.InterSum = interSum;
+        this.shippingCharge = shippingCharge;
+        this.Qty = qty;
     }
 
     public Integer getId() {

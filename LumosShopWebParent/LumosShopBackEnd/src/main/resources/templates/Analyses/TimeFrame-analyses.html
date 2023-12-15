@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<body>
+<div th:fragment="TimeframeData(group)" th:remove="tag">
+
+
+    <ul class="justify-content-center nav" th:with="Btn_Analyses ='Btn-Analyses'+${group}">
+
+        <button TimeFrame="last_Week" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4" th:classappend="${Btn_Analyses}">
+            Last Week
+        </button>
+        <button TimeFrame="15Days" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4 " th:classappend="${Btn_Analyses}">
+            15 Day
+        </button>
+        <button TimeFrame="29Days" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4 " th:classappend="${Btn_Analyses}">
+            29 Day
+        </button>
+        <button TimeFrame="last3Month" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4 " th:classappend="${Btn_Analyses}">
+            3 Month
+        </button>
+        <button TimeFrame="last6Month" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4 " th:classappend="${Btn_Analyses}">
+            6 Month
+        </button>
+        <button TimeFrame="last_Year" class="btn btn-sm btn-outline-success me-1 mt-2 mb-4 " th:classappend="${Btn_Analyses}">
+            One Year
+        </button>
+        <button class="btn btn-sm btn-outline-success me-1 mt-2 mb-4" th:classappend="${Btn_Analyses}">
+            Personalized TimeFrame
+        </button>
+    </ul>
+
+    <div class="text-center">
+        <form th:id="'Personalized-Range'+${group}" class="form-inline d-inline-flex d-none">
+            <div class="form-group me-1">
+                <input type="date" class="form-control" th:id="'startDate'+${group}" placeholder="Select start date">
+            </div>
+            <div class="form-group me-2">
+                <input type="date" class="form-control" th:id="'endDate'+${group}" placeholder="Select end date">
+            </div>
+            <button type="button" th:id="'fetchingPersonalized-Data'+${group}" class="btn btn-sm btn-outline-secondary">Fetch</button>
+        </form>
+    </div>
+
+    <div class="justify-content-center my-4" th:id="'chart_SalesAnalyses_Timeframe'+${group}"></div>
+    <div class="row">
+
+        <!-- Total Revenue -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Revenue
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:id="'CTotalRevenue'+${group}">$0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Total Revenue Avg -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Revenue (average)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:id="'CTotalRevenueAVG'+${group}" >$0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Revenue -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Net Revenue
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:id="'CNetRevenue'+${group}">$00</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Net Revenue Avg -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Net Revenue (average)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:id="'CNetRevenueAVG'+${group}">$00</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+
+
+            <!-- Total Transactions -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" th:id="'TotalNumCardText'+${group}">
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:id="'TotalNumCard'+${group}">1</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,10 +1,17 @@
 package com.dgpad.product;
 
+import com.dgpad.Utility;
 import com.dgpad.category.CategoryService;
+import com.dgpad.customer.CustomerService;
+import com.dgpad.review.ReviewService;
 import com.lumosshop.common.entity.Category;
+import com.lumosshop.common.entity.Customer;
+import com.lumosshop.common.entity.Review;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CategoryNotFoundException;
+import com.lumosshop.common.exception.CustomerNotFoundException;
 import com.lumosshop.common.exception.ProductNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +32,18 @@ public class ProductController {
     private CategoryService categoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewService reviewService;
 
+    @Autowired
+    private CustomerService customerService;
+    private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
+        String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
+        if (email == null) {
+            throw new CustomerNotFoundException("Visitor");
+        }
+        return customerService.getCustomerByEmail(email);
+    }
     @GetMapping("/c/{category_alias}")
     public String displayCategoryFirstPage(@PathVariable("category_alias") String alias,
                                            Model model) throws CategoryNotFoundException {
@@ -74,7 +92,8 @@ public class ProductController {
 
     @GetMapping("/p/{product-alias}")
     public String displayProduct(@PathVariable("product-alias") String alias,
-                                 Model model) {
+                                 Model model,
+                                 HttpServletRequest httpServletRequest)throws CustomerNotFoundException {
         try {
             Product product = productService.getProduct(alias);
             List<Category> ChainCategory = categoryService.getParentCategories(product.getCategory());
@@ -82,6 +101,20 @@ public class ProductController {
             model.addAttribute("ChainCategory", ChainCategory);
             model.addAttribute("product", product);
             model.addAttribute("pageTitle", product.getName());
+
+            Page<Review> reviews = reviewService.displayLastThreeReviews(product);
+            model.addAttribute("reviews", reviews);
+
+            Customer customer = isTheCustomerAuthenticate(httpServletRequest);
+            boolean Reviewed = reviewService.isSuchProductReviewed(product.getId(), customer);
+            if (Reviewed) {
+                model.addAttribute("Reviewed", true);
+            } else {
+                boolean ableToWriteReview = reviewService.theCustomerAbleToWriteReview(product.getId(), customer);
+                model.addAttribute("ableToWriteReview", ableToWriteReview);
+            }
+
+
 
             return "product/product-page";
 
@@ -101,7 +134,7 @@ public class ProductController {
         Page<Product> productPage = productService.search(keyword, pageNumber);
         List<Product> productList = productPage.getContent();
 
-        long startCount = (pageNumber - 1) * ProductService.SEARCH_RESULTS_PER_PAGE + 1;
+        long startCount = (long) (pageNumber - 1) * ProductService.SEARCH_RESULTS_PER_PAGE + 1;
         long endCount = startCount + ProductService.SEARCH_RESULTS_PER_PAGE - 1;
         if (endCount > productPage.getTotalElements()) {
             endCount = productPage.getTotalElements();

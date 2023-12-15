@@ -8,6 +8,18 @@
             <br>
             <p class="fw-bold">[[${product.name}]]</p>
         </a>
+        <div class="d-flex justify-content-center ">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" class="productPage-ratingStar" dir="ltr" data-size="xs" th:value="${product.rating_avg}">
+                    </td>
+                    <td>
+                        <small>[[${product.reviews}]]</small>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div th:if="${product.discountPercent <= 0}">
             <span class="fw-semibold">
                 <span th:replace="product/productPartialView :: price(${product.price})"></span>

@@ -2,8 +2,13 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
 
-<head th:replace="~{fragments :: TheHeader(${pageTitle})}"></head>
-
+<head>
+    <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+    <link th:href="@{/rating-plugin/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+    <script th:src="@{/rating-plugin/js/star-rating.js}" type="text/javascript"></script>
+    <link th:href="@{/rating-plugin/themes/krajee-uni/theme.css}" media="all" rel="stylesheet" type="text/css" />
+    <script th:src="@{/rating-plugin/themes/krajee-uni/theme.js}"></script>
+</head>
 <body data-bs-theme="dark">
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
@@ -37,7 +42,15 @@
 
 
 </div>
+<script>
+    $(".productPage-ratingStar").rating({
+        displayOnly: true,
+        hoverOnClear: false,
+        showCaption: false,
+        theme: 'krajee-uni'
 
+    });
+</script>
 </body>
 <footer th:replace="~{fragments :: footer}"></footer>
 </html>

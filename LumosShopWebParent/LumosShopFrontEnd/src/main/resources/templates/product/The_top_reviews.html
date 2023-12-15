@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="data">
+    <div class="row">
+        <div class="col">
+            <hr/>
+        </div>
+    </div>
+    <div class="row m-1">
+        <h3 id="simple-list-item-1">Customers Reviews:</h3>
+    </div>
+
+    <div class="row m-1">
+        <div class="col-xs">
+            <input type="text" class="productPage-ratingStar" dir="ltr" data-size="sm" th:value="${product.rating_avg}">
+
+        </div>
+        <div class="col-xs ml-1 mt-3">
+            <span id="ratingAvg" th:text="${product.rating_avg}"></span> of 5
+        </div>
+
+    </div>
+
+    <div th:if="${product.reviews > 3}" class="row m-1 ml-3">
+        <a th:href="@{'/review/'+${product.alias}}">View all [[${product.reviews}]] ratings</a>
+    </div>
+
+    	<div th:if="${Reviewed}" class="row m-1 ml-3">
+    		<span class="text-success">You have already provided feedback for this product.</span>
+    	</div>
+
+    	<div th:if="${ableToWriteReview}" class="row m-1 ml-3">
+    		<span class="text-danger-emphasis">
+    			You have acquired and received this item.
+    			<strong>
+    				<a th:href="@{'/share-review/'+${product.id}}">Share your thoughts in a review.</a>
+    			</strong>
+    		</span>
+    	</div>
+
+    <div class="row">
+        <div class="col">
+            <hr/>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col">
+            <th:block th:each="review : ${reviews}">
+                <div class="mt-2">
+                    <div class="row">
+                        <input type="text" class="productPage-ratingStar" dir="ltr" data-size="xs"
+                               th:value="${review.rating}">
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong th:text="${review.title}"></strong></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><span th:text="${review.ReviewComment}"></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col ms-3">
+                            <small th:text="${review.customer.fullName}"></small>
+                            <small th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></small>
+
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+
+    </div>
+
+    <!--	<div th:replace="reviews/reviews_votes :: content"></div>-->
+
+</div>
+</body>
+</html> 

@@ -1,4 +1,4 @@
-package com.lumosshop.common.entity.order;
+    package com.lumosshop.common.entity.order;
 
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.CustomerAddresses;
@@ -61,6 +61,14 @@ public class Order {
     private float InterSum;
 
     public Order() {
+    }
+
+    public Order(Integer id, Date orderDate, float totalPrice, float productCost, float interSum) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.totalPrice = totalPrice;
+        this.productCost = productCost;
+        this.InterSum = interSum;
     }
 
     public Integer getId() {
@@ -294,6 +302,20 @@ public class Order {
         }
     }
 
+    @Transient
+    public String getFormOrderDate() {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormatter.format(this.orderDate);
+    }
+
+    public void setFormOrderDate(String dateString) {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.orderDate = dateFormatter.parse(dateString);
+        } catch (ParseException ignored) {
+        }
+    }
+
     public String getFormattedOrderDate() {
         DateFormat dateFormatter = new SimpleDateFormat("dd MMM yy");
         Calendar calendar = Calendar.getInstance();
@@ -308,7 +330,7 @@ public class Order {
     public boolean phaseExist(Order_Phase phase) {
 
         for (OrderFollowUp trace : orderFollowUps) {
-            if (trace.getRemarks().equals(phase)) {
+            if (trace.getOrderPhase().equals(phase)) {
                 return true;
             }
         }

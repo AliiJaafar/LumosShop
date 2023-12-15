@@ -2,9 +2,12 @@ package com.dgpad.order;
 
 import com.dgpad.Utility;
 import com.dgpad.customer.CustomerService;
+import com.dgpad.review.ReviewService;
 import com.lumosshop.common.entity.Currency;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.order.Order;
+import com.lumosshop.common.entity.order.Order_Summary;
+import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CustomerNotFoundException;
 import com.lumosshop.common.exception.OrderNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -25,6 +29,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private ReviewService reviewService;
 
 
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
@@ -89,6 +95,20 @@ public class OrderController {
             model.addAttribute("order", order);
             model.addAttribute("customer", customer);
             model.addAttribute("title", "Orders specifics");
+
+            Iterator<Order_Summary> orderSummaryIterator = order.getOrderSummaries().iterator();
+            while (orderSummaryIterator.hasNext()) {
+                Order_Summary orderSummary = orderSummaryIterator.next();
+                Product product = orderSummary.getProduct();
+                Integer productID = product.getId();
+
+                boolean theCustomerHasReviewed = reviewService.isSuchProductReviewed(productID, customer);
+                product.setReviewedAlready(theCustomerHasReviewed);
+                if (!theCustomerHasReviewed) {
+                    boolean ableToWrite = reviewService.theCustomerAbleToWriteReview(productID, customer);
+                    product.setCustomerIsAbleToWriteReview(ableToWrite);
+                }
+            }
 
             return "orders/order-progress-modal";
         } catch (OrderNotFoundException ex) {

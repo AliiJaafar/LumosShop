@@ -36,11 +36,11 @@ function updateNumberOfStamps() {
 }
 
 function CreateNewStamp() {
-    htmlCode = generateTrackCode();
+    htmlCode = createTheNewStampCode();
     $("#FollowUpList").append(htmlCode);
 }
 
-function generateTrackCode() {
+function createTheNewStampCode() {
     Coming = totalStamps + 1;
     totalStamps++;
     rowId = "Rstamp" + Coming;

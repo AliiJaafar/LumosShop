@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class OrderRestController {
+public class OrderRestController  {
     @Autowired
     private OrderService orderService;
 
