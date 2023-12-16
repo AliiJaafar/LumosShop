@@ -1,9 +1,12 @@
-package com.lumosshop.common.entity;
+package com.lumosshop.common.entity.review;
 
+import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.product.Product;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
+
 @Entity
 @Table(name = "review")
 public class Review {
@@ -35,6 +38,10 @@ public class Review {
     private int Likes;
 
     public Review() {
+    }
+
+    public Review(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
@@ -99,6 +106,19 @@ public class Review {
 
     public void setLikes(int likes) {
         Likes = likes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(id, review.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

@@ -44,35 +44,7 @@
             <hr/>
         </div>
     </div>
-    <div class="row m-2">
-        <div class="col">
-            <th:block th:each="review : ${reviews}">
-                <div class="mt-2">
-                    <div class="row">
-                        <input type="text" class="productPage-ratingStar" dir="ltr" data-size="xs"
-                               th:value="${review.rating}">
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong th:text="${review.title}"></strong></div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><span th:text="${review.ReviewComment}"></span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col ms-3">
-                            <small th:text="${review.customer.fullName}"></small>
-                            <small th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></small>
-
-                        </div>
-                    </div>
-                </div>
-            </th:block>
-        </div>
-
-
-    </div>
-
-    <!--	<div th:replace="reviews/reviews_votes :: content"></div>-->
+    <div th:replace="~{review/reviews_reactWith :: data}"></div>
 
 </div>
 </body>

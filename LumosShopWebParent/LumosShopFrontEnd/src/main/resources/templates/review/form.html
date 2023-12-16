@@ -33,7 +33,7 @@
             </div>
 
             <form th:if="${ableToWriteReview}" th:action="@{/share_review}" th:object="${review}" method="post">
-                <input type="hidden" name="productId" th:value="${product.id}" />
+                <input type="hidden" name="productId" th:if="${product}" th:value="${product.id}" />
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input th:field="${review.title}" id="title" type="text" name="title" required

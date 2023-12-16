@@ -153,9 +153,25 @@
         </div>
     </div>
 </div>
+<div data-bs-theme="dark" aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
 
+    <!-- Then put toasts within -->
+    <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img th:src="@{/images/lumosOnlyShape.png}" width="30px" class="rounded me-2" alt="logo">
+            <strong class="me-auto">Lumos :: System</strong>
+            <small>Just Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-white">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+</div>
 <div th:replace="~{product/Carousel-image :: image-coursel}"></div>
 <script th:src="@{/JS/Inc_dec_Qty.js}"></script>
+<script th:src="@{/JS/reactWithReviews.js}"></script>
+<script th:src="@{/JS/modalSystems.js}"></script>
 <script>
     contextPath = "[[@{/}]]";
     productId = "[[${product.id}]]";

@@ -3,7 +3,7 @@ package com.dgpad.review;
 import com.dgpad.order.OrderSummaryRepository;
 import com.dgpad.product.ProductRepository;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.order.Order_Phase;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.ReviewNotFoundException;
@@ -33,10 +33,10 @@ public class ReviewService {
     public Review save(Review review) {
         review.setReviewDate(new Date());
         Review theReview = reviewRepository.save(review);
-        Integer productID = theReview.getProduct().getId();
-        productRepository.improveRatingsAndAverageScore(productID);
 
-        return theReview;
+        Integer productID = theReview.getProduct().getId();
+//        productRepository.improveRatingsAndAverageScore(productID);
+            return theReview;
     }
     public Page<Review> listingAllReviews(Customer customer, String keyword, String sortField,
                                           String sortDirection, int pageNumber) {

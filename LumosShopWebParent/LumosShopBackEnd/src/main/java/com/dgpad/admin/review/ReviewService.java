@@ -1,9 +1,7 @@
 package com.dgpad.admin.review;
 
 import com.dgpad.admin.product.ProductRepository;
-import com.lumosshop.common.entity.Review;
-import com.lumosshop.common.entity.order.Order;
-import com.lumosshop.common.exception.OrderNotFoundException;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.exception.ReviewNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

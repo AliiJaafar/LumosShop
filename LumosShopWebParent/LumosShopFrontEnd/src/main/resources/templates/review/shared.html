@@ -15,9 +15,8 @@
 
 <div class="container mt-4">
     <div>
-        <h3 class="text-center">
-            Share Your feedback - Posted
-        </h3>
+        <h2 class="text-center text-danger-emphasis fw-bolder m-5">Feedback Posted!</h2>
+
     </div>
     <div class="card mx-auto border-success p-3" style="width: 600px;">
         <img class="card-img-top" th:src="@{${review.product.mainImagePath}}">
@@ -51,9 +50,7 @@
                                             </textarea>
                     </div>
                 </div>
-                <p class="text-center">
-                    <input type="submit" value="Share" href="#" class="btn btn-primary mt-4"/>
-                </p>
+
             </div>
         </div>
     </div>
@@ -61,22 +58,6 @@
 </div>
 
 
-<div data-bs-theme="dark" class="modal fade text-center" id="modalDialog" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content ">
-            <div class="modal-header text-warning">
-                <h3 class="modal-title" id="modalTitle"></h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <span class="fs-5 fw-bold" id="modalBody"></span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     contextPath = "[[@{/}]]";

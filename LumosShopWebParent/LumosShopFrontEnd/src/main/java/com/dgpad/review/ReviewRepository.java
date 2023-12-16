@@ -1,10 +1,11 @@
 package com.dgpad.review;
 
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
@@ -28,5 +29,19 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
             "where r.product.id = ?1 " +
             "and r.customer.id = ?2")
     public Long countByProductAndCustomer(Integer productID, Integer customerID);
+
+
+    @Query("UPDATE Review r " +
+            "SET r.Likes = " +
+            "(SELECT CASE WHEN SUM(l.likes) IS NULL THEN 0 ELSE SUM(l.likes) END " +
+            "FROM ReviewLike l WHERE l.review.id = ?1) " +
+            "WHERE r.id = ?1")
+    @Modifying
+    public void updateLikes(Integer reviewID);
+
+
+    @Query("select r.Likes from Review r where r.id = ?1")
+    public Integer retrieveNumbersOfLikes(Integer reviewID);
+
 
 }

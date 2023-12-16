@@ -4,7 +4,7 @@ import com.dgpad.admin.Shipping.ShippingRepository;
 import com.dgpad.admin.order.OrderRepository;
 import com.dgpad.admin.review.ReviewRepository;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.Shipping;
 import com.lumosshop.common.entity.order.*;
 import com.lumosshop.common.entity.product.Product;

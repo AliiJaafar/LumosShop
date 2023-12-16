@@ -128,7 +128,7 @@
                                 </div>
 
                                 <div th:if="${product.reviewedAlready}" class="mt-2">
-                                    <a target="_blank" th:href="@{/}" class="btn btn-outline-warning">Review yours</a>
+                                    <a target="_blank" th:href="@{'/review/page/1?sortField=id&sortDirection=desc&keyword=' + ${product.name}}" class="btn btn-outline-warning">Review yours</a>
                                 </div>
                             </div>
 

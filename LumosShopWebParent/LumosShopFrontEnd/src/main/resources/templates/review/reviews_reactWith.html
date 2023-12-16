@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="data">
+    <div class="row m-2">
+        <div class="col">
+            <th:block th:each="review : ${reviews}">
+                <div class="mt-2">
+                    <div class="d-flex">
+                        <div class="p-2">
+                            <input type="text" class="productPage-ratingStar" dir="ltr" data-size="xs"
+                                   th:value="${review.rating}">
+                        </div>
+                        <div class="p-2">
+                            <a class="like" th:href="@{'/react/'+${review.id}+'/Like'}"><i class="fa-thin fa-heart text-danger-emphasis"></i></a>
+                        </div>
+                        <div class="p-2">
+                            <strong th:text="${review.likes}"></strong>
+                        </div>
+                        <div class="p-2">
+                            <a th:href="@{'/react/'+${review.id}+'/Dislike'}"><i class="fa-thin fa-thumbs-down"></i></a>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col"><strong th:text="${review.title}"></strong></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><span th:text="${review.ReviewComment}"></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col ms-3">
+                            <small th:text="${review.customer.fullName}"></small>
+                            <small th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></small>
+
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

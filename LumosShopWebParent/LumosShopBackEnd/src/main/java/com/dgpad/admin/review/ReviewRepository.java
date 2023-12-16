@@ -1,10 +1,8 @@
 package com.dgpad.admin.review;
 
-import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

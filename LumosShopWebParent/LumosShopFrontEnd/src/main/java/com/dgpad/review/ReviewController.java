@@ -4,7 +4,7 @@ import com.dgpad.Utility;
 import com.dgpad.customer.CustomerService;
 import com.dgpad.product.ProductService;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CustomerNotFoundException;
 import com.lumosshop.common.exception.ProductNotFoundException;
@@ -16,7 +16,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -139,7 +138,7 @@ public class ReviewController {
         model.addAttribute("totalElement", page.getTotalElements());
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
-        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("reviews", reviewList);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", reverseSortDirection);
@@ -176,8 +175,8 @@ public class ReviewController {
                 model.addAttribute("unableToWriteReview", true);
             }
         }
-        model.addAttribute("review", review);
         model.addAttribute("product", product);
+        model.addAttribute("review", review);
 
 
         return "review/form";
@@ -186,9 +185,7 @@ public class ReviewController {
     @PostMapping("/share_review")
     public String saveTheFeedback(Review review,
                                   Integer productId,
-                                  Model model,
                                   HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
-
         Customer customer = isTheCustomerAuthenticate(httpServletRequest);
 
         Product product = null;
@@ -201,9 +198,8 @@ public class ReviewController {
         review.setProduct(product);
         review.setCustomer(customer);
 
-        Review theReview = reviewService.save(review);
-        model.addAttribute("review", theReview);
+        reviewService.save(review);
 
-        return "review/shared";
+        return "redirect:/review/page/1?sortField=id&sortDirection=desc&keyword=" + product.getName();
     }
 }

@@ -6,7 +6,7 @@ import com.dgpad.customer.CustomerService;
 import com.dgpad.review.ReviewService;
 import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.Review;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CategoryNotFoundException;
 import com.lumosshop.common.exception.CustomerNotFoundException;
@@ -37,6 +37,7 @@ public class ProductController {
 
     @Autowired
     private CustomerService customerService;
+
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
         if (email == null) {
@@ -44,6 +45,7 @@ public class ProductController {
         }
         return customerService.getCustomerByEmail(email);
     }
+
     @GetMapping("/c/{category_alias}")
     public String displayCategoryFirstPage(@PathVariable("category_alias") String alias,
                                            Model model) throws CategoryNotFoundException {
@@ -93,7 +95,7 @@ public class ProductController {
     @GetMapping("/p/{product-alias}")
     public String displayProduct(@PathVariable("product-alias") String alias,
                                  Model model,
-                                 HttpServletRequest httpServletRequest)throws CustomerNotFoundException {
+                                 HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         try {
             Product product = productService.getProduct(alias);
             List<Category> ChainCategory = categoryService.getParentCategories(product.getCategory());
@@ -115,7 +117,6 @@ public class ProductController {
             }
 
 
-
             return "product/product-page";
 
         } catch (ProductNotFoundException exception) {
@@ -127,9 +128,10 @@ public class ProductController {
     public String searchFirstPage(@RequestParam("keyword") String keyword, Model model) {
         return search(keyword, model, 1);
     }
+
     @GetMapping("/search/page/{pageNumber}")
     public String search(@Param("keyword") String keyword, Model model,
-                         @PathVariable("pageNumber")int pageNumber) {
+                         @PathVariable("pageNumber") int pageNumber) {
 
         Page<Product> productPage = productService.search(keyword, pageNumber);
         List<Product> productList = productPage.getContent();
