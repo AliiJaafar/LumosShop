@@ -36,7 +36,10 @@
 </head>
 
 <body data-bs-theme="dark">
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 <div th:replace="~{breadcrumb :: category-chain}"></div>
@@ -153,13 +156,14 @@
         </div>
     </div>
 </div>
+<div th:replace="~{modal_fragments :: normalModal}"></div>
 <div data-bs-theme="dark" aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
 
     <!-- Then put toasts within -->
     <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <img th:src="@{/images/lumosOnlyShape.png}" width="30px" class="rounded me-2" alt="logo">
-            <strong class="me-auto">Lumos :: System</strong>
+            <strong id="toastHeadline" class="me-auto"></strong>
             <small>Just Now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>

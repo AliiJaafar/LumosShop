@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -55,7 +56,7 @@ public class ReviewLikeService {
         reviewRepository.updateLikes(reviewID);
         Integer likes = reviewRepository.retrieveNumbersOfLikes(reviewID);
 
-        return LikeConsequence.successful(likes, "You've " + likeEnum + " this review.");
+        return LikeConsequence.successful(likes, "Well,You've " + likeEnum + " this review.");
     }
     public LikeConsequence unLike(Integer reviewID, LikeEnum likeEnum, ReviewLike reviewLike) {
         likeRepository.delete(reviewLike);
@@ -63,5 +64,27 @@ public class ReviewLikeService {
         Integer likes = reviewRepository.retrieveNumbersOfLikes(reviewID);
 
         return LikeConsequence.successful(likes, "You've withdrawn your " + likeEnum + " from the review.");
+    }
+
+    public void handleActWithReviews(Integer customerID,
+                                     Integer productID,
+                                     List<Review> reviews) {
+        List<ReviewLike> likeList = likeRepository.findAllByCustomerAndProduct(customerID, productID);
+
+        for (ReviewLike like : likeList) {
+            Review likedOne = like.getReview();
+
+            if (reviews.contains(likedOne)) {
+                int i = reviews.indexOf(likedOne);
+                Review review = reviews.get(i);
+
+                if (like.isLikedAlready()) {
+                    review.setLikedByCustomer(true);
+
+                } else if (like.isDislikedAlready()) {
+                    review.setDislikedByCustomer(true);
+                }
+            }
+        }
     }
 }

@@ -77,6 +77,13 @@ public class ReviewService {
         return reviewRepository.findByProduct(product, pageable);
 
     }
+    public Page<Review> displayTheMostThreeLikedReviews(Product product) {
+        Sort sort = Sort.by("likes").descending();
+        Pageable pageable = PageRequest.of(0, 3, sort);
+
+        return reviewRepository.findByProduct(product, pageable);
+
+    }
 
     public boolean theCustomerAbleToWriteReview(Integer productID,
                                              Customer customer) {

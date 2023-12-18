@@ -1,11 +1,11 @@
 function showNormalModal(title, message) {
     $("#normalTitle").text(title);
-    $(".modal-body").text(message);
+    $("#normalContent").text(message);
     $("#normalModal").modal("show");
 }
 function showStaticModal(title, message) {
     $("#staticTitle").text(title);
-    $(".modal-body").text(message);
+    $(".StaticModal-body").html(message);
     $("#staticModal").modal("show");
 }
 
@@ -19,4 +19,7 @@ function displayWarningStaticModal(message) {
 
 function displayingNormalModal(message) {
     showNormalModal("Notice", message);
+}
+function displayingNormalModalERROR(message) {
+    showNormalModal("Error", message);
 }

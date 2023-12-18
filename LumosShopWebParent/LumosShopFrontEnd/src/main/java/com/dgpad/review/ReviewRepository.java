@@ -32,7 +32,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 
     @Query("UPDATE Review r " +
-            "SET r.Likes = " +
+            "SET r.likes = " +
             "(SELECT CASE WHEN SUM(l.likes) IS NULL THEN 0 ELSE SUM(l.likes) END " +
             "FROM ReviewLike l WHERE l.review.id = ?1) " +
             "WHERE r.id = ?1")
@@ -40,7 +40,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     public void updateLikes(Integer reviewID);
 
 
-    @Query("select r.Likes from Review r where r.id = ?1")
+    @Query("select r.likes from Review r where r.id = ?1")
     public Integer retrieveNumbersOfLikes(Integer reviewID);
 
 

@@ -32,6 +32,8 @@ public class ReviewController {
     private ProductService productService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private ReviewLikeService likeService;
 
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
@@ -120,11 +122,14 @@ public class ReviewController {
             return "error/404";
         }
         model.addAttribute("product", product);
-
-        Customer customer = isTheCustomerAuthenticate(httpServletRequest);
-
         Page<Review> page = reviewService.displayByCertainProduct(product, sortField, sortDirection, pageNumber);
         List<Review> reviewList = page.getContent();
+        Customer customer = isTheCustomerAuthenticate(httpServletRequest);
+
+        if (customer != null) {
+            likeService.handleActWithReviews(customer.getId(), product.getId(), reviewList);
+        }
+
         Long startCount = (long) (pageNumber - 1) * ReviewService.ITEM_IN_PAGE + 1;
         long endCount = startCount + ReviewService.ITEM_IN_PAGE - 1;
         if (endCount > page.getTotalElements()) {

@@ -3,6 +3,7 @@ package com.dgpad.product;
 import com.dgpad.Utility;
 import com.dgpad.category.CategoryService;
 import com.dgpad.customer.CustomerService;
+import com.dgpad.review.ReviewLikeService;
 import com.dgpad.review.ReviewService;
 import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.Customer;
@@ -34,15 +35,14 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ReviewLikeService likeService;
 
     @Autowired
     private CustomerService customerService;
 
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
-        if (email == null) {
-            throw new CustomerNotFoundException("Visitor");
-        }
         return customerService.getCustomerByEmail(email);
     }
 
@@ -104,17 +104,21 @@ public class ProductController {
             model.addAttribute("product", product);
             model.addAttribute("pageTitle", product.getName());
 
-            Page<Review> reviews = reviewService.displayLastThreeReviews(product);
+            Page<Review> reviews = reviewService.displayTheMostThreeLikedReviews(product);
             model.addAttribute("reviews", reviews);
 
             Customer customer = isTheCustomerAuthenticate(httpServletRequest);
-            boolean Reviewed = reviewService.isSuchProductReviewed(product.getId(), customer);
-            if (Reviewed) {
-                model.addAttribute("Reviewed", true);
-            } else {
-                boolean ableToWriteReview = reviewService.theCustomerAbleToWriteReview(product.getId(), customer);
-                model.addAttribute("ableToWriteReview", ableToWriteReview);
+            if (customer != null) {
+                boolean Reviewed = reviewService.isSuchProductReviewed(product.getId(), customer);
+                likeService.handleActWithReviews(customer.getId(), product.getId(), reviews.getContent());
+                if (Reviewed) {
+                    model.addAttribute("Reviewed", true);
+                } else {
+                    boolean ableToWriteReview = reviewService.theCustomerAbleToWriteReview(product.getId(), customer);
+                    model.addAttribute("ableToWriteReview", ableToWriteReview);
+                }
             }
+
 
 
             return "product/product-page";

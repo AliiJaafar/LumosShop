@@ -35,9 +35,30 @@ public class Review {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    private int Likes;
+    private int likes;
 
     public Review() {
+    }
+
+    @Transient
+    private boolean likedByCustomer;
+    @Transient
+    private boolean dislikedByCustomer;
+
+    public boolean isLikedByCustomer() {
+        return likedByCustomer;
+    }
+
+    public void setLikedByCustomer(boolean likedByCustomer) {
+        this.likedByCustomer = likedByCustomer;
+    }
+
+    public boolean isDislikedByCustomer() {
+        return dislikedByCustomer;
+    }
+
+    public void setDislikedByCustomer(boolean dislikedByCustomer) {
+        this.dislikedByCustomer = dislikedByCustomer;
     }
 
     public Review(Integer id) {
@@ -101,11 +122,11 @@ public class Review {
     }
 
     public int getLikes() {
-        return Likes;
+        return likes;
     }
 
     public void setLikes(int likes) {
-        Likes = likes;
+        this.likes = likes;
     }
 
     @Override
@@ -131,7 +152,7 @@ public class Review {
                 ", ReviewDate=" + ReviewDate +
                 ", product=" + product +
                 ", customer=" + customer +
-                ", Likes=" + Likes +
+                ", Likes=" + likes +
                 '}';
     }
 }

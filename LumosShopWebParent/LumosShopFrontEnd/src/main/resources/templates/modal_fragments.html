@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+
+<div th:fragment="deleteModal" class="modal fade text-center" tabindex="0" id="confirmModal" role="dialog" data-bs-theme="dark">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Delete Order Confirmation</h3>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<span class="fs-5 fw-bold confirmText"></span>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-success" id="confirmButton01">Yes</a>
+				<a type="button" class="btn btn-warning" data-bs-dismiss="modal">No</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:fragment="staticModal" class="modal fade" id="staticModal" tabindex="0" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="staticTitle">Modal title</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="confirmButton">Understood</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="normalModal" class="modal fade" id="normalModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="normalTitle">Modal title</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="normalContent">
+				...
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-duotone fa-xmark"></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html> 

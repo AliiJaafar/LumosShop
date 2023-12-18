@@ -12,13 +12,15 @@
                                    th:value="${review.rating}">
                         </div>
                         <div class="p-2">
-                            <a class="like" th:href="@{'/react/'+${review.id}+'/Like'}"><i class="fa-thin fa-heart text-danger-emphasis"></i></a>
+                            <a th:id="'likeReview'+${review.id}" th:revID="${review.id}"
+                               th:classappend="${review.likedByCustomer ? 'fa-solid' : 'fa-thin'}" class="act fa-heart text-danger fa-lg link-underline link-underline-opacity-0" th:href="@{'/react/'+${review.id}+'/Like'}"></a>
                         </div>
                         <div class="p-2">
-                            <strong th:text="${review.likes}"></strong>
+                            <strong th:id="'likes-review-'+${review.id}" th:text="${review.likes}"></strong>
                         </div>
                         <div class="p-2">
-                            <a th:href="@{'/react/'+${review.id}+'/Dislike'}"><i class="fa-thin fa-thumbs-down"></i></a>
+                            <a th:id="'dislikeReview'+${review.id}" th:revID="${review.id}"
+                               th:classappend="${review.dislikedByCustomer ? 'fa-solid' : 'fa-thin'}" class="act fa-thumbs-down fa-lg text-primary link-underline link-underline-opacity-0" th:href="@{'/react/'+${review.id}+'/Dislike'}"></a>
                         </div>
 
                     </div>

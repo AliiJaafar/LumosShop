@@ -22,9 +22,6 @@ public class ReviewLikeRestController {
 
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
-        if (email == null) {
-            throw new CustomerNotFoundException("Visitor");
-        }
         return customerService.getCustomerByEmail(email);
     }
 

@@ -32,7 +32,7 @@ function setCsrfHeader(xhr) {
 
 function showModalDialog(title, message) {
     $("#modalTitle").html(title);
-    $("#modalBody").text(message);
+    $("#modalBody").html(message);
     $("#modalDialog").modal("show");
 
 }
