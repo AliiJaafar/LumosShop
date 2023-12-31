@@ -56,8 +56,8 @@ function activatePersonalizedRange(group) {
     firstDateF.valueAsDate = fromDay;
 }
 function priceDisplay(price) {
-    formatted = $.number(price, decimalPrec, currencyDisSep, currencyGrSep);
-    return prefixPrice + formatted + suffixPrice;
+    // formatted = $.number(price, decimalPrec, currencyDisSep, currencyGrSep);
+    return prefixPrice + price + suffixPrice;
 
 }
 

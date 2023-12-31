@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Similarity Matrix</title>
+</head>
+<body>
+
+<h2>Item Similarity Matrix</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Item ID</th>
+        <th th:each="itemId : ${itemIds}" th:text="${itemId}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${itemSimilarities}">
+        <td th:text="${entry.key}"></td>
+        <td th:each="similarity : ${entry.value}" th:text="${similarity.value}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Item Matrix</title>
+</head>
+<body>
+<h2>User-Item Matrix</h2>
+
+<table border="1">
+    <tr>
+        <th>User ID</th>
+        <!-- Add column headers for each item ID -->
+        <th th:each="item : ${userItemMatrix.values().stream().findFirst().orElse(null).keySet()}">
+            Item ID <span th:text="${item}"></span>
+        </th>
+    </tr>
+    <!-- Iterate over user-item matrix entries and display values -->
+    <tr th:each="entry : ${userItemMatrix}">
+        <td th:text="${entry.key}"></td>
+        <td th:each="item : ${entry.value.keySet()}" th:text="${entry.value.get(item)}"></td>
+    </tr>
+</table>
+</body>
+</html>

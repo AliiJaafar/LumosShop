@@ -1,7 +1,12 @@
 package com.dgpad;
 
+import com.dgpad.customer.CustomerRepository;
+import com.dgpad.interactions.InteractionRepository;
 import com.dgpad.product.ProductRepository;
 import com.dgpad.review.ReviewRepository;
+import com.lumosshop.common.entity.Customer;
+import com.lumosshop.common.entity.interactions.Interaction;
+import com.lumosshop.common.entity.interactions.InteractionType;
 import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.product.Product;
 import org.junit.jupiter.api.Test;
@@ -20,6 +25,10 @@ public class ReviewRepositoryTest {
     private ReviewRepository reviewRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private InteractionRepository interactionRepository;
 
     @Test
     public void testFindProductByID() {
@@ -27,6 +36,33 @@ public class ReviewRepositoryTest {
         Product product = productRepository.findById(productId).get();
         System.out.println(product);
 
+    }
+
+    @Test
+    public void testListAllInteractions() {
+        Iterable<Interaction> interactionIterable = interactionRepository.findAll();
+
+        interactionIterable.forEach(System.out::println);
+    }
+    @Test
+    public void testListAllInteractionsByProduct() {
+        Product product = productRepository.findById(4).get();
+        Iterable<Interaction> interactionIterable = interactionRepository.findAllByProduct(product);
+
+        interactionIterable.forEach(System.out::println);
+    }
+    @Test
+    public void testListAllInteractionsByCustomer() {
+        Customer customer = customerRepository.findById(35).get();
+        Iterable<Interaction> interactionIterable = interactionRepository.findAllByCustomer(customer);
+
+        interactionIterable.forEach(System.out::println);
+    }
+    @Test
+    public void testListAllInteractionsByType() {
+        Iterable<Interaction> interactionIterable = interactionRepository.findAllByInteractionType(InteractionType.CLICK);
+
+        interactionIterable.forEach(System.out::println);
     }
 
     @Test

@@ -5,40 +5,66 @@
 <head th:replace="~{fragment :: TheHeader('analyses-sales')}">
 </head>
 
-<body data-bs-theme="dark">
-<div th:replace="~{fragment/header :: header}"></div>
 
+<body id="page-top">
+<!-- Page Wrapper -->
 
-<div class="container ">
+<div id="wrapper">
+  <!-- Sidebar -->
 
-  <ul class="justify-content-center nav nav-pills mb-3" id="pills-tab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Analyses by Date</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Certain Product</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Certain Category</button>
-    </li>
+  <ul th:replace="~{test :: sideBar}"></ul>
+  <!-- End of Sidebar -->
 
-  </ul>
-  <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-      <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('ALL')}"></div>
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- TopBar -->
+
+      <nav th:replace="~{test :: topBar}"></nav>
+
+      <div class="container ">
+
+        <ul class="justify-content-center nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Analyses by Date</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Certain Product</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Certain Category</button>
+          </li>
+
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+            <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('ALL')}"></div>
+
+          </div>
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('product')}"></div>
+          </div>
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+            <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('category')}"></div>
+          </div>
+        </div>
+
+      </div>
+
 
     </div>
-    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-      <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('product')}"></div>
-    </div>
-    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-      <div th:replace="~{Analyses/TimeFrame-analyses :: TimeframeData('category')}"></div>
-    </div>
+
+    <!-- Footer -->
+
+    <div th:replace="~{fragment/footer :: footer}"></div>
+    <!-- End of Footer -->
   </div>
 
+  <!-- End of Content Wrapper -->
 </div>
-
-
+<!-- End of Page Wrapper -->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -59,10 +85,13 @@
   });
 </script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/general-businessAnalyses.js}"></script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses_product.js}"></script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses_category.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
 </body>
 </html>
 

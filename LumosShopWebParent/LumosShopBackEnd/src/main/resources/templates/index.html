@@ -2,17 +2,48 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 
-<head th:replace="~{fragment :: TheHeader(Home)}"></head>
-
-<body data-bs-theme="dark" class="min-vh-100">
+<head th:replace="~{fragment :: TheHeader('Home')}"></head>
 
 
+<body id="page-top">
+<!-- Page Wrapper -->
 
-<div th:replace="~{fragment/header :: header}"></div>
+<div id="wrapper">
+    <!-- Sidebar -->
 
-<h3 class="m-4 flex-grow-1">Welcome,<a th:href="@{/account}" sec:authentication="principal.fullName"> </a>
-    <span sec:authentication="principal.authorities"> </span></h3>
+    <ul th:replace="~{test :: sideBar}"></ul>
+    <!-- End of Sidebar -->
 
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
 
+            <!-- TopBar -->
+
+            <nav th:replace="~{test :: topBar}"></nav>
+
+            <!--            Content Here-->
+
+            <h3 class="m-4 flex-grow-1">Welcome,<a th:href="@{/account}" sec:authentication="principal.fullName"> </a>
+                <span sec:authentication="principal.authorities"> </span>
+            </h3>
+
+        </div>
+
+        <!-- Footer -->
+
+        <div th:replace="~{fragment/footer :: footer}"></div>
+        <!-- End of Footer -->
+    </div>
+
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
 </body>
+
+
 </html>

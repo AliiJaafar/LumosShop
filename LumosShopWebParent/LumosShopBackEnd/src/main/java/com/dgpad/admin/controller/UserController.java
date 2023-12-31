@@ -1,5 +1,6 @@
 package com.dgpad.admin.controller;
 
+import com.dgpad.admin.util.B2_Util;
 import com.dgpad.admin.util.FileUploadUtil;
 import com.dgpad.admin.user.UserNotFoundException;
 import com.dgpad.admin.user.UserService;
@@ -92,10 +93,13 @@ public class UserController {
 
 
             String uploadDirectory = "user-photos/" + savedUser.getId();
-
+/*
             FileUploadUtil.cleanDir(uploadDirectory);
 
-            FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);
+            FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);*/
+
+            B2_Util.removeFolder(uploadDirectory);
+            B2_Util.uploadFile(uploadDirectory, fileName, multipartFile.getInputStream());
         } else {
             if (user.getPhotos().isEmpty()) user.setPhotos(null);
             userService.save(user);
@@ -135,6 +139,10 @@ public class UserController {
     public String delete(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) throws UserNotFoundException {
         try {
             userService.deleteById(id);
+
+            String ImageDir = "user-photos/" + id;
+            B2_Util.removeFolder(ImageDir);
+
             redirectAttributes.addFlashAttribute("message", "User ID " + id + " has been deleted from the system with success.");
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

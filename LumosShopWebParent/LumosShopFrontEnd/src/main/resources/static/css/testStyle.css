@@ -1,0 +1,28 @@
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 0 215px;
+}
+.section-title h2 {
+    font-size: 30px;
+    text-transform: capitalize;
+    position: relative;
+    color: #888aa6;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+}
+.section-title h2::before {
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 50px;
+    background: #F7941D;
+    left: 50%;
+    bottom: 0;
+    margin-left: -25px;
+}
+.section-title p {
+    font-size: 14px;
+    color: #666;
+}

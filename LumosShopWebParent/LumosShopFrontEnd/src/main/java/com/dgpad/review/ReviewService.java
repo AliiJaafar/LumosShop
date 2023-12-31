@@ -6,6 +6,7 @@ import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.order.Order_Phase;
 import com.lumosshop.common.entity.product.Product;
+import com.lumosshop.common.exception.ProductNotFoundException;
 import com.lumosshop.common.exception.ReviewNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -94,6 +96,10 @@ public class ReviewService {
     public boolean isSuchProductReviewed(Integer productID, Customer customer) {
         Long i = reviewRepository.countByProductAndCustomer(productID, customer.getId());
         return i == 1;
+    }
+
+    public Review retrieveReview(Integer ID) throws ReviewNotFoundException {
+        return reviewRepository.findById(ID).get();
     }
 
 }

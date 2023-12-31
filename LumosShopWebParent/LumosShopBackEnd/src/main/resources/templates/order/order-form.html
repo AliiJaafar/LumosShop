@@ -1,164 +1,187 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <div th:replace="~{fragment :: TheHeader('order - form')}"></div>
 </head>
-<body data-bs-theme="dark">
-<div th:replace="~{fragment/header :: header}"></div>
+<body id="page-top">
 
-<div class="container">
-    <h3 class="mb-3">Edit Order ID - [[${order.id}]]</h3>
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{test :: sideBar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{test :: topBar}"></nav>
+
+            <div class="container">
+                <h3 class="mb-3">Edit Order ID - [[${order.id}]]</h3>
 
 
-    <form th:action="@{/order/saving}" th:object="${order}" method="post" onsubmit="return processFormBeforeSubmit();">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{customer.id}">
+                <form th:action="@{/order/saving}" th:object="${order}" method="post" onsubmit="return processFormBeforeSubmit();">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{customer.id}">
 
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapseOne">
-                        HighLights
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-                    <div class="accordion-body">
-                        <div th:replace="~{order/form/highlight :: form}"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#Stocks" aria-expanded="false"
-                            aria-controls="Stocks">
-                        Stocks List
-                    </button>
-                </h2>
-                <div id="Stocks" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <div th:replace="~{order/form/stocks :: form}"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                            aria-controls="panelsStayOpen-collapseThree">
-                        Destination
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <div th:replace="~{order/form/destination :: form}"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#FollowUp" aria-expanded="false"
-                            aria-controls="FollowUp">
-                        Follow-Up
-                    </button>
-                </h2>
-                <div id="FollowUp" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        <!--                        <div th:replace="~{order/form/followUp :: form}"></div>-->
-                        <div id="FollowUpList">
-                            <th:block th:each="followUp, status : ${order.orderFollowUps}">
-                                <div class="row border rounded p-1" th:id="'Rstamp' + ${status.count}"
-                                     th:with="isItNEW = ${followUp.orderPhase.toString() == 'NEW'}">
+                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                        aria-controls="panelsStayOpen-collapseOne">
+                                    HighLights
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <div th:replace="~{order/form/highlight :: form}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#Stocks" aria-expanded="false"
+                                        aria-controls="Stocks">
+                                    Stocks List
+                                </button>
+                            </h2>
+                            <div id="Stocks" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div th:replace="~{order/form/stocks :: form}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                                        aria-controls="panelsStayOpen-collapseThree">
+                                    Destination
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div th:replace="~{order/form/destination :: form}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#FollowUp" aria-expanded="false"
+                                        aria-controls="FollowUp">
+                                    Follow-Up
+                                </button>
+                            </h2>
+                            <div id="FollowUp" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <!--                        <div th:replace="~{order/form/followUp :: form}"></div>-->
+                                    <div id="FollowUpList">
+                                        <th:block th:each="followUp, status : ${order.orderFollowUps}">
+                                            <div class="row border rounded p-1" th:id="'Rstamp' + ${status.count}"
+                                                 th:with="isItNEW = ${followUp.orderPhase.toString() == 'NEW'}">
 
-                                    <input hidden name="stampId" th:value="${followUp.id}" class="followUpID"/>
+                                                <input hidden name="stampId" th:value="${followUp.id}" class="followUpID"/>
 
-                                    <div class="col-2">
-                                        <div class="stampPart">[[${status.count}]]</div>
+                                                <div class="col-2">
+                                                    <div class="stampPart">[[${status.count}]]</div>
 
-                                        <th:block th:if="${!isItNEW}">
-                                            <div class="mt-1">
-                                                <a class="fas fa-trash icon-dark linkRemoveStamp" href=""
-                                                   th:rowNumber="${status.count}"></a>
-                                            </div>
-                                        </th:block>
-                                    </div>
-
-                                    <div class="col-10">
-                                        <div class="form-group row">
-                                            <label class="col-form-label">TimeStamp</label>
-                                            <div class="col">
-
-                                                <input type="datetime-local" name="TimeStamp"
-                                                       th:value="${followUp.retrieveTimeStamp()}"
-                                                       class="form-control"
-                                                       th:readonly="${isItNEW}"
-                                                       th:required="${!isItNEW}"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label">order phase</label>
-                                            <div class="col">
-                                                <th:block th:if="${isItNEW}">
-                                                    <input type="hidden" name="stampPhase" value="NEW"/>
-                                                </th:block>
-                                                <select name="stampPhase" class="form-control phases" required
-                                                        th:rowNumber="${status.count}"
-                                                        th:disabled="${isItNEW}"
-                                                        th:id="${isItNEW ? 'Choices' : ''}">
-
-                                                    <th:block
-                                                            th:each="phase : ${T(com.lumosshop.common.entity.order.Order_Phase).values()}">
-                                                        <option th:value="${phase}" th:text="${phase}"
-                                                                th:selected="${followUp.orderPhase.name() == phase.name()}"
-                                                                th:Preset="${phase.remark}"/>
+                                                    <th:block th:if="${!isItNEW}">
+                                                        <div class="mt-1">
+                                                            <a class="fas fa-trash icon-dark linkRemoveStamp" href=""
+                                                               th:rowNumber="${status.count}"></a>
+                                                        </div>
                                                     </th:block>
+                                                </div>
 
-                                                </select>
-                                            </div>
-                                        </div>
+                                                <div class="col-10">
+                                                    <div class="form-group row">
+                                                        <label class="col-form-label">TimeStamp</label>
+                                                        <div class="col">
 
-                                        <div class="form-group row">
-                                            <label class="col-form-label">remark</label>
-                                            <div class="col">
+                                                            <input type="datetime-local" name="TimeStamp"
+                                                                   th:value="${followUp.retrieveTimeStamp()}"
+                                                                   class="form-control"
+                                                                   th:readonly="${isItNEW}"
+                                                                   th:required="${!isItNEW}"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-form-label">order phase</label>
+                                                        <div class="col">
+                                                            <th:block th:if="${isItNEW}">
+                                                                <input type="hidden" name="stampPhase" value="NEW"/>
+                                                            </th:block>
+                                                            <select name="stampPhase" class="form-control phases" required
+                                                                    th:rowNumber="${status.count}"
+                                                                    th:disabled="${isItNEW}"
+                                                                    th:id="${isItNEW ? 'Choices' : ''}">
+
+                                                                <th:block
+                                                                        th:each="phase : ${T(com.lumosshop.common.entity.order.Order_Phase).values()}">
+                                                                    <option th:value="${phase}" th:text="${phase}"
+                                                                            th:selected="${followUp.orderPhase.name() == phase.name()}"
+                                                                            th:Preset="${phase.remark}"/>
+                                                                </th:block>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label class="col-form-label">remark</label>
+                                                        <div class="col">
                           <textarea class="form-control" name="stampRemark"
                                     th:id="'stampRemark' + ${status.count}"
                                     th:readonly="${isItNEW}" required>[[${followUp.remarks}]]
                           </textarea>
-                                            </div>
-                                        </div>
+                                                        </div>
+                                                    </div>
 
+                                                </div>
+                                            </div>
+                                            <div th:id="'Gap' + ${status.count}" class="row">&nbsp;</div>
+                                        </th:block>
                                     </div>
+                                    <p class="text-center">
+                                        <button id="AddStamp" class="btn btn-success mt-3 btn-sm">update phase <i
+                                                class="fa-light fa-arrow-progress"></i></button>
+                                    </p>
                                 </div>
-                                <div th:id="'Gap' + ${status.count}" class="row">&nbsp;</div>
-                            </th:block>
+                            </div>
                         </div>
+                    </div>
+                    <div class="mt-4">
                         <p class="text-center">
-                            <button id="AddStamp" class="btn btn-success mt-3 btn-sm">update phase <i
-                                    class="fa-light fa-arrow-progress"></i></button>
+                            <input type="submit" value="Submit" class="btn btn-primary m-3"/>
+                            <input id="btn-Cancel" type="button" value="Cancel" class="btn btn-secondary"
+                                   data-bs-dismiss="modal"/>
                         </p>
                     </div>
-                </div>
+                </form>
             </div>
+
+
         </div>
-        <div class="mt-4">
-            <p class="text-center">
-                <input type="submit" value="Submit" class="btn btn-primary m-3"/>
-                <input id="btn-Cancel" type="button" value="Cancel" class="btn btn-secondary"
-                       data-bs-dismiss="modal"/>
-            </p>
-        </div>
-    </form>
+
+        <!-- Footer -->
+        <div th:replace="~{fragment/footer :: footer}"></div>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+    <div th:replace="~{fragment/modal_fragments :: staticModal}"></div>
+    <div th:replace="~{fragment/modal_fragments :: normalModal}"></div>
+    <div th:replace="~{order/add-product-modal:: modal}"></div>
 </div>
+<!-- End of Page Wrapper -->
 
-<div th:replace="~{fragment/modal_fragments :: staticModal}"></div>
-<div th:replace="~{fragment/modal_fragments :: normalModal}"></div>
-<div th:replace="~{order/add-product-modal:: modal}"></div>
-
-<footer th:replace="~{fragment/footer :: footer}"></footer>
 <script th:src="@{/js/jquery.number.min.js}"></script>
 <script th:src="@{/js/order_form_overview_products.js}"></script>
 <script th:src="@{/js/modalSystems.js}"></script>
@@ -199,6 +222,7 @@
     }
 </script>
 
-
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
 </body>
 </html>

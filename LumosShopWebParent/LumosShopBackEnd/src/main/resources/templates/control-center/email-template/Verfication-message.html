@@ -4,7 +4,7 @@
 <body>
 
 <div th:fragment="data">
-    <div class="container mt-5" data-bs-theme="dark">
+    <div class="container mt-5">
         <h3>
             Verification Message
         </h3>
@@ -15,8 +15,8 @@
                 <input name="Verification_emailTitle" th:value="${Verification_emailTitle}" type="text" class="form-control w-50" id="Verification_emailTitle" required>
             </div>
             <section id="editor" class="mb-3">
-                <label for="edit" class="form-label">Template: </label>
-                <textarea id="edit" name="Verification_messageContent" th:text="${Verification_messageContent}" required></textarea>
+                <label for="Verification_messageContent" class="form-label">Template: </label>
+                <textarea id="Verification_messageContent" class="form-control" name="Verification_messageContent" th:text="${Verification_messageContent}" required></textarea>
             </section>
 
             <div>

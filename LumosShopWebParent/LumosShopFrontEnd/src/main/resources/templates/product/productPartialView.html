@@ -22,15 +22,15 @@
         </div>
         <div th:if="${product.discountPercent <= 0}">
             <span class="fw-semibold">
-                <span th:replace="product/productPartialView :: price(${product.price})"></span>
+                <span th:replace="~{product/productPartialView :: price(${product.price})}"></span>
             </span>
         </div>
         <div th:if="${product.discountPercent > 0}">
             <span class="text-danger fw-bolder">
-                <span th:replace="product/productPartialView :: price(${product.discountPrice})"></span>
+                <span th:replace="~{product/productPartialView :: price(${product.discountPrice})}"></span>
             </span>
             <del><span>
-                <span th:replace="product/productPartialView :: price(${product.price})"></span>
+                <span th:replace="~{product/productPartialView :: price(${product.price})}"></span>
             </span></del>
         </div>
     </div>

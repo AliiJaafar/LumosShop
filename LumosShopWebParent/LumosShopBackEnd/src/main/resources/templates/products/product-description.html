@@ -10,9 +10,13 @@
         <textarea  class="content form-control" th:field="*{shortDescription}" rows="5" required></textarea>
     </div>
     <div class="m-2">
-    <label>Full Description</label>
-    <textarea  class="content form-control" th:field="*{fullDescription}" rows="10" required></textarea>
+        <section>
+            <label for="full-description">Full Description</label>
+            <textarea id="full-description"  class="content form-control" th:field="*{fullDescription}"  required></textarea>
+        </section>
+
 </div>
 </div>
+
 </body>
 </html>

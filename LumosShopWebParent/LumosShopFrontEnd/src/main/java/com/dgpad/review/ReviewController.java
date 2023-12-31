@@ -2,8 +2,11 @@ package com.dgpad.review;
 
 import com.dgpad.Utility;
 import com.dgpad.customer.CustomerService;
+import com.dgpad.interactions.InteractionRepository;
 import com.dgpad.product.ProductService;
 import com.lumosshop.common.entity.Customer;
+import com.lumosshop.common.entity.interactions.Interaction;
+import com.lumosshop.common.entity.interactions.InteractionType;
 import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CustomerNotFoundException;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,6 +38,8 @@ public class ReviewController {
     private CustomerService customerService;
     @Autowired
     private ReviewLikeService likeService;
+    @Autowired
+    private InteractionRepository interactionRepository;
 
     private Customer isTheCustomerAuthenticate(HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
         String email = Utility.fetchCustomerEmailFromAuthSource(httpServletRequest);
@@ -205,6 +211,13 @@ public class ReviewController {
 
         reviewService.save(review);
 
+        Interaction interaction = new Interaction();
+        interaction.setInteractionType(InteractionType.REVIEW);
+        interaction.setTimestamp(new Date());
+        interaction.setProduct(product);
+        interaction.setCustomer(customer);
+        interaction.setValue(review.getRating());
+        interactionRepository.saveOrIncrementValue(interaction);
         return "redirect:/review/page/1?sortField=id&sortDirection=desc&keyword=" + product.getName();
     }
 }

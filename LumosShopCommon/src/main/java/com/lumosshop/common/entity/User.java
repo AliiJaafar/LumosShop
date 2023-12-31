@@ -1,5 +1,6 @@
 package com.lumosshop.common.entity;
 
+import com.lumosshop.common.constant.Constants;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -134,7 +135,7 @@ public class User {
         if (id == null || photos == null) {
             return "/images/defaultUserImage.png";
         }
-        return "/user-photos/" + this.id + "/" + this.photos;
+        return Constants.B2_ADDRESS+ "/user-photos/" + this.id + "/" + this.photos;
     }
 
     @Transient

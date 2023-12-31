@@ -1,5 +1,6 @@
 package com.lumosshop.common.entity.product;
 
+import com.lumosshop.common.constant.Constants;
 import com.lumosshop.common.entity.Category;
 import jakarta.persistence.*;
 
@@ -241,7 +242,7 @@ public class Product {
     public String getMainImagePath() {
         if (id == null || mainImage.isEmpty()) return "/images/lumosOnlyShape.png";
 
-        return "/product-images/" + this.id + "/" + this.mainImage;
+        return Constants.B2_ADDRESS+ "/product-images/" + this.id + "/" + this.mainImage;
     }
 
     public int getReviews() {

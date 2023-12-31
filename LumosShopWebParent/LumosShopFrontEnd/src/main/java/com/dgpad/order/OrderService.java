@@ -1,9 +1,12 @@
 package com.dgpad.order;
 
 import com.dgpad.checkout.CheckoutModel;
+import com.dgpad.interactions.InteractionRepository;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.CustomerAddresses;
 import com.lumosshop.common.entity.ShoppingBag;
+import com.lumosshop.common.entity.interactions.Interaction;
+import com.lumosshop.common.entity.interactions.InteractionType;
 import com.lumosshop.common.entity.order.*;
 import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.OrderNotFoundException;
@@ -23,6 +26,8 @@ import java.util.Set;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private InteractionRepository interactionRepository;
 
 
     public static final int NUMBER_OF_ORDER_IN_PAGE = 4;
@@ -50,6 +55,7 @@ public class OrderService {
         createdOrder.setShippingCharge(checkoutModel.getShippingCharge());
 
 
+
         if (address == null) {
             createdOrder.CustomerAddress();
         } else {
@@ -58,9 +64,19 @@ public class OrderService {
 
         Set<Order_Summary> orderSummaries = createdOrder.getOrderSummaries();
 
+        //Add Interaction
+
         for (ShoppingBag stock : bagStocks) {
             Order_Summary orderSummary = getOrderSummary(stock, createdOrder);
+            Product product = stock.getProduct();
+            Interaction interaction = new Interaction();
 
+            interaction.setProduct(product);
+            interaction.setCustomer(customer);
+            interaction.setInteractionType(InteractionType.ORDER);
+            interaction.setTimestamp(new Date());
+            interaction.setValue(stock.getQuantity());
+            interactionRepository.saveOrIncrementValue(interaction);
             orderSummaries.add(orderSummary);
         }
         OrderFollowUp followUp = new OrderFollowUp();
@@ -70,6 +86,9 @@ public class OrderService {
         followUp.setTimestamp(new Date());
 
         createdOrder.getOrderFollowUps().add(followUp);
+
+
+
 
         return orderRepository.save(createdOrder);
     }

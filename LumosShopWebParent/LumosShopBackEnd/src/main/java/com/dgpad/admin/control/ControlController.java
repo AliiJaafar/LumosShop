@@ -1,6 +1,7 @@
 package com.dgpad.admin.control;
 
 import com.dgpad.admin.util.FileUploadUtil;
+import com.lumosshop.common.constant.Constants;
 import com.lumosshop.common.entity.Currency;
 import com.lumosshop.common.entity.control.Control;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,10 +35,12 @@ public class ControlController {
         List<Currency> currencies = currencyRepository.findAllByOrderByNameAsc();
 
         model.addAttribute("currencies", currencies);
+        model.addAttribute("B2_Path", Constants.B2_ADDRESS);
 
         for (Control control : controlList) {
             model.addAttribute(control.getKey(), control.getValue());
         }
+
 
         return "control-center/controls";
     }

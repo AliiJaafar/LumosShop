@@ -117,9 +117,9 @@
 
                             <div>
                                 Intermediate Sum: <span th:text="${detail.qty}"></span> <i class="fa-duotone fa-xmark"></i>
-                                <div th:replace="fragments :: price(${detail.itemPrice})"></div>
+                                <div th:replace="~{fragments :: price(${detail.itemPrice})}"></div>
                                 <i class="fa-duotone fa-equals"></i>
-                                <div th:replace="fragments :: price(${detail.interSum})"></div>
+                                <div th:replace="~{fragments :: price(${detail.interSum})}"></div>
                             </div>
 
                             <div class="container">

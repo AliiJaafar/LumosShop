@@ -27,6 +27,15 @@
     <!-- End Google Tag Manager -->
 
 
+<!--    Test Style-->
+    <link rel="stylesheet" th:href="@{/css/testStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/owl-carousel.css}">
+
+<!--    Rating-Plugin-->
+    <link th:href="@{/rating-plugin/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+    <script th:src="@{/rating-plugin/js/star-rating.js}" type="text/javascript"></script>
+    <link th:href="@{/rating-plugin/themes/krajee-uni/theme.css}" media="all" rel="stylesheet" type="text/css" />
+    <script th:src="@{/rating-plugin/themes/krajee-uni/theme.js}"></script>
 </div>
 <div th:fragment="alert">
     <div th:if="${message != null}" class="my-2 alert alert-success text-center">

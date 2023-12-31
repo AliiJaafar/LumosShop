@@ -1,135 +1,138 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
-<head><div th:replace="~{fragment :: TheHeader('Control-Center')}">
-</div>
+<head th:replace="~{fragment :: TheHeader('Control-Center')}">
 
 <!--    <script src="https://cdn.tiny.cloud/1/9ggur390z4pgx4f4b4g5bv95tttbvxw2ibmrj6gdyn3mi6ka/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
 <!--    <script src="https://cdn.tiny.cloud/1/778xk4j8f2w6nbtucbqovl506je3c9c18zx6kbtssx6hbm1x/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 </head>
 
 
-<body data-bs-theme="dark">
-<div th:replace="~{fragment/header :: header}"></div>
-<div class="container">
 
-    <div th:replace="~{fragment :: messageFlash}"></div>
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" id="controlTab" role="tablist" data-bs-theme="dark">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="STANDARD-tab" data-bs-toggle="tab" href="#STANDARD"
-               role="tab">STANDARD</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="place-tab" data-bs-toggle="tab" href="#place"
-               role="tab">Place</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="email_system-tab" data-bs-toggle="tab" href="#email_system" role="tab">Email System</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="outline-tab" data-bs-toggle="tab" href="#outline" role="tab">Outline</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="payment-tab" data-bs-toggle="tab" href="#payment" role="tab">Payment</a>
+<body id="page-top">
+<!-- Page Wrapper -->
 
-        </li>
-    </ul>
+<div id="wrapper">
+    <!-- Sidebar -->
 
-    <!-- Tab content -->
-    <div class="tab-content" id="myTabContent" data-bs-theme="dark">
-        <div class="tab-pane fade p-4 show active" id="STANDARD" role="tabpanel" aria-labelledby="STANDARD-tab">
-            <div th:replace="~{control-center/standard :: data}"></div>
+    <ul th:replace="~{test :: sideBar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- TopBar -->
+
+            <nav th:replace="~{test :: topBar}"></nav>
+
+            <div class="container-fluid">
+
+                <div th:replace="~{fragment :: messageFlash}"></div>
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="controlTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="STANDARD-tab" data-bs-toggle="tab" href="#STANDARD"
+                           role="tab">STANDARD</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="place-tab" data-bs-toggle="tab" href="#place"
+                           role="tab">Place</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="email_system-tab" data-bs-toggle="tab" href="#email_system" role="tab">Email System</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="outline-tab" data-bs-toggle="tab" href="#outline" role="tab">Outline</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="payment-tab" data-bs-toggle="tab" href="#payment" role="tab">Payment</a>
+
+                    </li>
+                </ul>
+
+                <!-- Tab content -->
+                <div class="tab-content" id="myTabContent" >
+                    <div class="tab-pane fade p-4 show active" id="STANDARD" role="tabpanel" aria-labelledby="STANDARD-tab">
+                        <div th:replace="~{control-center/standard :: data}"></div>
+                    </div>
+                    <div class="tab-pane fade p-4" id="place" role="tabpanel" aria-labelledby="place-tab">
+                        <div th:replace="~{control-center/nation-form :: data}"></div>
+
+                    </div>
+                    <div class="tab-pane fade p-4" id="email_system" role="tabpanel" aria-labelledby="email_system-tab">
+                        <div th:replace="~{control-center/email_system :: data}"></div>
+
+                    </div>
+                    <div class="tab-pane fade p-4" id="outline" role="tabpanel" aria-labelledby="outline-tab">
+                        <div th:replace="~{control-center/email-template/email-templates :: data}"></div>
+                    </div>
+                    <div class="tab-pane fade p-4" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                        <div th:replace="~{control-center/payment-control :: content}"></div>
+                    </div>
+                </div>
+
+
+
+
+
+                <!--<div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <span id="toastMessage"></span>
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>-->
+                <!-- Flexbox container for aligning the toasts -->
+                <div aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
+
+                    <!-- Then put toasts within -->
+                    <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img th:src="@{/images/lumosOnlyShape.png}" width="30px" class="rounded me-2" alt="logo">
+                            <strong class="me-auto">Lumos :: System</strong>
+                            <small>Just Now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            <span id="toastMessage"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-        <div class="tab-pane fade p-4" id="place" role="tabpanel" aria-labelledby="place-tab">
-            <div th:replace="~{control-center/nation-form :: data}"></div>
 
-        </div>
-        <div class="tab-pane fade p-4" id="email_system" role="tabpanel" aria-labelledby="email_system-tab">
-            <div th:replace="~{control-center/email_system :: data}"></div>
+        <!-- Footer -->
 
-        </div>
-        <div class="tab-pane fade p-4" id="outline" role="tabpanel" aria-labelledby="outline-tab">
-            <div th:replace="~{control-center/email-template/email-templates :: data}"></div>
-        </div>
-        <div class="tab-pane fade p-4" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-            <div th:replace="~{control-center/payment-control :: content}"></div>
-        </div>
+        <div th:replace="~{fragment/footer :: footer}"></div>
+        <!-- End of Footer -->
     </div>
 
-
-
-
-
-    <!--<div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <span id="toastMessage"></span>
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>-->
-    <!-- Flexbox container for aligning the toasts -->
-    <div data-bs-theme="dark" aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
-
-        <!-- Then put toasts within -->
-        <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <img th:src="@{/images/lumosOnlyShape.png}" width="30px" class="rounded me-2" alt="logo">
-                <strong class="me-auto">Lumos :: System</strong>
-                <small>Just Now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body text-white">
-                <span id="toastMessage"></span>
-            </div>
-        </div>
-    </div>
+    <!-- End of Content Wrapper -->
 </div>
-
-<footer th:replace="~{fragment/footer :: footer}"></footer>
-
-<!--<script>
-    function updateTextAreaBackgroundColor(color) {
-        var textarea = document.getElementById('edit');
-        textarea.style.backgroundColor = color;
-    }
-    tinymce.init({
-        selector: 'textarea',
-        plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss code', // Include the "code" plugin
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        tinycomments_mode: 'embedded',
-        tinycomments_author: 'Author name',
-        mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-        ],
-        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-    });
-
-</script>-->
+<!-- End of Page Wrapper -->
 
 <script>
 
-        $(document).ready(function() {
-        $('#edit').summernote();
+    $(document).ready(function() {
+        $('#Verification_messageContent').summernote();
         $('#recover').summernote();
         $('#order').summernote();
     });
 </script>
-
-
-
 <script th:inline="javascript">
     const csrfHeaderName = /*[[${_csrf.headerName}]]*/ '';
     let csrfValue = /*[[${_csrf.token}]]*/ '';
 
 
 </script>
-
 <script>
     let contextPath = "[[@{/}]]";
     const buttonLoad = $("#buttonLoadNations");
@@ -527,7 +530,8 @@
 
 
 </script>
-
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
 </body>
 
 

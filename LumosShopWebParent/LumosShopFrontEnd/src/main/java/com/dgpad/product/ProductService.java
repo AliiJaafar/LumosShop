@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -49,5 +50,9 @@ public class ProductService {
             throw new ProductNotFoundException("could not found this Product with ID - " + ID);
         }
 
+    }
+
+    public List<Product> listAllProducts() {
+        return (List<Product>) productRepository.findAll();
     }
 }

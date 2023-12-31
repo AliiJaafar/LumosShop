@@ -4,72 +4,137 @@
 <head>
     <div th:replace="~{fragment :: TheHeader(${PageTitle})}"></div>
 </head>
-<body data-bs-theme="dark">
-<div th:replace="~{fragment/header :: header}"></div>
+</body>
 
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between mb-5">
-        <h2 class="text-info" th:text="${Title}"></h2>
-        <a th:href="@{/shipping/form}" class="btn text-info mb-3">
-            <i class="fa-duotone fa-truck-arrow-right fa-3x"></i>
-        </a>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="~{test :: sideBar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{test :: topBar}"></nav>
+
+            <!--            Content Here-->
+            <div class="container-fluid">
+
+                <div th:replace="~{fragment :: searchFilter('/shipping/page/1')}"></div>
+
+                <div th:replace="~{fragment :: messageFlash}"></div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="text-primary m-0 fw-bold" th:text="${Title}"></h5>
+                            <a th:href="@{/shipping/form}" class="btn text-primary m-0">
+                                <i class="fa-duotone fa-truck-arrow-right fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" width="100%" cellspacing="0">
+                                <thead class="table-dark">
+
+                                <tr>
+                                    <th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','tag')}"></th>
+                                    </th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'feeRate','Fee Rate','none')}"></th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'dayLong','Days Long','none')}"></th>
+                                    <th>Nation</th>
+                                    <th>City</th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'CashOnDelivery','Cash On Delivery','none')}"></th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','tag')}"></th>
+                                    </th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'feeRate','Fee Rate','none')}"></th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'dayLong','Days Long','none')}"></th>
+                                    <th>Nation</th>
+                                    <th>City</th>
+                                    <th th:replace="~{fragment :: column_link(${moduleURL},'CashOnDelivery','Cash On Delivery','none')}"></th>
+                                    <th>Actions</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="fee : ${shippingList}">
+                                    <td th:text="${fee.id}"></td>
+                                    <td th:text="${fee.feeRate}"></td>
+                                    <td th:text="${fee.dayLong}"></td>
+                                    <td th:text="${fee.nation.name}"></td>
+                                    <td th:text="${fee.city}"></td>
+                                    <td>
+                                        <a th:if="${fee.cashOnDelivery == true}"
+                                           class="fa-solid fa-check icon-green fa-lg mx-2"
+                                           th:href="@{'shipping/'+${fee.id}+'/able/false'} "
+                                           th:title="unable"></a>
+
+                                        <a th:if="${fee.cashOnDelivery == false}"
+                                           class="fa-solid fa-xmark icon-dark fa-lg mx-2"
+                                           th:href="@{'shipping/'+${fee.id}+'/able/true'} "
+                                           th:title="able"></a>
+                                    </td>
+                                    <td>
+                                        <div th:replace="~{fragment :: edit('shipping','/shipping/edit/'+ ${fee.id})}"></div>
+                                        <div th:replace="~{fragment :: delete('shipping', ${fee.id}, '/shipping/delete/' + ${fee.id}, true)}"></div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div th:replace="~{fragment :: pagination(${moduleURL},'shippingFee')}"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div th:replace="~{fragment/footer :: footer}"></div>
+        <!-- End of Footer -->
     </div>
+    <!-- End of Content Wrapper -->
 
-    <div th:replace="~{fragment :: searchFilter('/shipping/page/1')}"></div>
-
-    <div th:replace="~{fragment :: messageFlash}"></div>
-
-    <div>
-        <table class="table table-dark table-hover text-center">
-            <thead>
-
-            <tr>
-                <th>
-                <th th:replace="~{fragment :: column_link(${moduleURL},'id','ID','tag')}"></th>
-                </th>
-                <th th:replace="~{fragment :: column_link(${moduleURL},'feeRate','Fee Rate','none')}"></th>
-                <th th:replace="~{fragment :: column_link(${moduleURL},'dayLong','Days Long','none')}"></th>
-                <th>Nation</th>
-                <th>City</th>
-                <th th:replace="~{fragment :: column_link(${moduleURL},'CashOnDelivery','Cash On Delivery','none')}"></th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="fee : ${shippingList}">
-                <td th:text="${fee.id}"></td>
-                <td th:text="${fee.feeRate}"></td>
-                <td th:text="${fee.dayLong}"></td>
-                <td th:text="${fee.nation.name}"></td>
-                <td th:text="${fee.city}"></td>
-                <td>
-                        <a th:if="${fee.cashOnDelivery == true}" class="fa-solid fa-check icon-green fa-lg mx-2"
-                           th:href="@{'shipping/'+${fee.id}+'/able/false'} "
-                           th:title="unable"></a>
-
-                        <a th:if="${fee.cashOnDelivery == false}" class="fa-solid fa-xmark icon-dark fa-lg mx-2"
-                           th:href="@{'shipping/'+${fee.id}+'/able/true'} "
-                           th:title="able"></a>
-                </td>
-                <td>
-                    <div th:replace="~{fragment :: edit('shipping','/shipping/edit/'+ ${fee.id})}"></div>
-                    <div th:replace="~{fragment :: delete('shipping', ${fee.id}, '/shipping/delete/' + ${fee.id}, true)}"></div>
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
 </div>
+<!-- End of Page Wrapper -->
 
-<div th:replace="~{fragment :: pagination(${moduleURL},'shippingFee')}"></div>
-<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment/modal_fragments :: deleteModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
 <script>
     function clearFilter() {
         window.location = "[[@{/shipping}]]";
 
     }
+    $(document).ready(function () {
+        $(".link-delete").on("click", function (e) {
+            e.preventDefault();
+            Link = $(this);
+            //alert($(this).attr("href"));
+            feeId = Link.attr("entityId");
+            $("#confirmButton").attr("href", Link.attr("href"));
+            $(".confirmText").text("Are you certain of your choice to delete this fee rate with ID : " + feeId + " ?")
+            $("#confirmModal").modal("show");
+        });
+
+    });
 </script>
 </body>
 </html>

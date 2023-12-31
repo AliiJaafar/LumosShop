@@ -2,6 +2,7 @@ package com.dgpad.admin.controller;
 
 import com.dgpad.admin.service.CategoryService;
 import com.dgpad.admin.user.UserNotFoundException;
+import com.dgpad.admin.util.B2_Util;
 import com.dgpad.admin.util.CategoryPageInfo;
 import com.dgpad.admin.util.FileUploadUtil;
 import com.lumosshop.common.entity.Category;
@@ -102,8 +103,12 @@ public class CategoryController {
 
 			String uploadDir = "category-images/" + savedCategory.getId();
 
-			FileUploadUtil.cleanDir(uploadDir);
-			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+//			FileUploadUtil.cleanDir(uploadDir);
+//			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+
+            B2_Util.removeFolder(uploadDir);
+            B2_Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
         } else {
             categoryService.save(category);
         }
@@ -132,6 +137,9 @@ public class CategoryController {
     public String delete(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) throws UserNotFoundException {
         try {
             categoryService.delete(id);
+            String Dir = "category-images/" + id;
+            B2_Util.removeFolder(Dir);
+
             redirectAttributes.addFlashAttribute("message", "Category ID " + id + " has been deleted from the system with success.");
         } catch (CategoryNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

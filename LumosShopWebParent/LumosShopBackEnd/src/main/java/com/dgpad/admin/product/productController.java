@@ -3,6 +3,7 @@ package com.dgpad.admin.product;
 import com.dgpad.admin.service.CategoryService;
 import com.dgpad.admin.user.UserNotFoundException;
 import com.dgpad.admin.user.UserService;
+import com.dgpad.admin.util.B2_Util;
 import com.dgpad.admin.util.FileUploadUtil;
 import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.User;
@@ -135,11 +136,14 @@ public class productController {
         setProductDetails(detailIDs, detailNames, detailValues, product);
 
 
-        removeUnusedExtraImagesFromForm(product);
+//        removeUnusedExtraImagesFromForm(product);
+        removeUnusedExtraImagesFromForm_B2(product);
 
         Product savedProduct = productService.save(product);
 
-        saveUploadedImages(mainImageMultiPart, extraImageMultiPart, savedProduct);
+//        saveUploadedImages(mainImageMultiPart, extraImageMultiPart, savedProduct);
+
+        saveUploadedImagesB2(mainImageMultiPart, extraImageMultiPart, savedProduct);
         redirectAttributes.addFlashAttribute("message", "The product has been saved without any issues.");
         return "redirect:/products";
     }
@@ -168,6 +172,39 @@ public class productController {
             LOGGER.error("Could not list Directory : " + pathDirectory);
 
         }
+    }
+
+/*    private void removeUnusedExtraImagesFromForm_B2(Product product) {
+        String extraImageDirectory = "product-images/" + product.getId() + "/extras";
+        List<String> listKeys = B2_Util.listDir(extraImageDirectory);
+
+        for (String objectKey : listKeys) {
+            int lastIndexOfSlash = objectKey.lastIndexOf("/");
+            String fileName = objectKey.substring(lastIndexOfSlash + 1, objectKey.length());
+
+            if (!product.containsImageName(fileName)) {
+                B2_Util.deleteFile(objectKey);
+            }
+        }
+    }*/
+
+    private void removeUnusedExtraImagesFromForm_B2(Product product) {
+        String extraImageDirectory = "product-images/" + product.getId() + "/extras";
+        List<String> listKeys = B2_Util.listDir(extraImageDirectory);
+
+        listKeys.stream()
+                .filter(objectKey -> isUnusedImage(product, objectKey))
+                .forEach(B2_Util::deleteFile);
+    }
+
+    private boolean isUnusedImage(Product product, String objectKey) {
+        String fileName = extractFileName(objectKey);
+        return !product.containsImageName(fileName);
+    }
+
+    private String extractFileName(String objectKey) {
+        Path path = Paths.get(objectKey);
+        return path.getFileName().toString();
     }
 
     private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
@@ -208,6 +245,8 @@ public class productController {
         if (!mainImageMultiPart.isEmpty()) {
             String fileName = StringUtils.cleanPath(mainImageMultiPart.getOriginalFilename());
             String uploadDir = "product-images/" + savedProduct.getId();
+
+
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultiPart);
 
@@ -226,6 +265,76 @@ public class productController {
         }
 
     }
+
+/*    private void saveUploadedImagesB2(MultipartFile mainImageMultiPart,
+                                      MultipartFile[] extraImagesMultiPart,
+                                      Product product) throws IOException {
+        if (!mainImageMultiPart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(mainImageMultiPart.getOriginalFilename());
+            String uploadDirectory = "product-images/" + product.getId();
+
+            List<String> keyList = B2_Util.listDir(uploadDirectory + "/");
+            for (String object : keyList) {
+                if (!object.contains("/extras/")) {
+                    B2_Util.deleteFile(object);
+                }
+            }
+
+            B2_Util.uploadFile(uploadDirectory, fileName, mainImageMultiPart.getInputStream());
+        }
+        if (extraImagesMultiPart.length > 0) {
+            String uploadDirectory = "product-images/" + product.getId() + "/extras";
+
+
+            for (MultipartFile multipartFile : extraImagesMultiPart) {
+                if (multipartFile.isEmpty()) {
+                    continue;
+                }
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+                B2_Util.uploadFile(uploadDirectory, fileName, multipartFile.getInputStream());
+            }
+        }
+
+    }*/
+
+    private void saveUploadedImagesB2(MultipartFile mainImageMultiPart,
+                                      MultipartFile[] extraImagesMultiPart,
+                                      Product product) throws IOException {
+        processMainImage(mainImageMultiPart, product);
+        processExtraImages(extraImagesMultiPart, product);
+    }
+
+    private void processMainImage(MultipartFile mainImageMultiPart, Product product) throws IOException {
+        if (!mainImageMultiPart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(mainImageMultiPart.getOriginalFilename());
+            String uploadDirectory = "product-images/" + product.getId();
+
+            deleteNonExtrasImages(uploadDirectory);
+            B2_Util.uploadFile(uploadDirectory, fileName, mainImageMultiPart.getInputStream());
+        }
+    }
+
+    private void processExtraImages(MultipartFile[] extraImagesMultiPart, Product product) throws IOException {
+        if (extraImagesMultiPart.length > 0) {
+            String uploadDirectory = "product-images/" + product.getId() + "/extras";
+
+            for (MultipartFile multipartFile : extraImagesMultiPart) {
+                if (!multipartFile.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                    B2_Util.uploadFile(uploadDirectory, fileName, multipartFile.getInputStream());
+                }
+            }
+        }
+    }
+
+    private void deleteNonExtrasImages(String uploadDirectory) {
+        List<String> keyList = B2_Util.listDir(uploadDirectory + "/");
+        keyList.stream()
+                .filter(object -> !object.contains("/extras/"))
+                .forEach(B2_Util::deleteFile);
+    }
+
 
     private void setNewExtraImageNames(MultipartFile[] extraImageMultiPart, Product product) {
         if (extraImageMultiPart.length > 0) {
@@ -293,8 +402,12 @@ public class productController {
             productService.deleteById(id);
             String productExtraImageDir = "product-images/" + id + "/extras";
             String productImageDir = "product-images/" + id;
-            FileUploadUtil.removeDir(productExtraImageDir);
-            FileUploadUtil.removeDir(productImageDir);
+
+            /*FileUploadUtil.removeDir(productExtraImageDir);
+            FileUploadUtil.removeDir(productImageDir);*/
+
+            B2_Util.removeFolder(productExtraImageDir);
+            B2_Util.removeFolder(productImageDir);
 
             redirectAttributes.addFlashAttribute("message", "Product ID " + id + " has been deleted from the system with success.");
         } catch (ProductNotFoundException e) {
@@ -307,21 +420,13 @@ public class productController {
     @GetMapping("/products/info/{id}")
     public String viewProductInformation(@PathVariable("id") Integer id, Model model,
                                          RedirectAttributes redirectAttributes) {
-
-
         try {
             Product product = productService.findProductById(id);
             model.addAttribute("product", product);
-
             return "products/product_modal";
-
         } catch (ProductNotFoundException e) {
-
-
             redirectAttributes.addFlashAttribute("message", e.getMessage());
-
             return "redirect:/products";
-
         }
     }
 }

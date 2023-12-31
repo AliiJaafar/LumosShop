@@ -1,5 +1,6 @@
 package com.lumosshop.common.entity;
 
+import com.lumosshop.common.constant.Constants;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -175,7 +176,7 @@ public class Category {
         if (id == null || image == null || image.isEmpty()) {
             return "/images/_Lumus-LogoDefault.jpg";
         }
-        return "/category-images/" + this.id + "/" + this.image;
+        return Constants.B2_ADDRESS+ "/category-images/" + this.id + "/" + this.image;
     }
 
     @Override

@@ -36,10 +36,7 @@
 </head>
 
 <body data-bs-theme="dark">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 <div th:replace="~{breadcrumb :: category-chain}"></div>
@@ -51,7 +48,7 @@
         <div class="row">
             <div class="col-sm">
                 <div style="width: 500px; height: 500px;">
-                    <img id="Primary-Image" th:src="@{${product.mainImagePath}}" class="img-fluid">
+                    <img th:data-product-id="${product.id}" id="Primary-Image" th:src="@{${product.mainImagePath}}" class="img-fluid">
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-2 m-2 p-1">
@@ -89,10 +86,10 @@
                 <div th:if="${product.discountPercent > 0}">
 
                     <p class="text-danger fw-semibold fs-5" style="margin-bottom: 0">Price:
-                        <span th:replace="product/productPartialView :: price(${product.discountPrice})"></span>
+                        <span th:replace="~{product/productPartialView :: price(${product.discountPrice})}"></span>
                     </p>
                     <span class="fw-lighter">was <del>
-                    <span th:replace="product/productPartialView :: price(${product.price})"></span>
+                    <span th:replace="~{product/productPartialView :: price(${product.price})}"></span>
                 </del></span>
                     <p class="fw-lighter">Discount ([[${product.discountPercent}]] <i class="fa-duotone fa-percent"></i>)
                     </p>
@@ -122,7 +119,7 @@
         <p class="fs-4 my-4">Description <i class="fa-duotone fa-ampersand"></i> Information</p>
         <hr>
         <p class="fs-5 text-secondary">Description</p>
-        <div class="my-4" th:text="${product.fullDescription}"></div>
+        <div class="my-4" th:utext="${product.fullDescription}"></div>
 
         <div th:if="${not #lists.isEmpty(product.details)}" class="container">
             <p class="fs-5 text-secondary my-4">Some Additional Information</p>
@@ -225,6 +222,58 @@
 
 
 </script>
+<!-- Include the script in your HTML file -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+/*        // Example: Get product ID from a data attribute on the product image
+        var productID = document.getElementById('Primary-Image').getAttribute('data-product-id');
+
+        console.log("productID" + productID);
+
+
+        // Make sure to replace 'data-product-id' with the actual data attribute in your HTML
+
+        // Make an asynchronous request to the backend to store the click
+        fetch( contextPath+'clicks/store', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productID: productID,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Handle success if needed
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });*/
+
+        var productID = document.getElementById('Primary-Image').getAttribute('data-product-id');
+
+        URL = contextPath + 'clicks/store/' + productID;
+        $.ajax({
+            type: "POST",
+            url: URL,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeaderName, csrfValue);
+            }
+        }).done(function() {
+            // showToastMessage("System","store click");
+        }).fail(function() {
+            // showToastMessage("fail to react with the review.");
+            // displayingNormalModalERROR("Error in acting with review.")
+        });
+    });
+
+</script>
+
+
+
 </body>
 <footer th:replace="~{fragments :: footer}"></footer>
 </html>

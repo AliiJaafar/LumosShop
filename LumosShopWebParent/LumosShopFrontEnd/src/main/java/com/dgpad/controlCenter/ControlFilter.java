@@ -1,6 +1,7 @@
 package com.dgpad.controlCenter;
 
 
+import com.lumosshop.common.constant.Constants;
 import com.lumosshop.common.entity.control.Control;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,22 +17,23 @@ public class ControlFilter implements Filter {
     @Autowired
     private ControlService controlService;
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        HttpServletRequest servletRequest = (HttpServletRequest) request;
-        String url = servletRequest.getRequestURL().toString();
+        HttpServletRequest servletRequest = (HttpServletRequest) req;
+        String addr = servletRequest.getRequestURL().toString();
 
-        if (url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg")) {
-            chain.doFilter(request, response);
+        if (addr.endsWith(".css") || addr.endsWith(".js") || addr.endsWith(".png") || addr.endsWith(".jpg") || addr.endsWith(".jpeg")) {
+            chain.doFilter(req, response);
             return;
         }
 
         List<Control> standard = controlService.getStandardControl();
         standard.forEach(control -> {
 //            System.out.println(control);
-            request.setAttribute(control.getKey(), control.getValue());
+            req.setAttribute(control.getKey(), control.getValue());
         });
 
-        chain.doFilter(request, response);
+        req.setAttribute("B2_PATH", Constants.B2_ADDRESS);
+        chain.doFilter(req, response);
     }
 }

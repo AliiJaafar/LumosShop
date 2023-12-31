@@ -1,4 +1,5 @@
 package com.lumosshop.common.entity.product;
+import com.lumosshop.common.constant.Constants;
 import com.lumosshop.common.entity.product.Product;
 import jakarta.persistence.*;
 
@@ -62,7 +63,7 @@ public class ProductImage {
 
 	@Transient
 	public String getImagePath() {
-		return "/product-images/" + product.getId() + "/extras/" + this.name;
+		return Constants.B2_ADDRESS+ "/product-images/" + product.getId() + "/extras/" + this.name;
 	}
 
 }

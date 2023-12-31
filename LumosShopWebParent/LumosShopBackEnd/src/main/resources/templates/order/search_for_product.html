@@ -1,47 +1,73 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <div th:replace="~{fragment :: TheHeader('searching for products')}"></div>
 </head>
-<body data-bs-theme="dark">
-<div class="container">
+<body id="page-top">
 
-    <div>
-        <form th:action="@{/orders/products-search/page/1}" class="d-inline-flex my-4">
-            <input th:value="${keyword}" type="search" required class="form-control" name="keyword"
-                   placeholder="search">
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-            <input type="hidden" name="sortField" th:value="${sortField}">
-            <input type="hidden" name="sortDirection" th:value="${sortDirection}">
-            <button type="submit" class="btn btn-outline-success ms-1">
-                <i class="fa-duotone fa-magnifying-glass"></i>
-            </button>
-            <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
-                <i class="fa-duotone fa-broom-wide"></i>
-            </button>
-        </form>
+    <!-- Sidebar -->
+    <ul th:replace="~{test :: sideBar}"></ul>
+    <!-- End of Sidebar -->
 
-        <div class="row row-cols-2 text-center">
-            <th:block th:each="product : ${productList}">
-                <div class="col">
-                    <div class="border rounded my-1 pt-2">
-                        <a href="" class="productSrc" th:pid="${product.id}">
-                            <img width="200px" th:src="@{${product.mainImagePath}}" alt="product-img">
-                            <br>
-                            <p class="fw-bold" th:id="'productName'+${product.id}">[[${product.name}]]</p>
-                        </a>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{test :: topBar}"></nav>
+
+            <div class="container">
+
+                <div>
+                    <form th:action="@{/orders/products-search/page/1}" class="d-inline-flex my-4">
+                        <input th:value="${keyword}" type="search" required class="form-control" name="keyword"
+                               placeholder="search">
+
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDirection" th:value="${sortDirection}">
+                        <button type="submit" class="btn btn-outline-success ms-1">
+                            <i class="fa-duotone fa-magnifying-glass"></i>
+                        </button>
+                        <button class="mx-2 btn btn-outline-secondary" type="button" onclick="clearFilter()">
+                            <i class="fa-duotone fa-broom-wide"></i>
+                        </button>
+                    </form>
+
+                    <div class="row row-cols-2 text-center">
+                        <th:block th:each="product : ${productList}">
+                            <div class="col">
+                                <div class="border rounded my-1 pt-2">
+                                    <a href="" class="productSrc" th:pid="${product.id}">
+                                        <img width="200px" th:src="@{${product.mainImagePath}}" alt="product-img">
+                                        <br>
+                                        <p class="fw-bold" th:id="'productName'+${product.id}">[[${product.name}]]</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
-            </th:block>
-        </div>
-    </div>
-    <div th:replace="~{fragment :: pagination('/orders/products-search',products)}"></div>
-</div>
-<div th:replace="~{fragment/modal_fragments :: staticModal}"></div>
-<div th:replace="~{fragment/modal_fragments :: normalModal}"></div>
-</body>
-<script th:src="@{/js/modalSystems.js}"></script>
+                <div th:replace="~{fragment :: pagination('/orders/products-search',products)}"></div>
+            </div>
 
+
+        </div>
+
+        <!-- Footer -->
+        <div th:replace="~{fragment/footer :: footer}"></div>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+    <div th:replace="~{fragment/modal_fragments :: staticModal}"></div>
+    <div th:replace="~{fragment/modal_fragments :: normalModal}"></div>
+</div>
+<!-- End of Page Wrapper -->
+
+<script th:src="@{/js/modalSystems.js}"></script>
 <script>
     moduleURL = "[[@{/orders}]]";
     contextPath = "[[@{/}]]";
@@ -74,4 +100,8 @@
 
 
 </script>
+
+<div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
+<div th:replace="~{fragment :: scripts}"></div>
+</body>
 </html>

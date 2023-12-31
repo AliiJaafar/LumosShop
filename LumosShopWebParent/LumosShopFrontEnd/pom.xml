@@ -34,6 +34,11 @@
 			<version>3.0.1.RELEASE</version>
 		</dependency>
 
+			<dependency>
+				<groupId>nz.ac.waikato.cms.weka</groupId>
+				<artifactId>weka-dev</artifactId>
+				<version>3.9.5</version>
+			</dependency>
 
 	</dependencies>
 

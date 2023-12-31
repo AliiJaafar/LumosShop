@@ -4,7 +4,7 @@
 <body>
 
 <div th:fragment="data">
-    <div class="container mt-5" data-bs-theme="dark">
+    <div class="container-fluid mt-5">
         <h3>
             Order Acknowledgment
         </h3>
@@ -12,11 +12,11 @@
         <form th:action="@{/control/update-message-design}" method="post">
             <div class="mb-3">
                 <label for="orderTitle" class="form-label">Subject/Title:</label>
-                <input id="orderTitle" name="ORDER_emailTitle" th:value="${ORDER_emailTitle}" type="text" class="form-control w-50" required/>
+                <input id="orderTitle" name="ORDER_emailTitle" th:value="${ORDER_emailTitle}" type="text" class="form-control " required/>
             </div>
-            <section id="editor" class="mb-3">
+            <section class="mb-3">
                 <label for="order" class="form-label">Template: </label>
-                <textarea id="order" name="Order_messageContent" th:text="${Order_messageContent}" required></textarea>
+                <textarea id="order" class="form-control" name="Order_messageContent" th:text="${Order_messageContent}" required></textarea>
             </section>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>
