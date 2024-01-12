@@ -9,11 +9,8 @@
     <script th:src="@{/rating-plugin/themes/krajee-fas/theme.js}"></script>
 </head>
 
-<body data-bs-theme="dark">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body>
+
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 
@@ -68,7 +65,7 @@
 </div>
 
 
-<div data-bs-theme="dark" class="modal fade text-center" id="modalDialog" role="dialog">
+<div class="modal fade text-center" id="modalDialog" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content ">
             <div class="modal-header text-warning">

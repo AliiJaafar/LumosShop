@@ -5,7 +5,7 @@
     <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
 </head>
 
-<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -21,7 +21,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 mb-3">
-            <div class="card bg-dark text-white" th:classappend="${letTheMainAddressBePrimary ? 'border-4 border-primary' : ''}">
+            <div class="card" th:classappend="${letTheMainAddressBePrimary ? 'border-4 border-primary' : ''}">
                 <div class="card-header border-primary">
                     <div class="d-flex justify-content-between">
                         <span>Primary Address</span>
@@ -51,7 +51,7 @@
         </div>
         <th:block th:each="address , status : ${ALlAddresses}">
             <div class="col-md-4 mb-3">
-                <div class="card bg-dark text-white" th:classappend="${address.primary ? 'border-4 border-primary' : ''}">
+                <div class="card" th:classappend="${address.primary ? 'border-4 border-primary' : ''}">
                     <div class="card-header ">
                         <div class="d-flex justify-content-between">
                             <span th:text="'Address ' + ${status.count +1}"></span>
@@ -75,7 +75,7 @@
                         <p class="card-text" th:text="${address}"></p>
                     </div>
                     <div class="card-footer d-flex justify-content-between" >
-                        <a class="btn text-primary-emphasis me-2" th:href="@{'/addresses/edit/'+${address.id}}"><i
+                        <a class="btn text-primary me-2" th:href="@{'/addresses/edit/'+${address.id}}"><i
                                 class="fa-duotone fa-location-pen fa-xl"></i></a>
 
                         <a class="btn text-danger link-delete" th:entityId="${address.firstName}"

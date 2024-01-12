@@ -24,4 +24,7 @@ public interface ShoppingBagRepository extends CrudRepository<ShoppingBag, Integ
     @Modifying
     @Query("update ShoppingBag s set s.quantity = ?3 where s.customer.id = ?1 and s.product.id = ?2")
     public void changeQuantity( Integer customerID, Integer productID,Integer quantity);
+
+    @Query("select s.product from ShoppingBag s where s.customer.id = ?1")
+    public List<Product> InCartProducts(Integer CustomerId);
 }

@@ -7,9 +7,11 @@ import com.dgpad.recommender.RecommenderService;
 import com.lumosshop.common.entity.Category;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.product.Product;
+import com.lumosshop.common.entity.review.Review;
 import com.lumosshop.common.exception.CustomerNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,38 +40,46 @@ public class MainController {
         }
         return customerService.getCustomerByEmail(email);
     }
+
     @GetMapping(value = "")
-    public String viewHomePage(Model model,HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
-        Customer customer = isTheCustomerAuthenticate(httpServletRequest);
-        // Assuming you have a method to calculate item similarities
-        Map<Integer, Map<Integer, Double>> itemSimilarities = recommenderService.calculateAndUseItemSimilarities();
+    public String viewHomePage(Model model, HttpServletRequest httpServletRequest) throws CustomerNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication == null || authentication instanceof AnonymousAuthenticationToken)) {
+            Customer customer = isTheCustomerAuthenticate(httpServletRequest);
+            // Assuming you have a method to calculate item similarities
+            Map<Integer, Map<Integer, Double>> itemSimilarities = recommenderService.calculateAndUseItemSimilarities();
 
-        // Assuming you have a method to create the user-item matrix
-        Map<Integer, Map<Integer, Double>> userItemMatrix = recommenderService.createUserItemMatrix();
+            // Assuming you have a method to create the user-item matrix
+            Map<Integer, Map<Integer, Double>> userItemMatrix = recommenderService.createUserItemMatrix();
 
-        // Generate recommendations for the user
-        List<Integer> recommendations = recommenderService.generateRecommendationsForUser(customer.getId(), userItemMatrix, itemSimilarities);
+            // Generate recommendations for the user
+            List<Integer> recommendations = recommenderService.generateRecommendationsForUser(customer.getId(), userItemMatrix, itemSimilarities);
 
-        // Filter products based on recommendations
-        List<Product> filteredProducts = productService.listAllProducts().stream()
-                .filter(product -> recommendations.contains(product.getId()))
-                .collect(Collectors.toList());
+            // Filter products based on recommendations
+            List<Product> filteredProducts = productService.listAllProducts().stream()
+                    .filter(product -> recommendations.contains(product.getId()))
+                    .collect(Collectors.toList());
 
-
-        model.addAttribute("customer", customer.getFullName());
-        // Pass the recommendations to the view
-        model.addAttribute("recommendations", recommendations);
-        model.addAttribute("products", filteredProducts);
-
-        // Return the Thymeleaf template name (recommendations.html)
-
-
+            model.addAttribute("customer", customer.getFullName());
+            // Pass the recommendations to the view
+            model.addAttribute("recommendations", recommendations);
+            model.addAttribute("products", filteredProducts);
+        }
 
 
+        List<Product> productInSale = productService.displayMostInSaleProducts();
+        model.addAttribute("productInSale", productInSale);
+
+        List<Product> productMostSell = productService.displayMostSellerProducts(5);
+        model.addAttribute("productMostSell", productMostSell);
+
+        List<Product> productMostViewed = productService.displayMostClickedProducts(5);
+        model.addAttribute("productMostViewed", productMostViewed);
 
 
 
-        model.addAttribute("title","LUMOS - HOME");
+
+        model.addAttribute("title", "LUMOS - HOME");
 
         List<Category> categoryList = categoryService.findLeafCategories();
         model.addAttribute("categoryList", categoryList);

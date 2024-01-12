@@ -35,7 +35,7 @@
     </style>
 </head>
 
-<body data-bs-theme="dark">
+<body>
 
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
@@ -137,7 +137,7 @@
     </div>
 </div>
 
-<div data-bs-theme="dark" class="modal fade text-center" id="modalDialog" role="dialog">
+<div class="modal fade text-center" id="modalDialog" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content ">
             <div class="modal-header text-warning">
@@ -154,7 +154,7 @@
     </div>
 </div>
 <div th:replace="~{modal_fragments :: normalModal}"></div>
-<div data-bs-theme="dark" aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
+<div aria-live="polite" aria-atomic="true" class="d-flex w-100 ">
 
     <!-- Then put toasts within -->
     <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -164,7 +164,7 @@
             <small>Just Now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body text-white">
+        <div class="toast-body">
             <span id="toastMessage"></span>
         </div>
     </div>

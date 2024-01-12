@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
 @Repository
 public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>, CrudRepository<Order, Integer> {
 
@@ -25,5 +27,9 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
 
     @Query("SELECT DISTINCT o FROM Order o WHERE o.customer.id = :customerId")
     Page<Order> findAllByCustomer(@Param("customerId") Integer customerId, Pageable pageable);
+    @Query("SELECT DISTINCT o FROM Order o WHERE o.customer.id = :customerId")
+    List<Order> findAllTheOrderByCustomer(@Param("customerId") Integer customerId);
+
+
 }
 

@@ -2,9 +2,12 @@ package com.dgpad.customer;
 
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.Identification_method;
+import com.lumosshop.common.entity.control.Nation;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
@@ -24,4 +27,9 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     @Modifying
     @Query("UPDATE Customer c SET c.enabled = true, c.verificationCode = null where c.id = ?1")
     public void enable(Integer id);
+
+    @Query("select c from Customer c where c.nation.name = ?1")
+    public List<Customer> findByNation(String nation);
+    @Query("select c from Customer c where c.city = ?1")
+    public List<Customer> findByCity(String city);
 }

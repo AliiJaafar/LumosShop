@@ -39,7 +39,7 @@
                 <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i> Fee Form</h2>
 
 
-                <form th:action="@{/shipping/saveFee}" method="post" data-bs-theme="dark" th:object="${Fee}">
+                <form th:action="@{/shipping/saveFee}" method="post" th:object="${Fee}">
                     <label>
                         <input hidden="hidden" th:field="*{id}">
                     </label>

@@ -46,7 +46,7 @@
                 <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i>[[${pageTitle}]]</h2>
 
 
-                <form th:action="@{/customers/saving}" method="post" data-bs-theme="dark" th:object="${customer}"
+                <form th:action="@{/customers/saving}" method="post" th:object="${customer}"
                       onsubmit="return checkEmailUnique(this);">
 
                     <input type="hidden" th:field="*{id}">

@@ -12,6 +12,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>, CrudRepository<Order, Integer> {
 
@@ -31,6 +32,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
     @Query("select new com.lumosshop.common.entity.order.Order(o.id,o.orderDate,o.totalPrice,o.productCost,o.InterSum) from Order o where " +
             "o.orderDate between ?1 and ?2 order by o.orderDate asc ")
     public List<Order> findOrdersByDate(Date startDate, Date endDate);
+
 
 
 }

@@ -9,6 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ProductRepository extends CrudRepository<Product, Integer>, PagingAndSortingRepository<Product, Integer> {
 
 
@@ -34,6 +36,7 @@ public interface ProductRepository extends CrudRepository<Product, Integer>, Pag
             "or p.shortDescription like %?1%" +
             "or p.fullDescription like %?1%")
     public Page<Product> findAll(String keyword, Pageable pageable);
+
     @Query("select p from Product p where p.category.id = ?1 or " +
             "p.category.allParentIDs like %?2%")
     public Page<Product> findAllByCategory(Integer categoryId, String retrieveCategoryMatchingId, Pageable pageable);
@@ -42,4 +45,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer>, Pag
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     public Page<Product> searchProductsByName(String keyword, Pageable pageable);
 
+    public List<Product> findAllByOrderByDiscountPercentDesc();
+
+    @Query("SELECT p FROM Product p WHERE p.discountPercent > ?1 ORDER BY p.discountPercent ASC")
+    List<Product> findAllByDiscountPercentGreaterThanOrderByDiscountPercentAsc(float percent);
 }

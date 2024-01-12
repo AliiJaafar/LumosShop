@@ -31,6 +31,11 @@ public class Product {
     @Column(length = 4096, nullable = false, name = "full_description")
     private String fullDescription;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+
     @Column(name = "created_time", nullable = false, updatable = false)
     private Date createdTime;
 
@@ -60,9 +65,6 @@ public class Product {
     private int reviews;
     private float rating_avg;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL ,orphanRemoval = true)
     private Set<ProductImage> images = new HashSet<>();
@@ -286,6 +288,7 @@ public class Product {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", discountPercent=" + discountPercent +
                 '}';
     }
 

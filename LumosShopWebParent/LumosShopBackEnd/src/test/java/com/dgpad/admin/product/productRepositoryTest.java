@@ -29,6 +29,7 @@ public class productRepositoryTest {
         productRepository.improveRatingsAndAverageScore(productID);
 
     }
+
     @Test
     public void testCreateProduct() {
         Category category = entityManager.find(Category.class, 1);
@@ -55,6 +56,7 @@ public class productRepositoryTest {
         assertThat(savedProduct).isNotNull();
         assertThat(savedProduct.getId()).isGreaterThan(0);
     }
+
     @Test
     public void testListAllProducts() {
         Iterable<Product> iterableProducts = productRepository.findAll();
@@ -70,6 +72,7 @@ public class productRepositoryTest {
 
         assertThat(product).isNotNull();
     }
+
     @Test
     public void testUpdateProduct() {
         Integer id = 1;
@@ -92,20 +95,28 @@ public class productRepositoryTest {
 
         assertThat(!result.isPresent());
     }
+
     @Test
     public void testGetProductByName() {
         String name = "Thin-Film Flexible Solar Panel";
         Product productByName = productRepository.getProductByName(name);
-        System.out.println("Is there A result -----?--> " +productByName);
+        System.out.println("Is there A result -----?--> " + productByName);
 
         assertThat(productByName).isNotNull();
 
     }
+
     @Test
     public void testEnablingProduct() {
-        productRepository.updateEnabledStatus(2, false);;
+        productRepository.updateEnabledStatus(2, false);
+        ;
 
     }
+    @Test
+    public void testListAllProductsByOrderByDiscount() {
+        float percent = 1F;
+        Iterable<Product> iterableProducts = productRepository.findAllByDiscountPercentGreaterThanOrderByDiscountPercentAsc(percent);
 
-
+        iterableProducts.forEach(System.out::println);
+    }
 }

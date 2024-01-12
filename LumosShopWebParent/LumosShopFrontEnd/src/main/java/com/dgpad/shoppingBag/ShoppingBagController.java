@@ -4,16 +4,23 @@ import com.dgpad.ShippingCharge.ShippingFeeService;
 import com.dgpad.Utility;
 import com.dgpad.address.CustomerAddressesService;
 import com.dgpad.customer.CustomerService;
+import com.dgpad.order.OrderService;
+import com.dgpad.product.ProductRepository;
+import com.dgpad.recommender.demographic.RecommendationService;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.CustomerAddresses;
 import com.lumosshop.common.entity.Shipping;
 import com.lumosshop.common.entity.ShoppingBag;
+import com.lumosshop.common.entity.order.Order;
+import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CustomerNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -29,6 +36,12 @@ public class ShoppingBagController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private RecommendationService recommendationService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping("/bag")
     public String displayTheBag(HttpServletRequest httpServletRequest,Model model) throws CustomerNotFoundException {
@@ -56,6 +69,10 @@ public class ShoppingBagController {
         model.addAttribute("bagList", bagList);
         model.addAttribute("CustomerUsingHisOriginalAddress", CustomerUsingHisOriginalAddress);
         model.addAttribute("TotalBagPrice", TotalBagPrice);
+
+        List<Product> recommendationList = recommendationList(customer);
+        model.addAttribute("recommendationList", recommendationList);
+
         return "Bag/shopping-bag";
     }
 
@@ -65,6 +82,15 @@ public class ShoppingBagController {
             throw new CustomerNotFoundException("Visitor");
         }
         return customerService.getCustomerByEmail(email);
+    }
+
+    private List<Product> recommendationList(Customer customer) {
+        // Get all orders for the customer
+        List<Order> allOrder = orderService.displayAllOrders();
+        List<Product> inCartProducts = bagService.AllProductInCartForCustomer(customer.getId());
+        // Get top N recommendations
+        List<String> recommendations = recommendationService.getTopNRecommendations(allOrder, inCartProducts, 3);
+        return productRepository.findByNameIn(recommendations);
     }
 
 }

@@ -37,7 +37,7 @@
 <div th:fragment="searchFilter(moduleURL)">
 
 
-    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}" data-bs-theme="dark">
+    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}" >
 
         <input type="hidden" name="sortField" th:value="${sortField}">
         <input type="hidden" name="sortDirection" th:value="${sortDirection}">

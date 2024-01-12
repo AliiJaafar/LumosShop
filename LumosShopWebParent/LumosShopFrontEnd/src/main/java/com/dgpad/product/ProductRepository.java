@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>, CrudRepository<Product, Integer> {
     @Query("update Product p set " +
             "p.rating_avg = CAST(COALESCE((select avg(r.rating) from Review r where r.product.id = ?1), 0) AS java.lang.Float), " +
@@ -29,4 +31,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     public Page<Product> search(String keyword, Pageable pageable);
 
     public Product findByAlias(String alias);
+
+    @Query("SELECT p FROM Product p WHERE p.discountPercent > ?1 ORDER BY p.discountPercent ASC")
+    List<Product> findAllByDiscountPercentGreaterThanOrderByDiscountPercentAsc(float percent);
+
+
+    List<Product> findByNameIn(List<String> names);
 }

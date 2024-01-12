@@ -24,20 +24,17 @@
     </style>
 </head>
 
-<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body class="d-flex flex-column min-vh-100">
+
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 <div th:replace="~{fragments :: messageFlash}"></div>
 
-<div class="form-container" data-bs-theme="dark">
+<div class="form-container" >
     <h2 class="text-center my-5"><i class="fa-duotone fa-address-book"></i>[[${title}]]</h2>
 
 
-    <form th:action="@{/addresses/save}" method="post" data-bs-theme="dark" th:object="${address}">
+    <form th:action="@{/addresses/save}" method="post"  th:object="${address}">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{primary}">
 

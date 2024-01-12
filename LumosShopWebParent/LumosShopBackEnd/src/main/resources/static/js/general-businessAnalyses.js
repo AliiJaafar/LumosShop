@@ -56,8 +56,14 @@ function activatePersonalizedRange(group) {
     firstDateF.valueAsDate = fromDay;
 }
 function priceDisplay(price) {
-    // formatted = $.number(price, decimalPrec, currencyDisSep, currencyGrSep);
-    return prefixPrice + price + suffixPrice;
+    var formattedValue = new Intl.NumberFormat(undefined, {
+        minimumFractionDigits: decimalPrec,
+        maximumFractionDigits: decimalPrec,
+        useGrouping: true,
+
+    }).format(price);
+        // $.number(price, decimalPrec, currencyDisSep, currencyGrSep);
+    return prefixPrice + formattedValue + suffixPrice;
 
 }
 

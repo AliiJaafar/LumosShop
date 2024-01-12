@@ -2,29 +2,26 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:replace="~{fragments :: TheHeader('My Reviews')}"></head>
 
-<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body class="d-flex flex-column min-vh-100">
+
 <div th:replace="~{navbar :: navbar}"></div>
 <ul class="nav justify-content-center bg-secondary-subtle mb-3">
     <th:block sec:authorize="isAuthenticated()">
         <li class="nav-item">
-            <a class="nav-link text-primary-emphasis" th:href="@{/my-account}" sec:authentication="principal.fullName"></a>
+            <a class="nav-link" th:href="@{/my-account}" sec:authentication="principal.fullName"></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-primary-emphasis" th:href="@{/orders}"><i class="fa-thin fa-bags-shopping"></i>Orders</a>
+            <a class="nav-link" th:href="@{/orders}"><i class="fa-thin fa-bags-shopping"></i>Orders</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-primary-emphasis" th:href="@{/addresses}"><i class="fa-duotone fa-location-dot"></i>
+            <a class="nav-link" th:href="@{/addresses}"><i class="fa-duotone fa-location-dot"></i>
                 Addresses</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-primary-emphasis" th:href="@{/FAQ}">FAQ</a>
+            <a class="nav-link " th:href="@{/FAQ}">FAQ</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-primary-emphasis" th:href="@{/bag}"><i class="fa-duotone fa-bag-shopping"></i></a>
+            <a class="nav-link" th:href="@{/bag}"><i class="fa-duotone fa-bag-shopping"></i></a>
         </li>
         <li class="nav-item">
             <form th:action="@{/logout}" method="post">
@@ -39,60 +36,73 @@
 </ul>
 
 
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between mb-5">
-        <h2 class="text-center">Manage Review  <i class="fa-duotone fa-star-sharp text-warning"></i></h2>
-    </div>
-
+<div class="container-fluid">
     <div th:replace="~{fragments :: searchFilter('/review/page/1')}"></div>
 
+    <div class="card shadow mb-3">
+        <div class="card-header py-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="text-primary m-0 fw-bold">My Reviews  <i class="fa-duotone fa-star-sharp text-warning"></i></h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th th:replace="~{fragments :: column_link(${moduleURL},'id','ID','none')}"></th>
+                        <th th:replace="~{fragments :: column_link(${moduleURL},'product.name','Product','none')}"></th>
+                        <th th:replace="~{fragments :: column_link(${moduleURL},'rating','Rating','none')}"></th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="review : ${reviewList}">
+                        <td th:text="${review.id}"></td>
+                        <td th:text="${review.product.name}"></td>
+                        <td th:text="${review.title}"></td>
+                        <td th:text="${review.rating}"></td>
+                        <td th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></td>
+                        <td>
+                            <a class="btn    link-detail"
+                               th:href="@{'/review/info/'+${review.id}}"
+                               th:title="'view more details'">
+                                <i class="fa-duotone fa-file-alt fa-2x"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div th:replace="~{fragments :: pagination(${moduleURL},'review')}"></div>
+        </div>
+    </div>
+
+
+
     <div>
-        <table class="table table-dark table-hover">
-            <thead>
-            <tr>
-                <th th:replace="~{fragments :: column_link(${moduleURL},'id','ID','none')}"></th>
-                <th th:replace="~{fragments :: column_link(${moduleURL},'product.name','Product','none')}"></th>
-                <th th:replace="~{fragments :: column_link(${moduleURL},'rating','Rating','none')}"></th>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
 
-            <tbody>
-            <tr th:each="review : ${reviewList}">
-                <td th:text="${review.id}"></td>
-                <td th:text="${review.product.name}"></td>
-                <td th:text="${review.title}"></td>
-                <td th:text="${review.rating}"></td>
-                <td th:text="${#dates.format(review.reviewDate, 'yyyy/MM/dd HH:mm')}"></td>
-                <td>
-                    <a class="btn    link-detail"
-                       th:href="@{'/review/info/'+${review.id}}"
-                       th:title="'view more details'">
-                    <i class="fa-duotone fa-file-alt fa-2x"></i></a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 
 
-<div class="modal fade" id="detailModal" data-bs-theme="dark">
+<div class="modal fade" id="detailModal" >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         </div>
     </div>
 </div>
-<div class="modal fade" id="customerModal" data-bs-theme="dark">
+<div class="modal fade" id="customerModal" >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         </div>
     </div>
 </div>
 
-<div th:replace="~{fragments :: pagination(${moduleURL},'review')}"></div>
 <footer th:replace="~{fragments :: footer}"></footer>
 
 

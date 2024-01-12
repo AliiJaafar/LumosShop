@@ -70,4 +70,8 @@ public class ShoppingBagService {
         bagRepository.save(selectedItems);
         return targetQty;
     }
+
+    public List<Product> AllProductInCartForCustomer(Integer CustomerID) {
+        return bagRepository.InCartProducts(CustomerID);
+    }
 }

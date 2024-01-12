@@ -39,4 +39,7 @@ public interface InteractionRepository extends JpaRepository<Interaction, Long> 
     @Query("SELECT i FROM Interaction i WHERE i.product.id = :productId AND i.customer.id = :customerId AND i.interactionType = :interactionType")
     Optional<Interaction> findByProductIdAndCustomerIdAndInteractionType(Integer productId, Integer customerId, InteractionType interactionType);
 
+    @Query("select i.product from Interaction i where i.interactionType = 'CLICK' ORDER BY i.value desc limit ?1")
+    public List<Product> findMostClickedProduct(Integer limit);
+
 }

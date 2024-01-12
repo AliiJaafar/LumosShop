@@ -24,18 +24,15 @@
 </head>
 
 
-<body data-bs-theme="dark">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body>
+
 <div th:replace="~{navbar :: navbar}"></div>
 
-<div class="form-container" data-bs-theme="dark">
+<div class="form-container" >
     <h2 class="text-center my-5"><i class="fa-duotone fa-bars"></i> User Registration Form</h2>
 
 
-    <form th:action="@{/setUp-customer}" method="post" data-bs-theme="dark" th:object="${customer}"
+    <form th:action="@{/setUp-customer}" method="post" th:object="${customer}"
           onsubmit="return checkEmailUnique(this);">
         <input type="hidden" th:field="*{id}">
 

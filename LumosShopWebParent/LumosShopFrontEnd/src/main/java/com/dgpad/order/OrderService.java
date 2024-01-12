@@ -135,6 +135,9 @@ public class OrderService {
     }
 
 
+    public List<Order> displayAllOrders() {
+        return (List<Order>) orderRepository.findAll();
+    }
     public void setOrderCUSTOMER_REQUESTED_RETURN(Customer customer,
                                                   Request_Reverted requestReverted) throws OrderNotFoundException {
 
@@ -161,6 +164,10 @@ public class OrderService {
     }
     private String handleNull(String value) {
         return (value != null) ? value : ".";
+    }
+
+    public List<Order> listAllOrdersForCertainCustomer(Integer id) {
+        return orderRepository.findAllTheOrderByCustomer(id);
     }
 
 }

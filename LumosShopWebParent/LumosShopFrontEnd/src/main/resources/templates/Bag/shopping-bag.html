@@ -5,6 +5,11 @@
 
 <head>
     <div th:replace="~{fragments :: TheHeader(${pageTitle})}"></div>
+
+
+    <link th:href="@{/css/test/shoppingBagStyle.css}">
+
+
     <style>
         @media (min-width: 1025px) {
             .h-custom {
@@ -44,54 +49,49 @@
     </style>
 </head>
 
-<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body class="d-flex flex-column min-vh-100">
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col">
-            <div class="card">
-                <div class="card-body p-4">
+        <div id="shoppingBag" class="card">
+            <div class="card-body p-4">
 
-                    <th:block th:unless="${#lists.size(bagList) == 0}">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <h5 class="mb-3"><a th:href="@{/store}" class="text-body"><i
-                                        class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
-                                <hr>
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div>
-                                        <p class="mb-1">Shopping cart</p>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0"><span class="text-muted">
-                                            Sort by:</span> <a href="#" class="text-body">price
-                                            <i class="fas fa-angle-down mt-1"></i></a></p>
-                                    </div>
+                <th:block th:unless="${#lists.size(bagList) == 0}">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <h5 class="mb-3"><a th:href="@{/store}" class="text-body"><i
+                                    class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <p class="mb-1">Shopping cart</p>
                                 </div>
-                                <th:block th:each="item, status : ${bagList}">
-                                    <div class="card mb-3" th:id="'seq'+ ${status.count}">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img th:src="@{${item.product.mainImagePath}}"
-                                                             class="img-fluid rounded-3 me-3" alt="Shopping item"
-                                                             style="width: 80px;">
+                                <div>
+                                    <p class="mb-0"><span class="text-muted">
+                                            Sort by:</span> <a href="#" class="text-body">price
+                                        <i class="fas fa-angle-down mt-1"></i></a></p>
+                                </div>
+                            </div>
+                            <th:block th:each="item, status : ${bagList}">
+                                <div class="card mb-3" th:id="'seq'+ ${status.count}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex flex-row align-items-center">
+                                                <div>
+                                                    <img th:src="@{${item.product.mainImagePath}}"
+                                                         class="img-fluid rounded-3 me-3" alt="Shopping item"
+                                                         style="width: 80px;">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <a class="fs-5" th:href="@{'/store/p/'+${item.product.alias}}"
+                                                       target="_blank" th:text="${item.product.name}"></a>
+                                                    <div th:replace="~{Bag/AddToBag :: stock_qty(${item.quantity},${item.product.id})}"></div>
+                                                    <div class="mt-2">
+                                                        <div th:replace="~{fragments :: priceOfProduct(${item.product})}"></div>
                                                     </div>
-                                                    <div class="ms-3">
-                                                        <a class="fs-5" th:href="@{'/store/p/'+${item.product.alias}}"
-                                                           target="_blank" th:text="${item.product.name}"></a>
-                                                        <div th:replace="~{Bag/AddToBag :: stock_qty(${item.quantity},${item.product.id})}"></div>
-                                                        <div class="mt-2">
-                                                            <div th:replace="~{fragments :: priceOfProduct(${item.product})}"></div>
-                                                        </div>
-                                                        <span class="fs-4">
+                                                    <span class="fs-4">
                                                     = <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}" th:remove="tag">
                                                             [[${CURRENCY_SYMBOL}]]
                                                         </span>
@@ -103,192 +103,202 @@
                                                                 [[${CURRENCY_SYMBOL}]]
                                                             </span>
                                                         </span>
-                                                    </div>
-
                                                 </div>
-                                                <a class="align-content-center deleteBtn" href="#"
-                                                   th:seq="${status.count}" th:product_id="${item.product.id}">
-                                                    <i class="fa fa-duotone fa-trash-alt"></i>
-                                                </a>
+
                                             </div>
+                                            <a class="align-content-center deleteBtn" href="#"
+                                               th:seq="${status.count}" th:product_id="${item.product.id}">
+                                                <i class="fa fa-duotone fa-trash-alt"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                </th:block>
-                            </div>
-                            <div class=" col-lg-5">
-                                <th:block th:if="${#lists.size(bagList) == 0}">
-                                    <p>nothing to display choose something to added to your bag</p>
-                                </th:block>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div class=" col-lg-5">
+                            <th:block th:if="${#lists.size(bagList) == 0}">
+                                <p>nothing to display choose something to added to your bag</p>
+                            </th:block>
 
 
-                                <th:block th:unless="${#lists.size(bagList) == 0}">
-                                    <div class="my-4">
-                                        <h4>
-                                            Total price: <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}"
-                                                               th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-                                            <span class="fs-3 totalPrice"
-                                                  th:text="${#numbers.formatDecimal(TotalBagPrice,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}"></span>
-                                            <span
-                                                    th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}"
-                                                    th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-                                        </h4>
+                            <th:block th:unless="${#lists.size(bagList) == 0}">
+                                <div class="my-4">
+                                    <h4>
+                                        Total price: <span th:if="${CURRENCY_SYMBOL_PLACE == 'Left'}"
+                                                           th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                                        <span class="fs-3 totalPrice"
+                                              th:text="${#numbers.formatDecimal(TotalBagPrice,1,CURRENCY_GROUPING_SEPARATOR,CURRENCY_DISPLAY_PRECISION,CURRENCY_DECIMAL_SEPARATOR)}"></span>
+                                        <span
+                                                th:if="${CURRENCY_SYMBOL_PLACE == 'Right'}"
+                                                th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+                                    </h4>
 
-                                    </div>
-                                    <!-- <div class=" card bg-primary text-white rounded-3">
-                                         <div class="card-body">
-                                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                                 <h5 class="mb-0">Card details</h5>
-                                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                                                      class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
-                                             </div>
-
-                                             <p class="small mb-2">Card type</p>
-                                             <a href="#!" type="submit" class="text-white"><i
-                                                     class="fab fa-cc-mastercard fa-2x me-2"></i></a>
-                                             <a href="#!" type="submit" class="text-white"><i
-                                                     class="fab fa-cc-visa fa-2x me-2"></i></a>
-                                             <a href="#!" type="submit" class="text-white"><i
-                                                     class="fab fa-cc-amex fa-2x me-2"></i></a>
-                                             <a href="#!" type="submit" class="text-white"><i
-                                                     class="fab fa-cc-paypal fa-2x"></i></a>
-
-                                             <form class="mt-4">
-                                                 <div class="form-outline form-white mb-4">
-                                                     <input type="text" id="typeName"
-                                                            class="form-control form-control-lg"
-                                                            siez="17"
-                                                            placeholder="Cardholder's Name"/>
-                                                     <label class="form-label" for="typeName">Cardholder's Name</label>
-                                                 </div>
-
-                                                 <div class="form-outline form-white mb-4">
-                                                     <input type="text" id="typeText"
-                                                            class="form-control form-control-lg"
-                                                            siez="17"
-                                                            placeholder="1234 5678 9012 3457" minlength="19"
-                                                            maxlength="19"/>
-                                                     <label class="form-label" for="typeText">Card Number</label>
-                                                 </div>
-
-                                                 <div class="row mb-4">
-                                                     <div class="col-md-6">
-                                                         <div class="form-outline form-white">
-                                                             <input type="text" id="typeExp"
-                                                                    class="form-control form-control-lg"/>
-                                                             <label class="form-label" for="typeExp">Expiration</label>
-                                                         </div>
-                                                     </div>
-                                                     <div class="col-md-6">
-                                                         <div class="form-outline form-white">
-                                                             <input type="password" id="typeText"
-                                                                    class="form-control form-control-lg"
-                                                                    placeholder="&#9679;&#9679;&#9679;" size="1"
-                                                                    minlength="3"
-                                                                    maxlength="3"/>
-                                                             <label class="form-label" for="typeText">Cvv</label>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-
-                                             </form>
-
-                                             <hr class="my-4">
-
-                                             <div class="d-flex justify-content-between">
-                                                 <p class="mb-2">Subtotal</p>
-                                                 <p class="mb-2">$4798.00</p>
-                                             </div>
-
-                                             <div class="d-flex justify-content-between">
-                                                 <p class="mb-2">Shipping</p>
-                                                 <p class="mb-2">$20.00</p>
-                                             </div>
-
-                                             <div class="d-flex justify-content-between mb-4">
-                                                 <p class="mb-2">Total(Incl. taxes)</p>
-                                                 <p class="mb-2">$4818.00</p>
-                                             </div>
-
-                                             <button type="button" class="btn btn-info btn-block btn-lg">
-                                                 <div class="d-flex justify-content-between">
-                                                     <span>Checkout <i
-                                                             class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                                                 </div>
-                                             </button>
-
-                                         </div>
-                                     </div>-->
-                                    <div th:if="${CoveredShippingArea}">
-                                        <form th:action="@{/checkout}">
-                                            <button type="submit" class="btn btn-info btn-block btn-lg">
-                                                <div class="d-flex justify-content-between">
+                                </div>
+                                <div th:if="${CoveredShippingArea}">
+                                    <form th:action="@{/checkout}">
+                                        <button type="submit" class="btn btn-info btn-block btn-lg">
+                                            <div class="d-flex justify-content-between">
                                                     <span>Checkout <i
                                                             class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div th:unless="${CoveredShippingArea}">
-                                        <h4 class="text-warning-emphasis opacity-75">Regrettably, we are unable to ship
-                                            to your area as it falls outside our coverage area.</h4>
+                                            </div>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div th:unless="${CoveredShippingArea}">
+                                    <h4 class="text-warning-emphasis opacity-75">Regrettably, we are unable to ship
+                                        to your area as it falls outside our coverage area.</h4>
 
-                                        <a th:href="@{/my-account(redirect=bag)}"
-                                           th:if="${CustomerUsingHisOriginalAddress}">
-                                            Please revise/modify your address details
-                                        </a>
-                                        <a th:href="@{/addresses(redirect=bag)}"
-                                           th:unless="${CustomerUsingHisOriginalAddress}">
-                                            Kindly select a different address
-                                        </a>
-                                    </div>
+                                    <a th:href="@{/my-account(redirect=bag)}"
+                                       th:if="${CustomerUsingHisOriginalAddress}">
+                                        Please revise/modify your address details
+                                    </a>
+                                    <a th:href="@{/addresses(redirect=bag)}"
+                                       th:unless="${CustomerUsingHisOriginalAddress}">
+                                        Kindly select a different address
+                                    </a>
+                                </div>
 
-                                </th:block>
+                            </th:block>
+                        </div>
+                    </div>
+                </th:block>
+                <th:block th:if="${#lists.size(bagList) == 0}">
+                    <div class="row text-center">
+                        <h1 class="display-6">Try to Choose from our products</h1>
+                    </div>
+                    <div class="col-12 text-center my-5">
+                        <a th:href="@{/}" class="btn btn-primary rounded-pill py-3 px-5">View Products</a>
+                    </div>
+                </th:block>
+
+            </div>
+        </div>
+        <th:block th:unless="${#lists.size(recommendationList) == 0}">
+
+            <!-- Store Start -->
+            <div class="container-xxl py-5">
+                <div class="container">
+                    <div class="section-title text-center mx-auto">
+                        <p class="fs-5 fw-medium fst-italic text-primary">recommended</p>
+                    </div>
+                    <div class="row g-4">
+                        <div th:each="product, iterStat : ${recommendationList}" class="col-lg-4 col-md-6  ">
+                            <div class="store-item position-relative text-center">
+                                <img class="img-fluid" th:src="${product.mainImagePath}" alt="">
+                                <div class="p-4">
+                                    <h4 class="mb-3" th:text="${product.name}"></h4>
+                                    <h4 class=" text-primary">
+                                        <span th:replace="~{product/productPartialView :: price(${product.discountPrice})}"></span>
+                                    </h4>
+                                </div>
+                                <div>
+                                    <a class="btn btn-dark rounded-pill py-2 px-4 m-2 btnAddToCart"
+                                       th:productId="${product.id}">Add to Cart <i
+                                            class="fa fa-cart-plus ms-2"></i></a>
+                                </div>
                             </div>
                         </div>
-                    </th:block>
-                    <th:block th:if="${#lists.size(bagList) == 0}">
-                        <div class="row text-center">
-                            <h4>Try to Choose from our products</h4>
+                        <div class="col-12 text-center">
+                            <a th:href="@{/}" class="btn btn-primary rounded-pill py-3 px-5">View More Products</a>
                         </div>
-                    </th:block>
-
+                    </div>
                 </div>
             </div>
-        </div>
+            <!-- Store End -->
+        </th:block>
     </div>
-    <div data-bs-theme="dark" class="modal fade text-center" id="modalDialog" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content ">
-                <div class="modal-header text-warning">
-                    <h3 class="modal-title" id="modalTitle"></h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <span class="fs-5 fw-bold" id="modalBody"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        contextPath = "[[@{/}]]";
-        var csrfHeaderName = "[[${_csrf.headerName}]]";
-        var csrfValue = "[[${_csrf.token}]]";
 
-        // groupingSeperator = $[[CURRENCY_GROUPING_SEPARATOR]];
-        // decimalSeperator = $[[CURRENCY_DECIMAL_SEPARATOR]];
-        // precision = $[[CURRENCY_DISPLAY_PRECISION]]
 
-        decimalDigits = "[[${CURRENCY_DISPLAY_PRECISION}]]";
-        decimalPointType = "[[${CURRENCY_DECIMAL_SEPARATOR}]]";
-        thousandsPointType = "[[${CURRENCY_GROUPING_SEPARATOR}]]";
-
-    </script>
-    <script th:src="@{/JS/ShoppingBagStuff.js}"></script>
-    <!--    <script th:src="@{/JS/Inc_dec_Qty.js}"></script>-->
 </div>
+<div class="modal fade text-center" id="modalDialog" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ">
+            <div class="modal-header text-warning">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="fs-5 fw-bold" id="modalBody"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Flexbox container for aligning the toasts -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+
+    <div class="toast border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img th:src="@{/images/lumosOnlyShape.png}" width="30px" class="rounded me-2" alt="logo">
+            <strong id="toastHeadline" class="me-auto"></strong>
+            <small>Just Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".btnAddToCart").on("click", function (event) {
+            var productId = $(this).attr("productId");
+            addToCartEvent(productId);
+        });
+
+    });
+    function showModalDialog(title, message) {
+        $("#modalTitle").html(title);
+        $("#modalBody").html(message);
+        $("#modalDialog").modal("show");
+
+    }
+    function addToCartEvent(productID) {
+        URL = contextPath + "cart/add/" + productID + "/" + 1;
+
+        console.log("url " + URL);
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            beforeSend: setCsrfHeader
+        }).done(function (response) {
+            showModalDialog("Shopping <i class='fa-duotone fa-bag-shopping'></i>", response);
+            $('#modalDialog').on('hidden.bs.modal', function () {
+                // Reload or refresh the page after the modal is hidden
+                location.reload();
+            });
+        }).fail(function () {
+            showModalDialog("Error", "Something went wrong while adding the products");
+        });
+    }
+
+    contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
+
+    // groupingSeperator = $[[CURRENCY_GROUPING_SEPARATOR]];
+    // decimalSeperator = $[[CURRENCY_DECIMAL_SEPARATOR]];
+    // precision = $[[CURRENCY_DISPLAY_PRECISION]]
+
+    decimalDigits = "[[${CURRENCY_DISPLAY_PRECISION}]]";
+    decimalPointType = "[[${CURRENCY_DECIMAL_SEPARATOR}]]";
+    thousandsPointType = "[[${CURRENCY_GROUPING_SEPARATOR}]]";
+
+    $(".productPage-ratingStar").rating({
+        displayOnly: true,
+        hoverOnClear: false,
+        showCaption: false,
+        theme: 'krajee-uni'
+
+    });
+</script>
+<script th:src="@{/JS/ShoppingBagStuff.js}"></script>
+
+<!--    <script th:src="@{/JS/Inc_dec_Qty.js}"></script>-->
 </body>
 <footer th:replace="~{fragments :: footer}"></footer>
 </html>

@@ -5,7 +5,7 @@
 
 </head>
 
-<body data-bs-theme="dark" class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" id="page-top">
 
 
 <div th:replace="~{navbar :: navbar}"></div>
@@ -153,8 +153,8 @@
 -->
 
 
-<div class="container-fluid">
-    <div id="category-section">
+<div class="container-fluid mt-5">
+    <div id="category-section my-5">
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
@@ -163,66 +163,216 @@
             </div>
         </div>
 
-        <div class="row row-cols-sm-1 row-cols-md-4">
+        <div class="row row-cols-sm-1 row-cols-md-5 mb-3">
             <div class="col" th:each="category : ${categoryList}">
 
-                <div class="card m-3 text-center">
-
-                    <div class="card-body">
-                        <a th:href="@{'/store/c/'+${category.alias}}" class="card-title">
-                            <div class="image-container">
-                                <img class="card-img-top" style="width: 100px" th:src="@{${category.imagePath}}"/>
-                            </div>
-                            <p th:text="${category.name}"></p>
+                <div class="category-card mb-2">
+                    <div class="d-flex justify-content-center align-items-center mb-4">
+                        <a th:href="@{'/store/c/'+${category.alias}}">
+                            <img th:src="@{${category.imagePath}}" width="100px" alt="">
                         </a>
                     </div>
+                    <h5 class="mb-0 text-center"><b th:text="${category.name}"></b></h5>
                 </div>
             </div>
         </div>
     </div>
+    <th:block sec:authorize="isAuthenticated()">
+        <hr class="my-5">
+        <div id="recommended-section">
+            <section id="slider" class="pt-5">
+                <div class="container">
+                    <div class="section-title">
+                        <h3>Recommended For you</h3>
+                    </div>
+                    <div class="slider">
+                        <div class="owl-carousel">
+                            <div th:each="product, iterStat : ${products}">
+                                <div class="slider-card">
+                                    <div class="d-flex justify-content-center align-items-center mb-4">
+                                        <a th:href="@{'/store/p/'+ ${product.alias}}">
+                                            <img th:src="@{${product.mainImagePath}}" width="200px" alt="">
+                                        </a>
+                                    </div>
+                                    <h5 class="mb-0 text-center"><b th:text="${product.name}"></b></h5>
+                                    <table class="d-flex justify-content-center">
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="productPage-ratingStar" dir="ltr"
+                                                       data-size="xs"
+                                                       th:value="${product.rating_avg}">
+                                            </td>
+                                            <td>
+                                                <small>[[${product.reviews}]]</small>
+                                            </td>
+                                        </tr>
+                                    </table>
 
-    <div id="recommended-section">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2>Recommended For you</h2>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div th:each="product, iterStat : ${products}" class="col-md-3 my-4">
-                    <div th:replace="~{product/productPartialView :: productCard}"></div>
-                </div>
-            </div>
-        </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-12">
-                    <div class="owl-carousel popular-slider">
-                        <div th:each="product, iterStat : ${products}">
-                            <div th:replace="~{product/productPartialView :: productCard}"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
+        </div>
+    </th:block>
 
+
+    <hr class="my-5">
+    <section class="pt-5">
+        <div class="container">
+            <div id="InSale-section">
+
+                <div class="section-title">
+                    <h3>In Sale</h3>
+                </div>
+                <div class="slider">
+                    <div class="owl-carousel">
+                        <div th:each="p, iterStat : ${productInSale}">
+                            <div class="slider-card">
+                                <div class="d-flex justify-content-center align-items-center mb-4">
+                                    <a th:href="@{'/store/p/'+ ${p.alias}}">
+                                        <img th:src="@{${p.mainImagePath}}" width="200px" alt="">
+                                        <span class="price-dec">[[${p.discountPercent}]]% Off</span>
+                                    </a>
+                                </div>
+                                <h5 class="mb-0 text-center"><b th:text="${p.name}"></b></h5>
+                                <table class="d-flex justify-content-center">
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="productPage-ratingStar" dir="ltr"
+                                                   data-size="xs"
+                                                   th:value="${p.rating_avg}">
+                                        </td>
+                                        <td>
+                                            <small>[[${p.reviews}]]</small>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="d-flex justify-content-center my-3">
+                                <span class="text-danger fw-bolder">
+                                    <span th:replace="~{product/productPartialView :: price(${p.discountPrice})}"></span>
+                                </span>
+                                    <del>
+                                    <span>
+                                        <span th:replace="~{product/productPartialView :: price(${p.price})}"></span>
+                                    </span>
+                                    </del>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5">
+    <section class="pt-5">
+        <div class="container">
+            <div id="MostSell-section">
+
+                <div class="section-title">
+                    <h3>Most Selling</h3>
+                </div>
+                <div class="slider">
+                    <div class="owl-carousel">
+                        <div th:each="pr, iterStat : ${productMostSell}">
+                            <div class="slider-card">
+                                <div class="d-flex justify-content-center align-items-center mb-4">
+                                    <a th:href="@{'/store/p/'+ ${pr.alias}}">
+                                        <img th:src="@{${pr.mainImagePath}}" width="200px" alt="">
+                                    </a>
+                                </div>
+                                <h5 class="mb-0 text-center"><b th:text="${pr.name}"></b></h5>
+                                <table class="d-flex justify-content-center">
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="productPage-ratingStar" dir="ltr"
+                                                   data-size="xs"
+                                                   th:value="${pr.rating_avg}">
+                                        </td>
+                                        <td>
+                                            <small>[[${pr.reviews}]]</small>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<hr class="my-5">
+<section class="pt-5">
+    <div class="container">
+        <div id="MostViewed-section">
+
+            <div class="section-title">
+                <h3>Most Viewed</h3>
+            </div>
+            <div class="slider">
+                <div class="owl-carousel">
+                    <div th:each="pv, iterStat : ${productMostViewed}">
+                        <div class="slider-card">
+                            <div class="d-flex justify-content-center align-items-center mb-4">
+                                <a th:href="@{'/store/p/'+ ${pv.alias}}">
+                                    <img th:src="@{${pv.mainImagePath}}" width="200px" alt="">
+                                </a>
+                            </div>
+                            <h5 class="mb-0 text-center"><b th:text="${pv.name}"></b></h5>
+                            <table class="d-flex justify-content-center">
+                                <tr>
+                                    <td>
+                                        <input type="text" class="productPage-ratingStar" dir="ltr"
+                                               data-size="xs"
+                                               th:value="${pv.rating_avg}">
+                                    </td>
+                                    <td>
+                                        <small>[[${pv.reviews}]]</small>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="d-flex justify-content-center my-3">
+                                <div th:if="${pv.discountPercent <= 0}">
+                                <span class="fw-semibold">
+                                    <span th:replace="~{product/productPartialView :: price(${pv.price})}"></span>
+                                </span>
+                                </div>
+                                <div th:if="${pv.discountPercent > 0}">
+                                <span class="text-danger fw-bolder">
+                                    <span th:replace="~{product/productPartialView :: price(${pv.discountPrice})}"></span>
+                                </span>
+                                    <del>
+                                    <span>
+                                        <span th:replace="~{product/productPartialView :: price(${pv.price})}"></span>
+                                    </span>
+                                    </del>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-</div>
-
-
+</section>
 
 <footer th:replace="~{fragments :: footer}"></footer>
-<script th:src="@{/JS/active.js}"></script>
-<script th:src="@{/JS/owl-carousel.js}"></script>
+
+<script th:src="@{/JS/test/owl.carousel.min.js}"></script>
+<script th:src="@{/JS/test/script.js}"></script>
+
 <script>
     $(".productPage-ratingStar").rating({
         displayOnly: true,
         hoverOnClear: false,
         showCaption: false,
-        theme: 'krajee-uni'
+        theme: 'krajee-fas'
 
     });
 </script>

@@ -95,7 +95,6 @@ function changeTotalPrice() {
 
 function deleteProduct(ref,productId) {
     URL = contextPath + "bag/delete/" + productId;
-    alert(URL);
     $.ajax({
         type: "DELETE",
         url: URL,

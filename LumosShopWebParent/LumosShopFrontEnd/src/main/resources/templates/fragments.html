@@ -18,24 +18,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
 
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-W27ZPDZ7');</script>
-    <!-- End Google Tag Manager -->
-
-
 <!--    Test Style-->
-    <link rel="stylesheet" th:href="@{/css/testStyle.css}">
-    <link rel="stylesheet" th:href="@{/css/owl-carousel.css}">
 
+
+<!--    <link rel="stylesheet" th:href="@{/css/test/flatly_bootstrap.min.css}">-->
+    <link rel="stylesheet" th:href="@{/css/test/owl.carousel.min.css}">
+
+
+    <link rel="stylesheet" th:href="@{/css/test/sb-admin-2.min.css}">
+    <link rel="stylesheet" th:href="@{/css/testStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/test/styles.css}">
 <!--    Rating-Plugin-->
     <link th:href="@{/rating-plugin/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
     <script th:src="@{/rating-plugin/js/star-rating.js}" type="text/javascript"></script>
-    <link th:href="@{/rating-plugin/themes/krajee-uni/theme.css}" media="all" rel="stylesheet" type="text/css" />
-    <script th:src="@{/rating-plugin/themes/krajee-uni/theme.js}"></script>
+    <link th:href="@{/rating-plugin/themes/krajee-fas/theme.css}" media="all" rel="stylesheet" type="text/css" />
+    <script th:src="@{/rating-plugin/themes/krajee-fas/theme.js}"></script>
+
+
+
+</div>
+<!--SCRIPTS-->
+<div th:fragment="scripts" th:remove="tag">
+    <!-- Bootstrap core JavaScript-->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/JS/test/sb-admin-2.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/dist/jquery.min.js}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 </div>
 <div th:fragment="alert">
     <div th:if="${message != null}" class="my-2 alert alert-success text-center">
@@ -59,7 +76,7 @@
 <div th:fragment="searchFilter(moduleURL)">
 
 
-    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}" data-bs-theme="dark">
+    <form class="d-inline-flex mb-3" role="search" th:action="@{${moduleURL}}">
 
         <input type="hidden" name="sortField" th:value="${sortField}">
         <input type="hidden" name="sortDirection" th:value="${sortDirection}">
@@ -78,8 +95,7 @@
 </div>
 
 <th th:fragment="column_link(moduleURL,fieldName,columnLabel,removeTag)" th:remove="${removeTag}">
-    <a class="text-light"
-       th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDirection=' + ${sortField != fieldName ? sortDirection : reverseSortDirection} + ${keyword != null ? '&keyword='+ keyword : ''}}">
+    <a th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDirection=' + ${sortField != fieldName ? sortDirection : reverseSortDirection} + ${keyword != null ? '&keyword='+ keyword : ''}}">
         [[${columnLabel}]]
     </a>
     <span th:if="${sortField == fieldName}"
@@ -103,7 +119,7 @@
         </div>
 
         <div th:if="${totalPages > 1}">
-            <nav class="my-3" data-bs-theme="dark">
+            <nav class="my-3" >
                 <ul class="pagination  justify-content-center">
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
                         <a th:replace="~{fragments :: page_link(${moduleURL}, 1,'First')}"></a>
@@ -158,8 +174,36 @@
     <span th:text="${#dates.format(date, 'yyyy-MM-dd HH:mm:ss')}"></span>
 </div>
 
+<footer th:fragment="footer" class="footer mt-auto py-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarFooterDropdown"
+                        aria-controls="navbarFooterDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarFooterDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Returns <i class="fa-duotone fa-ampersand"></i> Refund</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="copyright text-center py-3" id="footer">
+            <p th:utext="${COPYRIGHT}"></p>
+        </div>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa-solid fa-angle-up"></i>
+        </a>
+</footer>
+<!--<footer th:fragment="footer" class="footer mt-auto py-3">
 
-<div th:fragment="footer">
     <div class="mt-4">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -181,9 +225,14 @@
             </div>
         </nav>
     </div>
-    <div class="text-center py-3" id="footer" style="background-color: rgba(0,0,0,0.6)">
-        <p th:utext="${COPYRIGHT}" class="text-light"></p>
+    <div class="copyright text-center py-3" id="footer">
+        <p th:utext="${COPYRIGHT}"></p>
     </div>
-</div>
+    &lt;!&ndash; Scroll to Top Button&ndash;&gt;
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa-solid fa-angle-up"></i>
+    </a>
+</footer>-->
+
 
 </html>

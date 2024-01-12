@@ -4,20 +4,30 @@
 
 <head th:replace="~{fragments :: TheHeader('ERROR')}"></head>
 
-<body data-bs-theme="dark">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div th:replace="~{navbar :: navbar}"></div>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<div class="text-center m-3">
-    <h2>Oops! It seems you've hit a locked door. This page requires specific <i class="text-danger"> authorization</i>.</h2>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <div th:replace="~{navbar :: navbar}"></div>
+
+<!--            CONTENT-->
+            <div class="text-center m-3">
+                <h2>Oops! It seems you've hit a locked door. This page requires specific <i class="text-danger"> authorization</i>.</h2>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer th:replace="~{fragments :: footer}"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+
 </div>
-<footer th:replace="~{fragments :: footer}"></footer>
-
-
-
+<!-- End of Page Wrapper -->
 
 
 </body>

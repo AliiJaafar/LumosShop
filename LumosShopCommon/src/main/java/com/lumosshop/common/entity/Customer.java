@@ -210,4 +210,12 @@ public class Customer {
         return fullAddress;
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

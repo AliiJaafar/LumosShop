@@ -2,6 +2,7 @@ package com.dgpad.admin;
 
 import com.dgpad.admin.Shipping.ShippingRepository;
 import com.dgpad.admin.order.OrderRepository;
+import com.dgpad.admin.order.OrderSummaryRepository;
 import com.dgpad.admin.review.ReviewRepository;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.review.Review;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrderSummaryRepository orderSummaryRepository;
     @Autowired
     private ShippingRepository shippingRepository;
     @Autowired
@@ -136,6 +140,15 @@ public class OrderRepositoryTest {
         assertThat(orders).hasSizeGreaterThan(0);
 
         orders.forEach(System.out::println);
+    }
+
+    @Test
+    public void testListMostSeller() {
+        List<Product> productAsc = orderSummaryRepository.findMostSellerProductAsc();
+
+        assertThat(productAsc).hasSizeGreaterThan(0);
+
+        productAsc.forEach(System.out::println);
     }
 
     @Test

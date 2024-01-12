@@ -4,6 +4,7 @@ import com.dgpad.customer.CustomerRepository;
 import com.dgpad.interactions.InteractionRepository;
 import com.dgpad.product.ProductRepository;
 import com.dgpad.review.ReviewRepository;
+import com.dgpad.shoppingBag.ShoppingBagRepository;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.interactions.Interaction;
 import com.lumosshop.common.entity.interactions.InteractionType;
@@ -30,6 +31,21 @@ public class ReviewRepositoryTest {
     @Autowired
     private InteractionRepository interactionRepository;
 
+    @Autowired
+    private ShoppingBagRepository shoppingBagRepository;
+
+    @Test
+    public void testListAllInCartProduct() {
+        Iterable<Product> Iterable = shoppingBagRepository.InCartProducts(37);
+
+        Iterable.forEach(System.out::println);
+    }
+    @Test
+    public void testListAllCustomerInCity() {
+        Iterable<Customer> Iterable = customerRepository.findByNation("Lebanon");
+
+        Iterable.forEach(System.out::println);
+    }
     @Test
     public void testFindProductByID() {
         Integer productId = 1;
@@ -41,6 +57,12 @@ public class ReviewRepositoryTest {
     @Test
     public void testListAllInteractions() {
         Iterable<Interaction> interactionIterable = interactionRepository.findAll();
+
+        interactionIterable.forEach(System.out::println);
+    }
+    @Test
+    public void testListMostClickedProduct() {
+        Iterable<Product> interactionIterable = interactionRepository.findMostClickedProduct(4);
 
         interactionIterable.forEach(System.out::println);
     }
