@@ -1,4 +1,4 @@
-package com.dgpad.admin.controller;
+package com.dgpad.admin.user;
 
 import com.dgpad.admin.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

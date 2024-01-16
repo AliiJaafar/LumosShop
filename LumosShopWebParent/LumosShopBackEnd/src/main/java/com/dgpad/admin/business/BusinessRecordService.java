@@ -23,27 +23,14 @@ public class BusinessRecordService extends AbstractBusinessRecordService {
     public List<BusinessRecord> getRecordsDataWithinCertainTimeframe(Date startIn, Date endIn,RecordsGroup group) {
 
         List<Order> orderList = orderRepository.findOrdersByDate(startIn, endIn);
-        displayTransactions(orderList);
         //OK
         List<BusinessRecord> businessRecordList = produceReadyToDisplayData(startIn, endIn, group);
 
-        System.out.println();
-
         determineSalesBeforeSendingData(orderList, businessRecordList);
-        displaySalesData(businessRecordList);
 
         return businessRecordList;
     }
 
-
-
-
-
-
-
-
-
-    /*////////////*/
 
     private void determineSalesBeforeSendingData(List<Order> listOrders, List<BusinessRecord> recordList) {
 
@@ -64,16 +51,6 @@ public class BusinessRecordService extends AbstractBusinessRecordService {
         }
 
     }
-    private void displaySalesData(List<BusinessRecord> recordList) {
-
-        recordList.forEach(record -> {
-            System.out.printf("%s, %10.2f, %10.2f, %d \n",
-                    record.getCode(), record.getTotalRevenue(),
-                    record.getNetRevenue(), record.getTotalTransactions());
-        });
-
-    }
-
     private List<BusinessRecord> produceReadyToDisplayData(Date startIn, Date endIn, RecordsGroup recordsGroup) {
 
         List<BusinessRecord> businessRecords = new ArrayList<>();
@@ -104,14 +81,7 @@ public class BusinessRecordService extends AbstractBusinessRecordService {
         } while (firstDay.before(lastDay));
         return businessRecords;
     }
-    private void displayTransactions(List<Order> listOrders) {
 
-        listOrders.forEach(order -> {
-            System.out.printf("%-3d | %s | %10.2f | %10.2f \n",
-                    order.getId(), order.getOrderDate(), order.getTotalPrice(), order.getProductCost());
-        });
-
-    }
 
 
 

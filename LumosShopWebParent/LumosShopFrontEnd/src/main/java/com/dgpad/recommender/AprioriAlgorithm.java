@@ -1,4 +1,4 @@
-package com.dgpad.recommender.demographic;
+package com.dgpad.recommender;
 
 import com.lumosshop.common.entity.ItemSet;
 import com.lumosshop.common.entity.order.Order;

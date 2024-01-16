@@ -1,14 +1,13 @@
-package com.dgpad.recommender.demographic;
+package com.dgpad.recommender.BagRec;
 
 import com.dgpad.customer.CustomerRepository;
 import com.dgpad.order.OrderSummaryRepository;
+import com.dgpad.recommender.AprioriAlgorithm;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.ItemSet;
 import com.lumosshop.common.entity.order.Order;
-import com.lumosshop.common.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import weka.core.Instances;
 
 import java.util.List;
 

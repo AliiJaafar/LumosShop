@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class MatrixController {
+public class RecommenderController {
 
     @Autowired
     private  RecommenderService recommenderService;
@@ -57,7 +57,7 @@ public class MatrixController {
     }
 
     @GetMapping("/recommendations")
-    public String generateRecommendations(HttpServletRequest httpServletRequest, Model model) throws CustomerNotFoundException {
+    public String generateRecommendationsWithUsingMatrix(HttpServletRequest httpServletRequest, Model model) throws CustomerNotFoundException {
         Customer customer = isTheCustomerAuthenticate(httpServletRequest);
         // Assuming you have a method to calculate item similarities
         Map<Integer, Map<Integer, Double>> itemSimilarities = recommenderService.calculateAndUseItemSimilarities();

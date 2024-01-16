@@ -1,35 +1,31 @@
-package com.dgpad.recommender.demographic;
+package com.dgpad.recommender;
 
 import com.dgpad.order.OrderService;
 import com.dgpad.product.ProductRepository;
+import com.dgpad.recommender.BagRec.SegmentationService;
 import com.dgpad.shoppingBag.ShoppingBagService;
 import com.lumosshop.common.entity.Customer;
-import com.lumosshop.common.entity.ItemSet;
 import com.lumosshop.common.entity.order.Order;
 import com.lumosshop.common.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/customers")
-public class CustomerSegmentationRestController {
+public class RecommenderRestController {
 
-    @Autowired
-    private SegmentationService segmentationService;
     @Autowired
     private OrderService orderService;
     @Autowired
-    private RecommendationService recommendationService;
+    private RecommenderService recommendationService;
     @Autowired
     private ShoppingBagService shoppingBagService;
     @Autowired
     private ProductRepository productRepository;
-    @GetMapping("/byCity/{city}")
+/*    @GetMapping("/byCity/{city}")
     public ResponseEntity<List<Customer>> getCustomersByCity(@PathVariable String city) {
         List<Customer> customers = segmentationService.getCustomerInCity(city);
         return ResponseEntity.ok(customers);
@@ -44,7 +40,7 @@ public class CustomerSegmentationRestController {
     public ResponseEntity<List<Object[]>> getPopularProducts() {
         List<Object[]> popularProducts = segmentationService.getPopularProducts();
         return ResponseEntity.ok(popularProducts);
-    }
+    }*/
 
 
 /*    @GetMapping("/recommendations/{CustomerId}")
@@ -62,7 +58,7 @@ public class CustomerSegmentationRestController {
     }
 
     @GetMapping("/recommendations/{customerId}")
-    public ResponseEntity<List<String>> getRecommendations(@PathVariable Integer customerId) {
+    public ResponseEntity<List<String>> getRecommendationsUsingFreq(@PathVariable Integer customerId) {
 
         // Get all orders for the customer
         List<Order> allOrder = orderService.displayAllOrders();

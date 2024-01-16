@@ -1,4 +1,4 @@
-package com.dgpad.admin.controller;
+package com.dgpad.admin.user;
 
 import com.dgpad.admin.util.B2_Util;
 import com.dgpad.admin.util.FileUploadUtil;

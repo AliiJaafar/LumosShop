@@ -6,7 +6,7 @@ import com.dgpad.address.CustomerAddressesService;
 import com.dgpad.customer.CustomerService;
 import com.dgpad.order.OrderService;
 import com.dgpad.product.ProductRepository;
-import com.dgpad.recommender.demographic.RecommendationService;
+import com.dgpad.recommender.RecommenderService;
 import com.lumosshop.common.entity.Customer;
 import com.lumosshop.common.entity.CustomerAddresses;
 import com.lumosshop.common.entity.Shipping;
@@ -16,11 +16,9 @@ import com.lumosshop.common.entity.product.Product;
 import com.lumosshop.common.exception.CustomerNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class ShoppingBagController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private RecommendationService recommendationService;
+    private RecommenderService recommendationService;
     @Autowired
     private ProductRepository productRepository;
 

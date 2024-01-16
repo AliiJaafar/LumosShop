@@ -1,21 +1,19 @@
-package com.dgpad.recommender.demographic;
+/*
+package com.dgpad.recommender;
 
+import com.dgpad.recommender.AprioriAlgorithm;
 import com.lumosshop.common.entity.ItemSet;
 import com.lumosshop.common.entity.order.Order;
 import com.lumosshop.common.entity.product.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dgpad.recommender.demographic.AprioriAlgorithm.countSupport;
+import static com.dgpad.recommender.AprioriAlgorithm.countSupport;
 
 @Service
 public class RecommendationService {
-    @Autowired
-    private SegmentationService segmentationService;
-
 
     public List<String> recommendProducts(List<Order> orders, List<Product> inCartProducts) {
 
@@ -23,7 +21,7 @@ public class RecommendationService {
         if (inCartProducts == null || inCartProducts.isEmpty()) {
             return Collections.emptyList();  // or return a default list, depending on your logic
         }
-        List<ItemSet> frequentItemSets = segmentationService.generateFrequentItemSets(orders, 2);
+        List<ItemSet> frequentItemSets = generateFrequentItemSets(orders, 2);
 
         // Calculate lift for each product pair
         Map<String, Double> productLiftMap = new HashMap<>();
@@ -89,6 +87,9 @@ public class RecommendationService {
         return lift;
     }
 
+    private List<ItemSet> generateFrequentItemSets(List<Order> orders, int minSupport) {
+        return AprioriAlgorithm.generateCandidateItemSets(orders, minSupport);
+    }
 
     public List<String> getTopNRecommendations(List<Order> orders, List<Product> inCartProducts, int topN) {
         List<String> recommendedProducts = recommendProducts(orders, inCartProducts);
@@ -98,3 +99,4 @@ public class RecommendationService {
 
 
 }
+*/

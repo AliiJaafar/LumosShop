@@ -40,10 +40,9 @@ public class  WebSecurityConfig {
                         .requestMatchers("/categories/**").hasAnyAuthority("Admin", "Content Manager")
                         .requestMatchers("/products/**").hasAnyAuthority("Admin", "product Manager", "Content Manager", "Customer Service")
                         .requestMatchers("/customers/**","/Analyses/**").hasAnyAuthority("Admin", "product Manager")
-                        .requestMatchers("/shipping/**").hasAnyAuthority("Admin", "product Manager")
+                        .requestMatchers("/shipping/**").hasAnyAuthority("Admin", "product Manager", "Content Manager")
                         .requestMatchers("/orders/**").hasAnyAuthority("Admin", "product Manager", "Customer Service")
-                        .requestMatchers("/menus/**").hasAnyAuthority("Admin", "Content Manager")
-                        .requestMatchers("/review/**").hasAnyAuthority("Admin", "Content Manager","Customer Service")
+                        .requestMatchers("/review/**").hasAnyAuthority("Admin", "E-commerce Assistant")
                         .requestMatchers("/controlCenter/**").hasAuthority("Admin"));
 
         http.authorizeHttpRequests((requests) -> {
