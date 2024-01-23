@@ -9,11 +9,7 @@
     <link th:href="@{/rating-plugin/themes/krajee-uni/theme.css}" media="all" rel="stylesheet" type="text/css" />
     <script th:src="@{/rating-plugin/themes/krajee-uni/theme.js}"></script>
 </head>
-<body >
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body class="d-flex flex-column min-vh-100">
 <div th:replace="~{navbar :: navbar}"></div>
 <div th:replace="~{navbar :: searchBar}"></div>
 <div th:replace="~{breadcrumb :: category-chain}"></div>
@@ -42,10 +38,8 @@
     </div>
 </div>
 
-<div th:replace="~{fragments :: pagination('/store/c/'+${category.alias},products)}">
-
-
-</div>
+<div th:replace="~{fragments :: pagination('/store/c/'+${category.alias},products)}"></div>
+<footer th:replace="~{fragments :: footer}"></footer>
 <script>
     $(".productPage-ratingStar").rating({
         displayOnly: true,
@@ -56,5 +50,5 @@
     });
 </script>
 </body>
-<footer th:replace="~{fragments :: footer}"></footer>
+
 </html>

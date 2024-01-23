@@ -84,15 +84,17 @@
     google.charts.setOnLoadCallback(uploadNewDataByTimeFrameForCategory);
   });
 </script>
-<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses.js}"></script>
 <script type="text/javascript" th:src="@{/js/general-businessAnalyses.js}"></script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses_product.js}"></script>
 <script type="text/javascript" th:src="@{/js/businessAnalyses_category.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+
 
 
 <div th:replace="~{fragment/modal_fragments :: logoutModal}"></div>
-<div th:replace="~{fragment :: scripts}"></div>
+<div th:replace=
+             "~{fragment :: scripts}"></div>
 </body>
 </html>
 

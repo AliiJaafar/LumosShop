@@ -6,11 +6,8 @@
 
 </head>
 
-<body >
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W27ZPDZ7"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<body class="d-flex flex-column min-vh-100">
+
 <div th:replace="~{navbar :: navbar}"></div>
 <div class="container text-center mt-5">
     <h1 class="text-success">Order Confirmed!</h1>
@@ -20,6 +17,7 @@
     <hr>
     <p class="text-muted">Thank you for choosing our services. We strive to provide the best for our valued customers.</p>
 </div>
-</body>
 <footer th:replace="~{fragments :: footer}"></footer>
+</body>
+
 </html>

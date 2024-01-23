@@ -39,11 +39,11 @@
         <form method="get" th:action="@{/store/search}" class="d-inline-flex" role="search" >
             <input required name="keyword" class="form-control ms-2" type="search" placeholder="Search"
                    th:value="${keyword}">
-            <button type="submit" class="btn btn-success m-0">
+            <button type="submit" class="btn btn-success ms-1">
                 <i class="fa-duotone fa-magnifying-glass"></i>
             </button>
-            <button class=" btn btn-sm btn-secondary ms-1" type="button" onclick="clearFilter()">
-                <i class="fa-duotone fa-broom-wide fa-xs"></i>
+            <button class=" btn btn-secondary ms-1" type="button" onclick="clearFilter()">
+                <i class="fa-duotone fa-broom-wide"></i>
             </button>
         </form>
         <th:block sec:authorize="isAuthenticated()">
