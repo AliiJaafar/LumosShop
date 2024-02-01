@@ -63,7 +63,8 @@ public class ProductImage {
 
 	@Transient
 	public String getImagePath() {
-		return Constants.B2_ADDRESS+ "/product-images/" + product.getId() + "/extras/" + this.name;
+		return "/product-images/" + product.getId() + "/extras/" + this.name;
+//		return Constants.B2_ADDRESS+ "/product-images/" + product.getId() + "/extras/" + this.name;
 	}
 
 }

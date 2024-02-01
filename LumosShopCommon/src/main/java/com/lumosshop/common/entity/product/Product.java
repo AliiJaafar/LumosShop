@@ -244,7 +244,8 @@ public class Product {
     public String getMainImagePath() {
         if (id == null || mainImage.isEmpty()) return "/images/lumosOnlyShape.png";
 
-        return Constants.B2_ADDRESS+ "/product-images/" + this.id + "/" + this.mainImage;
+        return "/product-images/" + this.id + "/" + this.mainImage;
+//        return Constants.B2_ADDRESS+ "/product-images/" + this.id + "/" + this.mainImage;
     }
 
     public int getReviews() {

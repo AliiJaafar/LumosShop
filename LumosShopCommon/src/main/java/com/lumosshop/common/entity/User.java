@@ -135,7 +135,9 @@ public class User {
         if (id == null || photos == null) {
             return "/images/defaultUserImage.png";
         }
-        return Constants.B2_ADDRESS+ "/user-photos/" + this.id + "/" + this.photos;
+        return "/user-photos/" + this.id + "/" + this.photos;
+
+//        return Constants.B2_ADDRESS+ "/user-photos/" + this.id + "/" + this.photos;
     }
 
     @Transient

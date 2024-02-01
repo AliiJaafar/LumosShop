@@ -103,12 +103,12 @@ public class CategoryController {
 
 			String uploadDir = "category-images/" + savedCategory.getId();
 
-//			FileUploadUtil.cleanDir(uploadDir);
-//			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+			FileUploadUtil.cleanDir(uploadDir);
+			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
 
-            B2_Util.removeFolder(uploadDir);
-            B2_Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
+//            B2_Util.removeFolder(uploadDir);
+//            B2_Util.uploadFile(uploadDir, fileName, multipartFile.getInputStream());
         } else {
             categoryService.save(category);
         }
@@ -138,8 +138,8 @@ public class CategoryController {
         try {
             categoryService.delete(id);
             String Dir = "category-images/" + id;
-            B2_Util.removeFolder(Dir);
-
+//            B2_Util.removeFolder(Dir);
+            FileUploadUtil.removeDir(Dir);
             redirectAttributes.addFlashAttribute("message", "Category ID " + id + " has been deleted from the system with success.");
         } catch (CategoryNotFoundException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());

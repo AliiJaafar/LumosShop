@@ -176,7 +176,8 @@ public class Category {
         if (id == null || image == null || image.isEmpty()) {
             return "/images/_Lumus-LogoDefault.jpg";
         }
-        return Constants.B2_ADDRESS+ "/category-images/" + this.id + "/" + this.image;
+        return "/category-images/" + this.id + "/" + this.image;
+//        return Constants.B2_ADDRESS+ "/category-images/" + this.id + "/" + this.image;
     }
 
     @Override

@@ -136,14 +136,14 @@ public class productController {
         setProductDetails(detailIDs, detailNames, detailValues, product);
 
 
-//        removeUnusedExtraImagesFromForm(product);
-        removeUnusedExtraImagesFromForm_B2(product);
+        removeUnusedExtraImagesFromForm(product);
+//        removeUnusedExtraImagesFromForm_B2(product);
 
         Product savedProduct = productService.save(product);
 
-//        saveUploadedImages(mainImageMultiPart, extraImageMultiPart, savedProduct);
+        saveUploadedImages(mainImageMultiPart, extraImageMultiPart, savedProduct);
 
-        saveUploadedImagesB2(mainImageMultiPart, extraImageMultiPart, savedProduct);
+//        saveUploadedImagesB2(mainImageMultiPart, extraImageMultiPart, savedProduct);
         redirectAttributes.addFlashAttribute("message", "The product has been saved without any issues.");
         return "redirect:/products";
     }

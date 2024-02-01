@@ -18,17 +18,11 @@ public class B2_Util {
 
 
     private static final String END_POINT = "https://s3.us-east-005.backblazeb2.com";
-    private static final String BUCKET_NAME;
-    private static final String ACCESS_KEY_ID;
-    private static final String SECRET_ACCESS_KEY;
-    private static final String B2_REGION;
+    private static final String BUCKET_NAME = "Lumosco";
+    private static final String ACCESS_KEY_ID = System.getenv("AWS_ACCESS_KEY_ID");
+    private static final String SECRET_ACCESS_KEY = System.getenv("AWS_SECRET_ACCESS_KEY");
+    private static final String B2_REGION = "us-east-005";
 
-    static {
-        BUCKET_NAME =  System.getenv("B2_BUCKETNAME");
-        ACCESS_KEY_ID = System.getenv("AWS_ACCESS_KEY_ID");
-        SECRET_ACCESS_KEY = System.getenv("AWS_SECRET_ACCESS_KEY");
-        B2_REGION = System.getenv("B2_REGION");
-    }
 
 
     public static S3Client createB2() {
